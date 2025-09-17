@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 border-b border-[#c45627] rounded-b-xs transition-all md:px-11 duration-300 ${
         scrolled
           ? "backdrop-blur-md bg-base-100/70 shadow-sm"
           : "bg-base-100"
@@ -27,27 +27,27 @@ const Navbar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-        <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-indigo-600">CHRO</span> </Link>
+        <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
 
           {/* Desktop Menu */}
-          <ul className="hidden lg:flex items-center gap-6 text-[18px] font-semibold">
+          <ul className="hidden lg:flex items-center gap-16 text-[16px] font-semibold">
             <li>
-              <Link href="/" className="flex items-center gap-2 hover:text-indigo-600">
+              <Link href="/" className="flex items-center gap-2 hover:text-[#c45627]">
                 <AiFillHome /> Home
               </Link>
             </li>
             <li>
-              <Link href="/popular" className="flex items-center gap-2 hover:text-indigo-600">
+              <Link href="/popular" className="flex items-center gap-2 hover:text-[#c45627]">
                 <FaRegStar /> Popular Post
               </Link>
             </li>
             <li>
-              <Link href="/add-post" className="flex items-center gap-2 hover:text-indigo-600">
+              <Link href="/add-post" className="flex items-center gap-2 hover:text-[#c45627]">
                 <FaPlusCircle /> Add Post
               </Link>
             </li>
             <li>
-              <Link href="/dashboard" className="flex items-center gap-2 hover:text-indigo-600">
+              <Link href="/dashboard" className="flex items-center gap-2 hover:text-[#c45627]">
                 <FaTachometerAlt /> Dashboard
               </Link>
             </li>
@@ -55,10 +55,10 @@ const Navbar = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="btn btn-outline">
+            <Link href="/login" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
               Login
             </Link>
-            <Link href="/register" className="btn btn-primary">
+            <Link href="/register" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
               Register
             </Link>
           </div>

@@ -9,14 +9,16 @@ export const metadata = {
 
 export default function MainLayout({ children }) {
   return <>
-    <header>
-      {/* nav bar */}
-       <Navbar/>
-    </header>
-    <main className="">
-      {children}
-    </main>
-    {/* footer */}
-    <Footer/>
+    <div className="space-y-20">
+      <header>
+        {/* nav bar */}
+        <Navbar />
+      </header>
+      <main className="">
+        {children}
+      </main>
+      {/* footer */}
+      <Footer />
+    </div>
   </>;
 }

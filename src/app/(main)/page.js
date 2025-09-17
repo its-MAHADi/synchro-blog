@@ -7,7 +7,7 @@ import PopularTopic from "./components/popularTopic/PopularTopic";
 
 export default function Home() {
   return (
-    <section>
+    <section className="max-w-11/12 mx-auto">
       {/* banner */}
         <Banner></Banner>
       {/*Features of Synchor */}

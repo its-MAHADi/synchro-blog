@@ -6,8 +6,13 @@ export const metadata = {
 
 export default function MainLayout({ children }) {
   return <>
-    <main className="pt-16">
+    <header>
+      {/* nav bar */}
+
+    </header>
+    <main className="">
       {children}
     </main>
+    {/* footer */}
   </>;
 }

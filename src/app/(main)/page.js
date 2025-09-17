@@ -1,10 +1,16 @@
-import Image from "next/image";
-import PopularTopic from "./popularTopic/page";
+import PopularTopic from "./components/popularTopic/PopularTopic";
 
 export default function Home() {
   return (
     <section>
-      <PopularTopic />
+      {/* banner */}
+
+      {/*Features of Synchor */}
+
+      {/* How synchro works */}
+
+      {/* PopularTopic */}
+      <PopularTopic/>
     </section>
   );
 }

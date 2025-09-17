@@ -1,3 +1,6 @@
+import Footer from "./components/footer/Footer";
+import Navbar from "./components/Navbar/Navbar";
+
 
 export const metadata = {
   title: "Home | Synchro",
@@ -8,11 +11,12 @@ export default function MainLayout({ children }) {
   return <>
     <header>
       {/* nav bar */}
-
+       <Navbar/>
     </header>
     <main className="">
       {children}
     </main>
     {/* footer */}
+    <Footer/>
   </>;
 }

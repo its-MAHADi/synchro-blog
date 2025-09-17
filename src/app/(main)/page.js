@@ -1,3 +1,6 @@
+
+import SynchroFeatures from "./components/FeaturesOfSynchor/SynchroFeatures";
+import SynchroWorks from "./components/HowSynchroWorks/SynchroWorks";
 import Banner from "./components/Banner/Banner";
 import Contact from "./components/Contact/Contact";
 import PopularTopic from "./components/popularTopic/PopularTopic";
@@ -8,9 +11,10 @@ export default function Home() {
       {/* banner */}
         <Banner></Banner>
       {/*Features of Synchor */}
-
+      <SynchroFeatures/>
       {/* How synchro works */}
-         
+      <SynchroWorks/>
+
       {/* PopularTopic */}
       <PopularTopic/>
       

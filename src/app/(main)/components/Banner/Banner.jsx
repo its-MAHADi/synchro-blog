@@ -6,7 +6,7 @@ import { FaRobot, FaGlobe, FaSearch } from "react-icons/fa";
 
 const Banner = () => {
   return (
-    <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white mt-15 overflow-hidden">
+    <div className="relative rounded-xl bg-[#c45627] text-white mt-15 overflow-hidden">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
@@ -27,10 +27,10 @@ const Banner = () => {
 
           {/* Buttons */}
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <button className="btn btn-primary text-white px-6">
+            <button className="btn bg-white text-[#c45627] hover:bg-[#ce5622] hover:border-[#ce5622] border-white hover:text-white rounded-lg px-6">
               Get Started
             </button>
-            <button className="btn btn-outline border-white text-white hover:bg-white hover:text-indigo-600 px-6">
+            <button className="btn btn-outline border-white text-white hover:bg-[#ce5622] hover:border-[#ce5622]hover:border-white hover:text-white rounded-lg px-6">
               Learn More
             </button>
           </div>

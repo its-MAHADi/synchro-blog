@@ -14,8 +14,12 @@
     "next": "15.5.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+<<<<<<< HEAD
+    "react-icons": "^5.5.0"
+=======
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0"
+>>>>>>> 215e73525044e78fef8b3ac69a807723d4e24666
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

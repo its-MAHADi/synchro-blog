@@ -3,6 +3,7 @@ import { BadgeQuestionMark } from 'lucide-react';
 import { Plus, Minus } from "lucide-react";
 import React, { useState } from 'react';
 // #c45627 #213943 #f6f5ea
+// mhkhandakar57@gmail.com
 const FAQ = () => {
     const [open, setOpen] = useState(false);
 
@@ -48,7 +49,19 @@ const FAQ = () => {
                 <span className="text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
             </div>
             <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-tr from-[#853716] via-[#ec9975] to-[#853716] bg-clip-text text-transparent 6mb-10">Frequently Asked Questions</h1>
-            
+            {
+                faqs.map((faq,index)=>(
+                    <div key={index}
+                        onClick={() => setOpen(!open)}
+                        className="max-w-7xl mx-auto mt-5 collapse collapse-plus border border-green-200 bg-gray-100 shadow-md rounded-xl cursor-pointer mb-3 p-4"
+                        >
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-semibold text-[#c45627]">{faq.question}</h2>
+                            {open ? <Minus className="w-6 h-6 text-[#c45627]" /> : <Plus className="w-6 h-6 text-[#c45627]" />}
+                        </div>
+                    </div>
+                ))
+            }
         </div>
     );
 };

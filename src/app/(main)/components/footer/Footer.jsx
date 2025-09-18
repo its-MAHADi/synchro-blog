@@ -9,8 +9,8 @@ const Footer = () => {
     <footer
       className="mt-10"
       style={{
-        backgroundColor: "#213943",
-        color: "#f6f5ea",
+        backgroundColor: "#f7f5eb",
+        color: "",
       }}
     >
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between py-6 px-4 md:px-10">

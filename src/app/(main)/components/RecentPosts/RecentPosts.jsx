@@ -4,82 +4,82 @@ import React from "react";
 const recentPosts = [
     {
         id: 1,
-        title: "10 Minimalist Lifestyle Tips",
-        excerpt: "Learn practical ways to simplify your home, reduce stress, and focus on what matters most.",
+        title: "Understanding React Hooks",
+        excerpt: "React Hooks let you use state and other features without writing a class...",
         date: "2025-09-18",
-        category: "Lifestyle",
+        category: "React",
         readTime: "5 min read"
     },
     {
         id: 2,
-        title: "Top 7 Travel Destinations for 2025",
-        excerpt: "From hidden beaches to mountain escapes — discover the best places to add to your 2025 bucket list.",
+        title: "Next.js 15 Features",
+        excerpt: "Next.js 15 comes with many new features including improved Turbopack...",
         date: "2025-09-17",
-        category: "Travel",
+        category: "Next.js",
         readTime: "7 min read"
     },
     {
         id: 3,
-        title: "How Smart Home Tech Is Changing Daily Life",
-        excerpt: "Smart devices are making routines easier, safer, and more energy-efficient — here’s what to try first.",
+        title: "JavaScript ES2025 Updates",
+        excerpt: "ES2025 introduces some exciting syntax features and better performance...",
         date: "2025-09-16",
-        category: "Technology",
+        category: "JavaScript",
         readTime: "6 min read"
     },
     {
         id: 4,
-        title: "Morning Workout Routines for Busy People",
-        excerpt: "Quick, effective exercises you can do at home to boost energy and start the day strong.",
+        title: "CSS Grid vs Flexbox",
+        excerpt: "A complete comparison between CSS Grid and Flexbox for modern layouts...",
         date: "2025-09-15",
-        category: "Health & Fitness",
+        category: "CSS",
         readTime: "8 min read"
     },
     {
         id: 5,
-        title: "Smart Investments for Beginners",
-        excerpt: "Practical, low-risk strategies to begin growing your savings and understanding the market.",
+        title: "TypeScript Tips for Beginners",
+        excerpt: "Learn essential TypeScript tips that will make your code safer and cleaner...",
         date: "2025-09-14",
-        category: "Business & Finance",
+        category: "TypeScript",
         readTime: "4 min read"
     },
     {
         id: 6,
-        title: "Healthy Eating on a Budget",
-        excerpt: "Nutritious, affordable meal ideas and shopping tips that keep both your wallet and body happy.",
+        title: "Tailwind CSS Utility Classes",
+        excerpt: "Tailwind CSS is a utility-first framework to rapidly build custom designs...",
         date: "2025-09-13",
-        category: "Health & Fitness",
+        category: "CSS",
         readTime: "6 min read"
     },
     {
         id: 7,
-        title: "Digital Declutter: Organize Your Life",
-        excerpt: "Simple steps to reduce digital noise, manage apps and notifications, and reclaim focus.",
+        title: "React Performance Optimization",
+        excerpt: "Techniques and best practices to optimize React applications...",
         date: "2025-09-12",
-        category: "Lifestyle",
+        category: "React",
         readTime: "10 min read"
     },
     {
         id: 8,
-        title: "Best Budget Travel Hacks",
-        excerpt: "Insider tips to travel more for less — from timing flights to finding affordable stays.",
+        title: "Deploying Next.js App",
+        excerpt: "Learn how to deploy your Next.js application on Vercel or other platforms...",
         date: "2025-09-11",
-        category: "Travel",
+        category: "Next.js",
         readTime: "5 min read"
     },
     {
         id: 9,
-        title: "Top Portable Gadgets for 2025",
-        excerpt: "Handy gadgets that make travel, work, and daily life easier — compact, powerful, and worth buying.",
+        title: "Understanding useEffect",
+        excerpt: "A deep dive into the useEffect hook and its common pitfalls...",
         date: "2025-09-10",
-        category: "Technology",
+        category: "React",
         readTime: "7 min read"
     },
     {
         id: 10,
-        title: "Side Hustles That Actually Work",
-        excerpt: "Realistic side-income ideas with steps to get started and scale over time.",
+        title: "Building Reusable Components",
+        excerpt: "Best practices for creating reusable and maintainable React components...",
         date: "2025-09-09",
-        category: "Business & Finance",
+        category: "React",
         readTime: "9 min read"
     },
 ];
@@ -97,8 +97,8 @@ const getCategoryColor = (category) => {
 
 const RecentPosts = () => {
     return (
-        <section className="max-w-screen-xl mx-auto px-4 py-16 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl">
-            <div className=" mx-auto">
+        <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen rounded-xl">
+            <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
                     <h2 className="text-4xl md:text-5xl font-bold bg-[#c45627] bg-clip-text text-transparent mb-4">
@@ -138,7 +138,7 @@ const RecentPosts = () => {
                                         ⏱️ {recentPosts[0].readTime}
                                     </span>
                                 </div>
-                                <button className="group md:px-6 md:py-3 p-2 text-[14px] md:text-base bg-[#e76a34] hover:bg-[#c45627] text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <button className="group px-6 py-3 bg-[#e76a34] hover:bg-[#c45627] text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                     Read Article
                                     <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
                                 </button>
@@ -201,7 +201,7 @@ const RecentPosts = () => {
 
                 {/* Load More Section */}
                 <div className="text-center mt-12">
-                    <button className="group px-8 py-4 bg-white border-2 cursor-pointer border-gray-200 hover:border-[#c45627] text-gray-700 hover:text-[#c45627] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                    <button className="group px-8 py-4 bg-white border-2 border-gray-200 hover:border-[#c45627] text-gray-700 hover:text-[#c45627] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
                         <span className="flex items-center gap-2">
                             Load More Posts
                             <span className="transition-transform duration-300 group-hover:rotate-180">↻</span>

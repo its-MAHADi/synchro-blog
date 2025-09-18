@@ -1,12 +1,10 @@
 "use client";
 import { BadgeQuestionMark } from 'lucide-react';
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus } from 'lucide-react';
 import React, { useState } from 'react';
-// #c45627 #213943 #f6f5ea
-// mhkhandakar57@gmail.com
-const FAQ = () => {
-    const [open, setOpen] = useState(false);
 
+const FAQ = () => {
+    const [openIndex, setOpenIndex] = useState(null); // Keep track of the open/close state of each FAQ
 
     const faqs = [
         {
@@ -41,6 +39,9 @@ const FAQ = () => {
         },
     ];
 
+    const handleToggle = (index) => {
+        setOpenIndex(openIndex === index ? null : index); // Toggle open/close for each FAQ
+    };
 
     return (
         <div id="faq" className='mt-25 flex justify-center items-center flex-col'>
@@ -48,20 +49,30 @@ const FAQ = () => {
                 <BadgeQuestionMark className="hidden lg:block w-8 h-8 text-[#f6f5ea]" />
                 <span className="text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
             </div>
-            <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-tr from-[#853716] via-[#ec9975] to-[#853716] bg-clip-text text-transparent 6mb-10">Frequently Asked Questions</h1>
-            {
-                faqs.map((faq,index)=>(
-                    <div key={index}
-                        onClick={() => setOpen(!open)}
-                        className="max-w-7xl mx-auto mt-5 collapse collapse-plus border border-green-200 bg-gray-100 shadow-md rounded-xl cursor-pointer mb-3 p-4"
-                        >
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-xl font-semibold text-[#c45627]">{faq.question}</h2>
-                            {open ? <Minus className="w-6 h-6 text-[#c45627]" /> : <Plus className="w-6 h-6 text-[#c45627]" />}
+            <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-tr from-[#853716] via-[#ec9975] to-[#853716] bg-clip-text text-transparent mb-10">Frequently Asked Questions</h1>
+            <div className='space-y-4  w-full'>
+                {faqs.map((faq, index) => (
+                    <div
+                        key={index}
+                        className="border border-[#ec9975] bg-white shadow-md rounded-xl">
+                        <div
+                            className="flex justify-between items-center p-4 cursor-pointer"
+                            onClick={() => handleToggle(index)}>
+                            <span className="text-xl font-semibold text-[#853716]">{faq.question}</span>
+                            {openIndex === index ? (
+                                <Minus className="text-[#853716]" />
+                            ) : (
+                                <Plus className=" text-[#853716]" />
+                            )}
                         </div>
+                        {openIndex === index && (
+                            <div className="p-4 text-gray-800 font-semibold text-lg">
+                                <p>{faq.answer}</p>
+                            </div>
+                        )}
                     </div>
-                ))
-            }
+                ))}
+            </div>
         </div>
     );
 };

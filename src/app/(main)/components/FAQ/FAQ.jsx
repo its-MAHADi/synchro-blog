@@ -42,7 +42,14 @@ const FAQ = () => {
 
 
     return (
-        <h1>HIII from FAQ section</h1>
+        <div id="faq" className='mt-25 flex justify-center items-center flex-col'>
+            <div className="inline-flex flex-row-reverse items-center gap-2 bg-[#c45627] px-4 py-2 rounded-full mb-4">
+                <BadgeQuestionMark className="hidden lg:block w-8 h-8 text-[#f6f5ea]" />
+                <span className="text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-tr from-[#853716] via-[#ec9975] to-[#853716] bg-clip-text text-transparent 6mb-10">Frequently Asked Questions</h1>
+            
+        </div>
     );
 };
 

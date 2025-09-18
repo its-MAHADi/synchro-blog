@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AiFillHome, AiOutlineCloseCircle } from "react-icons/ai";
 import { FaRegStar, FaPlusCircle, FaTachometerAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
+import Image from 'next/image';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,15 @@ const Navbar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-        <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+          <div className="flex justify-center items-center">
+            <Image
+              src="/SiteIcon/synchroIcon.png"
+              alt="Synchro Logo"
+              width={80}
+              height={80}
+            />
+            <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+          </div>
 
           {/* Desktop Menu */}
           <ul className="hidden lg:flex items-center gap-16 text-[16px] font-semibold">
@@ -55,10 +64,10 @@ const Navbar = () => {
 
           {/* Desktop Buttons */}
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+            <Link href="/sign-in" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
               Login
             </Link>
-            <Link href="/register" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+            <Link href="/sign-up" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
               Register
             </Link>
           </div>

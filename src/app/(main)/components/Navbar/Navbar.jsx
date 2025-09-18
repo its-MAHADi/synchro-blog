@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { AiFillHome, AiOutlineCloseCircle } from "react-icons/ai";
-import { FaRegStar, FaPlusCircle, FaTachometerAlt } from "react-icons/fa";
+import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
 import Image from 'next/image';
 
@@ -43,6 +43,11 @@ const Navbar = () => {
             <li>
               <Link href="/" className="flex items-center gap-2 hover:text-[#c45627]">
                 <AiFillHome /> Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/all-posts" className="flex items-center gap-2 hover:text-[#c45627]">
+                <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
             <li>
@@ -101,10 +106,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/popular" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <FaRegStar /> Popular Post
-            </Link>
-          </li>
+              <Link href="/all-posts" className="flex items-center gap-2 hover:text-[#c45627]">
+                <FaRegFileAlt/> All Blog Posts
+              </Link>
+            </li>
           <li>
             <Link href="/add-post" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <FaPlusCircle /> Add Post

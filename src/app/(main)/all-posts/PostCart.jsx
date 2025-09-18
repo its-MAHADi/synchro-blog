@@ -50,7 +50,7 @@ const PostCart = ({ postData }) => {
                 <div>
                     <Link
                         href={`/all-posts/${postData.id}`}
-                        className="flex items-center gap-1  font-medium text-primary text-lg hover:underline"
+                        className="flex items-center gap-1  font-medium text-[#c45627] text-lg hover:underline"
                     >
                         View Post <ArrowUpRight size={14} />
                     </Link>

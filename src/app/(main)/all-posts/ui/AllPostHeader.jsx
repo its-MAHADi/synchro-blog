@@ -21,7 +21,7 @@ const AllPostHeader = () => {
         <Button
           label={<FaSearch className="text-white" />}
           type="button"
-          clsName="btn btn-primary rounded-full p-3 flex items-center justify-center"
+          clsName="btn bg-[#c45627] rounded-full p-3 flex items-center justify-center"
         />
       </div>
     </div>

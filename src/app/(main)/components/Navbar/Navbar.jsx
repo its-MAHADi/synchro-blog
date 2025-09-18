@@ -26,7 +26,7 @@ const Navbar = () => {
       }`}
     >
       <div className="px-2">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-16 max-w-screen-xl mx-auto px-4">
           {/* Logo */}
           <div className="flex justify-center items-center">
             <Image
@@ -61,7 +61,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="/dashboard" className="flex items-center gap-2 hover:text-[#c45627]">
+              <Link href="/user-dashboard" className="flex items-center gap-2 hover:text-[#c45627]">
                 <FaTachometerAlt /> Dashboard
               </Link>
             </li>
@@ -116,7 +116,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/dashboard" onClick={() => setOpen(false)} className="flex items-center gap-2">
+            <Link href="/user-dashboard" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <FaTachometerAlt /> Dashboard
             </Link>
           </li>

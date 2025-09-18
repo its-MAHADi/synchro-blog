@@ -6,7 +6,7 @@ import { FaRobot, FaGlobe, FaSearch } from "react-icons/fa";
 
 const Banner = () => {
   return (
-    <div className="relative rounded-xl bg-[#c45627] text-white mt-15 overflow-hidden">
+    <div className="relative rounded-xl bg-[#c45627] text-white mt-15 overflow-hidden max-w-screen-xl mx-auto px-4">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
@@ -16,7 +16,7 @@ const Banner = () => {
           <h1 className="text-3xl lg:text-5xl font-extrabold leading-tight drop-shadow-lg">
             AI-Assisted Blogging Platform
           </h1>
-          <p className="text-base lg:text-lg text-gray-200 max-w-2xl mx-auto lg:mx-0">
+          <p className="text-xs md:text-base lg:text-lg text-gray-200 max-w-2xl mx-auto lg:mx-0">
             The main goal is to provide{" "}
             <span className="font-semibold">bloggers, writers, and organizations</span>{" "}
             with an AI-assisted platform to create, manage, and publish high-quality
@@ -38,16 +38,16 @@ const Banner = () => {
           {/* Features */}
           <div className="flex gap-8 mt-8 justify-center lg:justify-start">
             <div className="flex items-center gap-2">
-              <FaRobot className="text-xl" />
-              <span>AI Writing</span>
+              <FaRobot size={"18"} />
+              <span className="text-xs md:text-base">AI Writing</span>
             </div>
             <div className="flex items-center gap-2">
-              <FaSearch className="text-xl" />
-              <span>SEO Optimized</span>
+              <FaSearch size={"18"} />
+              <span className="text-xs md:text-base">SEO Optimized</span>
             </div>
-            <div className="flex items-center gap-2">
-              <FaGlobe className="text-xl" />
-              <span>Multilingual</span>
+            <div className="flex items-center gap-2 ">
+              <FaGlobe size={"18"} />
+              <span className="text-xs md:text-base">Multilingual</span>
             </div>
           </div>
         </div>

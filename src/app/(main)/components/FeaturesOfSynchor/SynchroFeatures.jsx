@@ -63,7 +63,7 @@ const FeatureCard = ({ feature }) => {
                 transition: { type: "tween", duration: 0.15 }
             }}
 
-            className="bg-[#f6f5ea] rounded-xl shadow p-5 cursor-pointer transition-transform"
+            className="bg-[#f7f5eb] rounded-xl shadow p-5 cursor-pointer transition-transform"
         >
             {/* Circle with Icon */}
             <motion.div

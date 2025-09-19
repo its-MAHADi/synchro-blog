@@ -97,17 +97,17 @@ const getCategoryColor = (category) => {
 
 const RecentPosts = () => {
     return (
-        <section className="py-16 px-4 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen rounded-xl">
+        <section className="py-16 px-4 min-h-screen rounded-xl">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-bold bg-[#c45627] bg-clip-text text-transparent mb-4">
+                    <h2 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mb-10">
                         Recent Posts
                     </h2>
                     <p className="text-gray-600 text-lg">
                         Discover the latest insights and tutorials on web development, programming, and modern technologies.
                     </p>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#c45627] to-purple-500 mx-auto mt-6 rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-[#c45627] to-amber-500 mx-auto mt-6 rounded-full"></div>
                 </div>
 
                 {/* Featured Post (First Post) */}
@@ -129,8 +129,8 @@ const RecentPosts = () => {
                             <p className="text-gray-600 text-lg mb-6 leading-relaxed">
                                 {recentPosts[0].excerpt}
                             </p>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <div className="flex flex-col lg:flex-row items-center justify-between">
+                                <div className="flex items-center gap-4 text-sm text-gray-500 whitespace-nowrap">
                                     <span className="flex items-center gap-1">
                                         📅 {new Date(recentPosts[0].date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                     </span>
@@ -138,7 +138,7 @@ const RecentPosts = () => {
                                         ⏱️ {recentPosts[0].readTime}
                                     </span>
                                 </div>
-                                <button className="group px-6 py-3 bg-[#e76a34] hover:bg-[#c45627] text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <button className="cursor-pointer mt-5 lg:mt-0 group px-6 py-3 bg-[#e76a34] hover:bg-[#c45627] text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                     Read Article
                                     <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">→</span>
                                 </button>
@@ -185,7 +185,7 @@ const RecentPosts = () => {
                                     </span>
                                 </div>
 
-                                <button className="group w-full py-3 px-4 bg-gray-50 hover:bg-[#c45627] text-[#c45627] hover:text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] border border-[#c45627] hover:border-transparent">
+                                <button className="cursor-pointer group w-full py-3 px-4 bg-gray-50 hover:bg-[#c45627] text-[#c45627] hover:text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-[1.02] border border-[#c45627] hover:border-transparent">
                                     <span className="flex items-center justify-center gap-2">
                                         Read More
                                         <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -201,7 +201,7 @@ const RecentPosts = () => {
 
                 {/* Load More Section */}
                 <div className="text-center mt-12">
-                    <button className="group px-8 py-4 bg-white border-2 border-gray-200 hover:border-blue-500 text-gray-700 hover:text-blue-600 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                    <button className="group px-8 py-4 bg-white border-2 border-gray-200 hover:border-[#853716] text-gray-700 hover:text-[#853716] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
                         <span className="flex items-center gap-2">
                             Load More Posts
                             <span className="transition-transform duration-300 group-hover:rotate-180">↻</span>

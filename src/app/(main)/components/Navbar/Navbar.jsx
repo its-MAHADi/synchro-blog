@@ -1,14 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { AiFillHome, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiFillHome, AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
+import { MdOutlineEmojiEvents, } from "react-icons/md";
+import { GoHome } from "react-icons/go";
 import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
 import Image from 'next/image';
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const pathname = usePathname();
 
   // Scroll effect
   useEffect(() => {
@@ -19,7 +24,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 border-b border-[#c45627] rounded-b-xs transition-all md:px-11 duration-300 ${
+      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#c45627] rounded-b-xs transition-all md:px-11 duration-300 ${
         scrolled
           ? "backdrop-blur-md bg-base-100/70 shadow-sm"
           : "bg-base-100"
@@ -39,30 +44,55 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Menu */}
-          <ul className="hidden lg:flex items-center gap-16 text-[16px] font-semibold">
+          <ul className="hidden lg:flex items-center gap-10 text-[16px] font-semibold">
             <li>
-              <Link href="/" className="flex items-center gap-2 hover:text-[#c45627]">
-                <AiFillHome /> Home
+              <Link href="/" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === '/'
+              ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              : "text-gray-700 hover:text-[#213943]"
+          }`}>
+                <GoHome /> Home
               </Link>
             </li>
             <li>
-              <Link href="/all-posts" className="flex items-center gap-2 hover:text-[#c45627]">
+              <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === "/all-posts"
+              ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              : "text-gray-700 hover:text-[#213943]"
+          }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
             <li>
-              <Link href="/popular" className="flex items-center gap-2 hover:text-[#c45627]">
+              <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === "/popular"
+              ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              : "text-gray-700 hover:text-[#213943]"
+          }`}>
                 <FaRegStar /> Popular Post
               </Link>
             </li>
             <li>
+              <Link href="/events" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === "/events"
+              ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              : "text-gray-700 hover:text-[#213943]"
+          }`}>
+                <MdOutlineEmojiEvents /> Events
+              </Link>
+            </li>
+            {/* <li>
               <Link href="/add-post" className="flex items-center gap-2 hover:text-[#c45627]">
                 <FaPlusCircle /> Add Post
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link href="/dashboard" className="flex items-center gap-2 hover:text-[#c45627]">
-                <FaTachometerAlt /> Dashboard
+              <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === "/aboutUs"
+              ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              : "text-gray-700 hover:text-[#213943]"
+          }`}>
+                <AiOutlineInfoCircle /> About Us
               </Link>
             </li>
           </ul>
@@ -102,7 +132,7 @@ const Navbar = () => {
         <ul className="p-4 space-y-3 font-medium">
           <li>
             <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <AiFillHome /> Home
+              <GoHome /> Home
             </Link>
           </li>
           <li>
@@ -111,10 +141,15 @@ const Navbar = () => {
               </Link>
             </li>
           <li>
+            <Link href="/events" onClick={() => setOpen(false)} className="flex items-center gap-2">
+              <MdOutlineEmojiEvents /> Events
+            </Link>
+          </li>
+          {/* <li>
             <Link href="/add-post" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <FaPlusCircle /> Add Post
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/dashboard" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <FaTachometerAlt /> Dashboard

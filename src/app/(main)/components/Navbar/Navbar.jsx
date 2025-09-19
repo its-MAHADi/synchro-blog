@@ -1,13 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { AiFillHome, AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
+
+import { FaRegStar,  FaTachometerAlt, FaRegFileAlt } from "react-icons/fa";
+
+
+
+import {  AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
-import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
+
 import { LucideSquareMenu } from "lucide-react";
-import Image from 'next/image';
+
 import { usePathname } from "next/navigation";
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -34,12 +40,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex justify-center items-center">
-            <Image
-              src="/SiteIcon/synchroIcon.png"
-              alt="Synchro Logo"
-              width={80}
-              height={80}
-            />
+            <img src="main_logo.png" alt="main logo" className="w-10 pr-2" />
             <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
           </div>
 

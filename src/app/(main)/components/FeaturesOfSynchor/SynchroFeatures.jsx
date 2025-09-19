@@ -63,7 +63,7 @@ const FeatureCard = ({ feature }) => {
                 transition: { type: "tween", duration: 0.15 }
             }}
 
-            className="bg-[#f6f5ea] rounded-xl shadow p-5 cursor-pointer transition-transform"
+            className="bg-[#f7f5eb] rounded-xl shadow p-5 cursor-pointer transition-transform"
         >
             {/* Circle with Icon */}
             <motion.div
@@ -85,8 +85,8 @@ const FeatureCard = ({ feature }) => {
 
 const SynchroFeatures = () => {
     return (
-        <section className="max-w-screen-xl mx-auto px-4 py-11">
-            <h2 className="text-3xl md:text-4xl text-[#c45627] font-bold text-center mb-12">
+        <section id="features" className="max-w-screen-xl mx-auto px-4 py-11">
+            <h2 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mb-10">
                 Features of Synchro
             </h2>
 

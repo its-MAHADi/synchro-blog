@@ -9,13 +9,16 @@ import RecentPosts from "./components/RecentPosts/RecentPosts";
 
 export default function Home() {
   return (
-    <section className="max-w-11/12 mx-auto space-y-20">
+    <section className="max-w-11/12 mx-auto">
       {/* banner */}
-        <Banner/>
-        {/* Recent Post */}
-        <RecentPosts/>
-      {/*Features of Synchor */}
+      <Banner/>
+
+      {/* Recent Post */}
+      <RecentPosts/>
+
+      {/*Features of Synchro */}
       <SynchroFeatures/>
+
       {/* How synchro works */}
       <SynchroWorks/>
 
@@ -27,6 +30,7 @@ export default function Home() {
       
       {/* contact page */}
       <Contact/>
+
     </section>
   );
 }

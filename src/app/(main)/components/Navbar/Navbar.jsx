@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { AiFillHome, AiOutlineCloseCircle } from "react-icons/ai";
-import { MdEmojiEvents } from "react-icons/md";
+import { AiFillHome, AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
+import { MdOutlineEmojiEvents, } from "react-icons/md";
+import { GoHome } from "react-icons/go";
 import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
 import Image from 'next/image';
@@ -50,7 +51,7 @@ const Navbar = () => {
               ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
               : "text-gray-700 hover:text-[#213943]"
           }`}>
-                <AiFillHome /> Home
+                <GoHome /> Home
               </Link>
             </li>
             <li>
@@ -77,7 +78,7 @@ const Navbar = () => {
               ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
               : "text-gray-700 hover:text-[#213943]"
           }`}>
-                <MdEmojiEvents /> Events
+                <MdOutlineEmojiEvents /> Events
               </Link>
             </li>
             {/* <li>
@@ -86,12 +87,12 @@ const Navbar = () => {
               </Link>
             </li> */}
             <li>
-              <Link href="/dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
-            pathname === "/dashboard"
+              <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#c45627] transition ${
+            pathname === "/aboutUs"
               ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
               : "text-gray-700 hover:text-[#213943]"
           }`}>
-                <FaTachometerAlt /> Dashboard
+                <AiOutlineInfoCircle /> About Us
               </Link>
             </li>
           </ul>
@@ -131,7 +132,7 @@ const Navbar = () => {
         <ul className="p-4 space-y-3 font-medium">
           <li>
             <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <AiFillHome /> Home
+              <GoHome /> Home
             </Link>
           </li>
           <li>
@@ -141,7 +142,7 @@ const Navbar = () => {
             </li>
           <li>
             <Link href="/events" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <MdEmojiEvents /> Events
+              <MdOutlineEmojiEvents /> Events
             </Link>
           </li>
           {/* <li>

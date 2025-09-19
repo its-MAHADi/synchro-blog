@@ -1,0 +1,4 @@
+.navLinks a.active{
+    text-decoration: underline;
+    font-size: 1.45rem;
+}

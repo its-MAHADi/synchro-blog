@@ -40,9 +40,9 @@ const Contact = () => {
 
   return (
     <div
-      className="min-h-screen border p-3 border-gray-300 rounded-xl"  >
+      className="min-h-screen p-3 rounded-xl"  >
       <h2
-        className="text-3xl font-bold text-center mb-6"
+        className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mt-30 mb-7"
         style={{ color: "" }}
       >
         Contact Us

@@ -2,7 +2,7 @@
 import { BadgeQuestionMark } from 'lucide-react';
 import { Plus, Minus } from 'lucide-react';
 import React, { useState } from 'react';
-
+// #c45627 #213943 #f6f5ea  mhkhandakar57@gmail.com
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(null); // Keep track of the open/close state of each FAQ
 
@@ -46,10 +46,10 @@ const FAQ = () => {
     return (
         <div id="faq" className='mt-25 flex justify-center items-center flex-col'>
             <div className="inline-flex flex-row-reverse items-center gap-2 bg-[#c45627] px-4 py-2 rounded-full mb-4">
-                <BadgeQuestionMark className="hidden lg:block w-8 h-8 text-[#f6f5ea]" />
-                <span className="text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
+                <BadgeQuestionMark className="lg:w-8 lg:h-8 text-[#f6f5ea]" />
+                <span className="text-sm lg:text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
             </div>
-            <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-tr from-[#853716] via-[#ec9975] to-[#853716] bg-clip-text text-transparent mb-10">Frequently Asked Questions</h1>
+            <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mb-10">Frequently Asked Questions</h1>
             <div className='space-y-4  w-full'>
                 {faqs.map((faq, index) => (
                     <div

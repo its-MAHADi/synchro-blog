@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { AiFillHome, AiOutlineCloseCircle } from "react-icons/ai";
-import { FaRegStar, FaPlusCircle, FaTachometerAlt } from "react-icons/fa";
+import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
+import Image from 'next/image';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -27,13 +28,26 @@ const Navbar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-        <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+          <div className="flex justify-center items-center">
+            <Image
+              src="/SiteIcon/synchroIcon.png"
+              alt="Synchro Logo"
+              width={80}
+              height={80}
+            />
+            <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+          </div>
 
           {/* Desktop Menu */}
           <ul className="hidden lg:flex items-center gap-16 text-[16px] font-semibold">
             <li>
               <Link href="/" className="flex items-center gap-2 hover:text-[#c45627]">
                 <AiFillHome /> Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/all-posts" className="flex items-center gap-2 hover:text-[#c45627]">
+                <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
             <li>
@@ -92,10 +106,10 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/popular" onClick={() => setOpen(false)} className="flex items-center gap-2">
-              <FaRegStar /> Popular Post
-            </Link>
-          </li>
+              <Link href="/all-posts" className="flex items-center gap-2 hover:text-[#c45627]">
+                <FaRegFileAlt/> All Blog Posts
+              </Link>
+            </li>
           <li>
             <Link href="/add-post" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <FaPlusCircle /> Add Post

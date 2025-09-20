@@ -73,9 +73,9 @@ export default function PopularTopic() {
             bgGradient: "from-emerald-50 to-green-50"
         }
     ];
-
+//[#c45627]
     return (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 border rounded-lg relative">
+        <section id="trendingTopics" className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 rounded-lg relative">
             {/* Animated background elements - responsive sizes */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-5 sm:top-10 left-2 sm:left-10 w-20 sm:w-32 h-20 sm:h-32 bg-gradient-to-r from-purple-200 to-pink-200 rounded-full blur-2xl sm:blur-3xl opacity-20 sm:opacity-30 animate-pulse"></div>
@@ -90,7 +90,7 @@ export default function PopularTopic() {
                     </div>
                     <Sparkles className="text-yellow-500 w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
                 </div>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-gray-800 via-gray-700 to-gray-900 bg-clip-text text-transparent mb-2 px-4">
+                <h1 className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mb-5">
                     Trending Topics
                 </h1>
                 <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
@@ -100,12 +100,12 @@ export default function PopularTopic() {
 
             {/* Custom Marquee Animation */}
             <div className="relative z-10 overflow-hidden">
-                <div className="flex animate-marquee hover:pause-animation gap-6">
+                <div className="flex animate-marquee hover:pause-animation gap-6 py-5">
                     {/* First set of topics */}
                     {topics.map((topic, index) => (
                         <div
                             key={`first-${topic.id}`}
-                            className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border-0 bg-gradient-to-br ${topic.bgGradient} hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 sm:hover:-translate-y-2 hover:scale-105 flex-shrink-0 w-80 sm:w-96`}
+                            className={`group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-lg sm:shadow-xl border-0 bg-gradient-to-br ${topic.bgGradient} hover:shadow-xl sm:hover:shadow-2xl transition-all duration-500 transform   flex-shrink-0 w-80 sm:w-96`}
                             onMouseEnter={() => setHoveredTopic(topic.id)}
                             onMouseLeave={() => setHoveredTopic(null)}
                         >
@@ -118,7 +118,7 @@ export default function PopularTopic() {
 
                             {/* Category Tag */}
                             <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20">
-                                <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/80 backdrop-blur-sm text-gray-700 rounded-full text-xs font-semibold border border-white/20">
+                                <span className="px-2 py-1 sm:px-3 sm:py-1  backdrop-blur-sm text-gray-700 rounded-full text-xs font-semibold border border-white/20">
                                     {topic.category}
                                 </span>
                             </div>

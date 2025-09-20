@@ -1,5 +1,6 @@
 
 
+import Navbar from "@/app/(main)/components/Navbar/Navbar";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
@@ -12,8 +13,10 @@ export const metadata = {
 
 export default function SignUpPage() {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4">
-            <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+        <div>
+            <Navbar/>
+        <div className="py-10 flex items-center justify-center bg-[#f6f5ea] px-4">
+            <div className="bg-white mt-10 rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
 
                 {/* Left: Illustration */}
                 <div className="hidden md:flex items-center justify-center ">
@@ -91,6 +94,7 @@ export default function SignUpPage() {
                     </p>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

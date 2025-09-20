@@ -62,21 +62,21 @@ const Banner = () => {
 
           {/* Corner Images with motion */}
           <motion.img
-            src="/BLOG_CORNER-1.WEBP"
+            src="/BLOG_CORNER-1.png"
             alt="Corner 1"
             className="absolute -top-5 -left-5 w-10 h-10 lg:w-16 lg:h-16 shadow-xl object-cover rounded-lg z-20"
             animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
           />
           <motion.img
-            src="/BLOG_CORNER-2.WEBP"
+            src="/BLOG_CORNER-2.png"
             alt="Corner 2"
             className="absolute -top-5 -right-5 w-10 h-10 lg:w-16 lg:h-16 shadow-xl object-cover rounded-lg z-20"
             animate={{ x: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
           />
           <motion.img
-            src="/BLOG_CORNER-3.WEBP"
+            src="/BLOG_CORNER-3.png"
             alt="Corner 3"
             className="absolute -bottom-5 -left-5 w-10 h-10 lg:w-16 lg:h-16 shadow-xl object-cover rounded-lg z-20"
             animate={{ x: [0, -10, 0] }}

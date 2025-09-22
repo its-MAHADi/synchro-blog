@@ -1,4 +1,13 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
+
+export const collectionNameObj = {
+  userCollection : 'users',
+  eventCollection : 'events',
+  blogCollection : 'blogs',
+  followerCollection : 'followers',
+  featuresCollection : 'features',
+}
+
 export default function dbConnect(collectionName){
 
 

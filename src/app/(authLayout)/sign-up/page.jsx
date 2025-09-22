@@ -9,6 +9,13 @@ export const metadata = {
 };
 
 export default function SignUpPage() {
+
+  const form = e.target;
+  const name = form.name.value
+  const email = form.email.value
+  const password = form.password.value 
+  console.log(name,email,password);
+
   return (
     <div>
       <Navbar />
@@ -39,16 +46,19 @@ export default function SignUpPage() {
             <form className="space-y-4">
               <input
                 type="text"
+                name="name"
                 placeholder="Full Name"
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
               />
               <input
                 type="email"
+                name="email"
                 placeholder="Email"
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
               />
               <input
                 type="password"
+                name="password"
                 placeholder="Password"
                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
               />

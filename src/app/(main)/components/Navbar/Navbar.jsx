@@ -130,7 +130,7 @@ const Navbar = () => {
             <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer" />
           </button>
         </div>
-        <ul className="p-4 space-y-3 font-medium">
+        <ul className="p-4 space-y-3 font-medium bg-white min-h-screen">
           <li>
             <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2">
               <GoHome /> Home

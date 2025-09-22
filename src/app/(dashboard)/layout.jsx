@@ -1,22 +1,23 @@
 // app/(dashboard)/layout.jsx
-// import UserSidebar from "@/components/dashboard/UserSidebar";
-// import AdminSidebar from "@/components/dashboard/AdminSidebar";
 
 import { cookies } from "next/headers";
-import Navbar from "../(main)/components/Navbar/Navbar";
+import AdminSidebar from "../(main)/components/AdminSidebar/AdminSidebar";
+import UserSidebar from "../(main)/components/UserSidebar/UserSidebar";
 
 export default function DashboardLayout({ children }) {
-  const role = cookies().get("role")?.value;
+  // role কুকি থেকে নেওয়া হলো
+  const role = cookies().get("role")?.value || "user";
 
   return (
-    <div className="flex min-h-screen">
+    <div className="md:flex min-h-screen">
       {/* Sidebar */}
-      {/* {role === "admin" ? <AdminSidebar /> : <UserSidebar />} */}
+      {role === "admin" ? <AdminSidebar /> : <UserSidebar />}
 
       {/* Main Content */}
-      <div className="flex-1">
-        <Navbar />
-        <main className="p-6">{children}</main>
+      <div className="flex-1 flex flex-col bg-gray-50">
+        {/* যদি আলাদা Navbar দরকার হয়, এখানে বসাতে পারো */}
+        {/* <Navbar /> */}
+        <main className="flex-1 p-6 max-w-[90%] mx-auto">{children}</main>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export default function MainLayout({ children }) {
         {/* nav bar */}
         <Navbar />
       </header>
-      <main className="min-h-[calc(100vh-148px)]">
+      <main className="min-h-[calc(100vh-434px)]">
         {children}
       </main>
       {/* footer */}

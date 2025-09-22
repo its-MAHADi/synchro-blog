@@ -40,7 +40,7 @@ const Contact = () => {
 
   return (
     <div
-      className="min-h-screen p-3 rounded-xl"  >
+      className="md:pb-14 p-3 rounded-xl"  >
       <h2
         className="text-4xl md:text-5xl text-center font-bold bg-gradient-to-br from-[#853716] via-[#ed703b] to-[#853716] bg-clip-text text-transparent mt-30 mb-7"
         style={{ color: "" }}
@@ -48,8 +48,8 @@ const Contact = () => {
         Contact Us
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div className=" w-full mx-auto p-6 rounded-2xl shadow-lg"
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 ">
+        <div className=" w-full mx-auto p-6 rounded-2xl shadow-lg mb-8  md:mb-0"
         >
 
 
@@ -111,7 +111,7 @@ const Contact = () => {
             </p>
           )}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center pl-0 md:pl-8">
         <div>
           <h2 className="text-5xl font-bold text-text-[#213943]">SYN<span className="text-[#c45627]">CHRO</span></h2>
           <p className="text-gray-600 mt-4">Have questions, feedback, or collaboration ideas? We’d love to hear from you!

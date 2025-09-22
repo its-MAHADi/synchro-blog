@@ -15,8 +15,8 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4 mt-20">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4 ">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden mt-20 ">
         {/* Left: Illustration */}
         <div className="hidden md:flex items-center justify-center">
           <Image

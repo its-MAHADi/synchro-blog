@@ -10,7 +10,7 @@ export const registerUser = async (payload) => {
     if (!email || !password) return null;
 
     const user = await userCollection.findOne({ email: payload.email })
-
+//  console.log(user)
     if (!user) {
         const hashedPassword = await bcrypt.hash(password, 10)
         payload.password = hashedPassword

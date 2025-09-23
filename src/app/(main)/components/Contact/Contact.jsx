@@ -1,6 +1,4 @@
-
 "use client";
-
 import React, { useState } from "react";
 
 const Contact = () => {
@@ -113,7 +111,7 @@ const Contact = () => {
         </div>
         <div className="flex items-center pl-0 md:pl-8">
         <div>
-          <h2 className="text-5xl font-bold text-text-[#213943]">SYN<span className="text-[#c45627]">CHRO</span></h2>
+          <h2 className="text-5xl font-bold text-text-[#213943]">Syn<span className="text-[#c45627]">chro</span></h2>
           <p className="text-gray-600 mt-4">Have questions, feedback, or collaboration ideas? We’d love to hear from you!
             At SYNCHRO, we believe in building connections and growing together.
             Reach out to us anytime—we’re here to listen, support, and create meaningful conversations.</p>

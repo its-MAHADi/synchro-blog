@@ -65,7 +65,7 @@ export default function SignInForm() {
       />
       <button
         type="submit"
-        className="w-full bg-[#c45627] text-white py-3 rounded-lg"
+        className="w-full bg-[#c45627] text-white py-3 rounded-lg cursor-pointer"
       >
         Sign In
       </button>

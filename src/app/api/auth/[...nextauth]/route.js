@@ -6,37 +6,29 @@ import CredentialsProvider from "next-auth/providers/credentials";
 // import { useCallback } from "react";
 
 export const authOptions = {
-    providers: [
-        CredentialsProvider({
-            name: "Credentials",
-            credentials: {
-                email: { label: "Email", type: "text", placeholder: "Enter your Email" },
-                password: { label: "Password", type: "password" }
-            },
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials) {
+        const result = await loginUser(credentials);
 
-            async authorize(credentials) {
-                // loginUser কল করার সময় অবশ্যই await দিতে হবে
+        if (result?.error) {
+          throw new Error(result.error); // Pass to frontend
+        }
 
-                const user = await loginUser(credentials);
-                console.log("User found:", user);
-                console.log("Credentials received:", credentials)
-                if (user) {
-                    return user; // সফল হলে ইউজার অবজেক্ট রিটার্ন
-                } else {
-                    return null; // ব্যর্থ হলে null
-                }
-            }
-        }),
-        // GoogleProvider({
-        //     clientId: process.env.GOOGLE_CLIENT_ID,
-        //     clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        // })
-    ],
-    pages: {
-        signin: '/sign-in'
-    },
-
+        return result.user; // Successful login
+      }
+    })
+  ],
+  pages: {
+    signIn: "/sign-in"
+  }
 };
+
 
 const handler = NextAuth(authOptions);
 

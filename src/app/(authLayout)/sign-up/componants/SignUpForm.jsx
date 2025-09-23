@@ -44,6 +44,15 @@ export default function SignUpForm() {
           console.log("Auto login failed:", loginResult);
         }
       }
+      else{
+         Swal.fire({
+          icon: "error",
+          title: "This email is already exists!",
+          text: "Your account has been created!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      }
     } catch (error) {
       console.log(error);
     }

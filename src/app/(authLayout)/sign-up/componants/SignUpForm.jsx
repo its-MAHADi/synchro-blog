@@ -14,7 +14,7 @@ export default function SignUpForm() {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const password = form.password.value; 
+    const password = form.password.value;
 
     try {
       const result = await registerUser({ name, email, password });
@@ -27,7 +27,7 @@ export default function SignUpForm() {
           showConfirmButton: false,
         });
         setTimeout(() => {
-          router.push('/sign-in');
+          router.push('/signupCoverProfile');
         }, 2000);
       }
     } catch (error) {

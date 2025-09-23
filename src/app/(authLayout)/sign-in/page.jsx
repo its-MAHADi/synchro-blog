@@ -43,7 +43,7 @@ export default function SignInPage() {
             </div>
 
             {/* Google Sign In */}
-            <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition">
+            <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer">
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
                 alt="Google"

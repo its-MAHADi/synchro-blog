@@ -27,7 +27,7 @@ export default function SignUpForm() {
           showConfirmButton: false,
         });
         setTimeout(() => {
-          router.push('/signupCoverProfile');
+          router.push('/SignupCoverProfile');
         }, 2000);
       }
     } catch (error) {
@@ -81,7 +81,7 @@ export default function SignUpForm() {
             />
             <button
               type="submit"
-              className="w-full bg-[#c45627] text-white py-3 rounded-lg hover:bg-[#a9441f] transition"
+              className="w-full bg-[#c45627] text-white py-3 rounded-lg hover:bg-[#a9441f] transition cursor-pointer"
             >
               Sign Up
             </button>
@@ -95,7 +95,7 @@ export default function SignUpForm() {
           </div>
 
           {/* Google Sign In */}
-          <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition">
+          <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer">
             <Image
               src="https://www.svgrepo.com/show/475656/google-color.svg"
               alt="Google"

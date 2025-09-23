@@ -63,7 +63,7 @@ export default function SigninUser() {
       />
       <button
         type="submit"
-        className="w-full bg-[#c45627] text-white py-3 rounded-lg hover:bg-[#a9441f] transition"
+        className="w-full bg-[#c45627] cursor-pointer text-white py-3 rounded-lg hover:bg-[#a9441f] transition"
       >
         Sign In
       </button>

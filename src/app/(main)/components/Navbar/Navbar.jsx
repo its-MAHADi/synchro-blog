@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { AiFillHome, AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
+import {  AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
-import { FaRegStar, FaPlusCircle, FaTachometerAlt, FaRegNewspaper, FaRegFileAlt } from "react-icons/fa";
+import { FaRegStar, FaTachometerAlt, FaRegFileAlt } from "react-icons/fa";
 import { LucideSquareMenu } from "lucide-react";
 import Image from 'next/image';
 import { usePathname } from "next/navigation";
@@ -158,14 +158,14 @@ const Navbar = () => {
           <div className="mt-4 flex flex-col gap-2">
             <Link
               href="/login"
-              className="btn btn-sm btn-outline"
+              className="btn btn-sm bg-[#c45627] text-white"
               onClick={() => setOpen(false)}
             >
-              Login
+              Log in
             </Link>
             <Link
               href="/register"
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm text-[#c45627] border-[#c45627]"
               onClick={() => setOpen(false)}
             >
               Register

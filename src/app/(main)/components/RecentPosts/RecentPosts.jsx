@@ -201,7 +201,7 @@ const RecentPosts = () => {
 
                 {/* Load More Section */}
                 <div className="text-center mt-12">
-                    <button className="group px-8 py-4 bg-white border-2 border-gray-200 hover:border-[#853716] text-gray-700 hover:text-[#853716] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                    <button className="cursor-pointer group px-8 py-4 bg-white border-2 border-gray-200 hover:border-[#853716] text-gray-700 hover:text-[#853716] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
                         <span className="flex items-center gap-2">
                             Load More Posts
                             <span className="transition-transform duration-300 group-hover:rotate-180">↻</span>

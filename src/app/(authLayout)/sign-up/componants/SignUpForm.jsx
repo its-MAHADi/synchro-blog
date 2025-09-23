@@ -1,9 +1,14 @@
 "use client";
 
-import Image from "next/image";
 import { registerUser } from "@/app/actions/auth/registerUser";
+import Image from "next/image";
+import { useRouter } from "next/navigation"; // App Router
+import Swal from "sweetalert2";
+import React from "react";
 
 export default function SignUpForm() {
+  const router = useRouter();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -11,12 +16,29 @@ export default function SignUpForm() {
     const email = form.email.value;
     const password = form.password.value;
 
-    await registerUser({ name, email, password });
+    try {
+      const result = await registerUser({ name, email, password });
+      if (result?.insertedId) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful',
+          text: 'Your account has been created!',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          router.push('/sign-in');
+        }, 2000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  // JSX **function body থেকে আলাদা return করতে হবে**
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4 mt-20">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4 ">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden mt-20 ">
         {/* Left: Illustration */}
         <div className="hidden md:flex items-center justify-center">
           <Image

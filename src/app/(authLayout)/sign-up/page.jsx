@@ -1,6 +1,8 @@
+
 import Footer from "@/app/(main)/components/footer/Footer";
 import Navbar from "@/app/(main)/components/Navbar/Navbar";
-import SignUpForm from "./SignUpForm";
+import SignupFrom from "./componants/SignUpForm";
+
 
 export const metadata = {
   title: "Sign Up page",
@@ -11,7 +13,7 @@ export default function SignUpPage() {
   return (
     <div>
       <Navbar />
-      <SignUpForm />
+      <SignupFrom />
       <Footer />
     </div>
   );

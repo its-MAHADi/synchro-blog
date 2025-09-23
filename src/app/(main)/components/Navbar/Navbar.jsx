@@ -123,7 +123,7 @@ const Navbar = () => {
             className="lg:hidden flex items-center"
             onClick={() => setOpen(true)}
           >
-            <LucideSquareMenu size={28} />
+            <LucideSquareMenu size={28} className="text-[#c45627] cursor-pointer" />
           </button>
         </div>
       </div>

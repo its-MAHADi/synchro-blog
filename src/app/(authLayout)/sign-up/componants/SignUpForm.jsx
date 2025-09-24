@@ -5,9 +5,19 @@ import Image from "next/image";
 import { useRouter } from "next/navigation"; // App Router
 import Swal from "sweetalert2";
 import React from "react";
+import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
   const router = useRouter();
+
+  const handleGoogleLogin = () => {
+  signIn("google", { callbackUrl: "/" }); // redirect to homepage after login
+};
+
+const handleGithubLogin = () => {
+  signIn("github", { callbackUrl: "/" }); // redirect to homepage after login
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,17 +105,38 @@ export default function SignUpForm() {
           </div>
 
           {/* Google Sign In */}
-          <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition">
-            <Image
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              width={24}
-              height={24}
-            />
-            <span className="text-[#213943] font-medium">
-              Continue with Google
-            </span>
-          </button>
+          <button
+  onClick={handleGoogleLogin}
+  type="button"
+  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+>
+  <Image
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    alt="Google"
+    width={24}
+    height={24}
+  />
+  <span className="text-[#213943] font-medium">
+    Continue with Google
+  </span>
+</button>
+{/* git hub */}
+<button
+  onClick={handleGithubLogin}
+  type="button"
+  className="mt-4 w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+>
+  <Image
+    src="https://www.svgrepo.com/show/512317/github-142.svg"
+    alt="GitHub"
+    width={24}
+    height={24}
+  />
+  <span className="text-[#213943] font-medium">
+    Continue with GitHub
+  </span>
+</button>
+
 
           {/* Sign In Link */}
           <p className="text-sm text-center text-gray-500 mt-6">

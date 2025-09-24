@@ -1,16 +1,18 @@
-import Navbar from '@/app/(main)/components/Navbar/Navbar';
 import React from 'react';
+import OTPFrom from "./OTPFrom";
 
-
-const OtpPage = () => {
-    return (
-        <div>
-            <Navbar />
-            <div className='pb-6'>
-               
-            </div>
-        </div>
-    );
+export const metadata = {
+  title: "OTP | Synchro",
+  description:
+    "The purpose of Synchro - AI-Powered Blogging Site is to simplify and enhance the process of creating, managing, and publishing blog content by leveraging artificial intelligence.",
 };
 
-export default OtpPage;
+export default function OTPVerificationPage() {
+
+  return (
+    <section className="bg-[#f6f5ea] min-h-screen flex justify-center items-center">
+      <OTPFrom />
+
+    </section>
+  );
+}

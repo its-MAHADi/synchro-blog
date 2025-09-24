@@ -51,7 +51,7 @@ const OTPFrom = () => {
                         timer: 1500,
                         showConfirmButton: false,
                     });
-                    router.push("/"); // go home
+                    router.push("/signupCoverProfile"); // go home
                 } else {
                     Swal.fire({
                         icon: "error",

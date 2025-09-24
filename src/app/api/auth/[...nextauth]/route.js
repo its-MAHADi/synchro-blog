@@ -2,7 +2,8 @@
 import { loginUser } from "@/app/actions/auth/loginUser";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
 // import { useCallback } from "react";
 
 export const authOptions = {
@@ -27,14 +28,24 @@ export const authOptions = {
                 }
             }
         }),
-        // GoogleProvider({
-        //     clientId: process.env.GOOGLE_CLIENT_ID,
-        //     clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        // })
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
+
+         GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET
+    })
     ],
     pages: {
         signin: '/sign-in'
     },
+     callbacks: {
+    async redirect({ baseUrl }) {
+      return baseUrl; // ✅ always redirect to home after login
+    }
+  }
 
 };
 

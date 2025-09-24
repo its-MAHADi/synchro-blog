@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Camera, Image, Upload, User, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function SignupCoverProfile({ onSubmit }) {
   const [coverFile, setCoverFile] = useState(null);
@@ -104,7 +105,7 @@ export default function SignupCoverProfile({ onSubmit }) {
 
         <div className="space-y-8">
           <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20">
-            
+
             {/* Profile Photo Section */}
             <div className="flex justify-center mb-12">
               <div className="relative group">
@@ -121,7 +122,7 @@ export default function SignupCoverProfile({ onSubmit }) {
                       <p className="text-sm font-medium">Add Photo</p>
                     </div>
                   )}
-                  
+
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <div className="text-white text-center">
@@ -156,15 +157,14 @@ export default function SignupCoverProfile({ onSubmit }) {
                 <Image className="w-5 h-5 text-purple-600" />
                 <label className="text-lg font-semibold text-gray-800">Cover Photo</label>
               </div>
-              
+
               <div
-                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-80 flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                  isDragOver 
-                    ? 'border-purple-400 bg-purple-50 scale-102' 
-                    : coverPreview 
-                      ? 'border-transparent' 
-                      : 'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-purple-400 hover:bg-purple-50'
-                }`}
+                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-80 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
+                  ? 'border-purple-400 bg-purple-50 scale-102'
+                  : coverPreview
+                    ? 'border-transparent'
+                    : 'border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-purple-400 hover:bg-purple-50'
+                  }`}
                 onClick={() => coverInputRef.current?.click()}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -197,7 +197,7 @@ export default function SignupCoverProfile({ onSubmit }) {
                     </div>
                   </div>
                 )}
-                
+
                 <input
                   ref={coverInputRef}
                   type="file"
@@ -211,13 +211,15 @@ export default function SignupCoverProfile({ onSubmit }) {
 
           {/* Action Buttons */}
           <div className="flex justify-center gap-4 pt-4">
-            <button
-              type="button"
-              onClick={handleSkip}
-              className="px-8 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 hover:shadow-md"
-            >
-              Skip for now
-            </button>
+            <Link href={'/'}>
+              <button
+                type="button"
+                onClick={handleSkip}
+                className="px-8 py-3 rounded-xl border-2 border-gray-300 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 hover:shadow-md"
+              >
+                Skip for now
+              </button>
+            </Link>
             <button
               type="button"
               onClick={handleSubmit}

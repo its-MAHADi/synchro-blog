@@ -37,6 +37,8 @@ export const registerUser = async (payload) => {
     createdAt: new Date(),
     last_log_in: null,
     memberStatus: false,
+    failedLoginAttempts: 0,
+    lockUntil: null
   };
 
   // Insert into DB

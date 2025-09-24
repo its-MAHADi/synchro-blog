@@ -142,7 +142,7 @@ export default function AboutPage() {
                         {/* Mission */}
                         <div className="relative">
                             <div className="absolute -inset-6 bg-gradient-to-r from-[#c45627]/10 to-transparent rounded-3xl"></div>
-                            <div className="relative bg-white border-2 border-[#c45627]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300">
+                            <div className="relative bg-white border-2 border-[#c45627]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 h-[320px]">
                                 <div className="flex items-center mb-6">
                                     <div className="bg-[#c45627] p-3 rounded-2xl mr-4">
                                         <Target className="w-8 h-8 text-white" />
@@ -160,7 +160,7 @@ export default function AboutPage() {
                         {/* Vision */}
                         <div className="relative">
                             <div className="absolute -inset-6 bg-gradient-to-l from-[#213943]/10 to-transparent rounded-3xl"></div>
-                            <div className="relative bg-white border-2 border-[#213943]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300">
+                            <div className="relative bg-white border-2 border-[#213943]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 h-[320px]">
                                 <div className="flex items-center mb-6">
                                     <div className="bg-[#213943] p-3 rounded-2xl mr-4">
                                         <Eye className="w-8 h-8 text-white" />

@@ -49,7 +49,7 @@ export default function SignUpForm() {
          Swal.fire({
           icon: "error",
           title: "This email is already exists!",
-          text: "Your account has been created!",
+          text: "Please add new email!",
           timer: 1500,
           showConfirmButton: false,
         });

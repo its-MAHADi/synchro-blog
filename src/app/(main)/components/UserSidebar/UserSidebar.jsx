@@ -13,6 +13,8 @@ const navItems = [
     { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-pink-500 to-rose-600" },
 ];
 
+
+
 export default function UserSidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
@@ -134,8 +136,8 @@ export default function UserSidebar() {
                                 key={item.name}
                                 href={item.href}
                                 className={`group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 ${isActive
-                                        ? `bg-gradient-to-r ${item.gradient} text-white shadow-2xl scale-105`
-                                        : "text-gray-700 hover:bg-white/20 hover:text-gray-800 hover:shadow-xl"
+                                    ? `bg-gradient-to-r ${item.gradient} text-white shadow-2xl scale-105`
+                                    : "text-gray-700 hover:bg-white/20 hover:text-gray-800 hover:shadow-xl"
                                     }`}
                                 style={{
                                     animationDelay: `${index * 100}ms`,
@@ -149,8 +151,8 @@ export default function UserSidebar() {
                                 {/* 3D Icon Container */}
                                 <div
                                     className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 transform group-hover:rotate-6 relative ${isActive
-                                            ? "bg-white/25 shadow-inner"
-                                            : "bg-white/30 group-hover:bg-white/40 shadow-md"
+                                        ? "bg-white/25 shadow-inner"
+                                        : "bg-white/30 group-hover:bg-white/40 shadow-md"
                                         }`}
                                     style={{
                                         boxShadow: isActive
@@ -167,8 +169,8 @@ export default function UserSidebar() {
 
                                 {/* Label with gradient */}
                                 <span className={`font-semibold flex-1 transition-all duration-300 ${isActive
-                                        ? "text-white drop-shadow-sm"
-                                        : "group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-600 group-hover:bg-clip-text group-hover:text-transparent"
+                                    ? "text-white drop-shadow-sm"
+                                    : "group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-600 group-hover:bg-clip-text group-hover:text-transparent"
                                     }`}>
                                     {item.name}
                                 </span>

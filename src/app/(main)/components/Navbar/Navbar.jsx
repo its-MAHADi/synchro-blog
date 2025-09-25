@@ -15,7 +15,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  console.log(session?.user, status)
+  // console.log(session?.user, status)
 
 
   // Scroll effect
@@ -103,7 +103,7 @@ const Navbar = () => {
               :
               <div className="flex items-center gap-2">
                 {
-                  session?.user?.image ? <img src={session?.user?.imag} alt="" />
+                  session?.user?.image ? <img src={session?.user?.image} alt="" />
                     :
                     <Link href={"/user-dashboard"}>
                       <FaUserCircle size={30} />

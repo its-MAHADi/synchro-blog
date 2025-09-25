@@ -1,9 +1,21 @@
-// app/api/[...nextauth]/route.js (server)
+import { loginUser } from "@/app/actions/auth/loginUser";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
-import { loginUser } from "@/app/actions/auth/loginUser";
+import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
+
+// Helper function: random userId
+function generateUserId() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const part1 = Array.from({ length: 4 }, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+  const part2 = Array.from({ length: 4 }, () =>
+    chars[Math.floor(Math.random() * chars.length)]
+  ).join("");
+  return `${part1}-${part2}`;
+}
 
 export const authOptions = {
   providers: [
@@ -14,61 +26,74 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // call your server login function
-        const result = await loginUser({
-          email: credentials.email,
-          password: credentials.password,
-        });
-
-        // If loginUser returned an error, throw it so NextAuth returns it to the client
-        if (result?.error) {
-          // Throwing preserves the specific message (e.g. "warning-2-left" or "Your account is locked...")
-          throw new Error(result.error);
-        }
-
-        // result might be { user } or might be the raw user depending on implementation.
-        const userFromResult = result?.user ? result.user : result;
-
-        if (!userFromResult) return null;
-
-        // Normalize the user that NextAuth expects
-        return {
-          id:
-            (userFromResult._id && typeof userFromResult._id.toString === "function")
-              ? userFromResult._id.toString()
-              : userFromResult.id?.toString?.() ?? String(userFromResult.email),
-          name: userFromResult.name ?? userFromResult.email,
-          email: userFromResult.email,
-        };
+        const user = await loginUser(credentials);
+        if (user) return user;
+        return null;
       },
     }),
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
     }),
   ],
+
   pages: {
     signIn: "/sign-in",
   },
+
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
+    async signIn({ user, account }) {
+      const userCollection = await dbConnect(collectionNameObj.usersCollection);
+      const existingUser = await userCollection.findOne({ email: user.email });
+
+      if (!existingUser) {
+        // নতুন ইউজার Google/GitHub থেকে
+        await userCollection.insertOne({
+          userRole: "user",
+          userId: generateUserId(),
+          email: user.email,
+          userName: user.name,
+          image: user.image || null,
+          password: null, // social login এ পাসওয়ার্ড থাকবে না
+          createdAt: new Date(),
+          last_log_in: new Date(),
+          memberStatus: false,
+          failedLoginAttempts: 0,
+          lockUntil: null,
+        });
+      } else {
+        // আগের ইউজার হলে last_log_in আপডেট হবে
+        await userCollection.updateOne(
+          { email: user.email },
+          { $set: { last_log_in: new Date() } }
+        );
       }
-      return token;
+
+      return true;
     },
-    async session({ session, token }) {
-      if (token) {
-        session.user = session.user || {};
-        session.user.id = token.id;
-        session.user.email = token.email;
+
+    async session({ session }) {
+      const userCollection = await dbConnect(collectionNameObj.usersCollection);
+      const dbUser = await userCollection.findOne({ email: session.user.email });
+
+      if (dbUser) {
+        session.user.id = dbUser._id.toString();
+        session.user.role = dbUser.userRole;
+        session.user.userId = dbUser.userId;
+        session.user.memberStatus = dbUser.memberStatus;
       }
+
       return session;
+    },
+
+    async redirect({ baseUrl }) {
+      return baseUrl;
     },
   },
 };

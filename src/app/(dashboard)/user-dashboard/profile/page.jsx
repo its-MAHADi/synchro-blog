@@ -99,7 +99,7 @@ export default function Profile() {
                         </div>
                         :
                         
-                          <FaUserCircle size={30} />
+                          <FaUserCircle size={50} />
                        
 
                     }

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaRegStar, FaTachometerAlt, FaRegFileAlt, FaUserCircle } from "react-icons/fa";
+import { FaRegStar, FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
@@ -74,11 +74,14 @@ const Navbar = () => {
                 <MdOutlineEmojiEvents /> Events
               </Link>
             </li>
-            {/* <li>
-              <Link href="/add-post" className="flex items-center gap-2 hover:text-[#c45627]">
+            <li>
+              <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/add-post"
+                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+                : "text-gray-700 hover:text-[#213943]"
+                }`}>
                 <FaPlusCircle /> Add Post
               </Link>
-            </li> */}
+            </li>
             <li>
               <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/aboutUs"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style

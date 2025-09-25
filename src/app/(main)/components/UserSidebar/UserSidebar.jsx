@@ -4,19 +4,25 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, User, FilePlus, List, CreditCard, Menu, X, ChevronRight, Sparkles } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { FaUserCircle } from "react-icons/fa";
 
 const navItems = [
     { name: "Dashboard", href: "/user-dashboard", icon: Home, gradient: "from-violet-500 to-purple-600" },
     { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-emerald-500 to-teal-600" },
     { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-orange-500 to-red-600" },
     { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-blue-500 to-cyan-600" },
+    { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-lime-500 to-green-600" },
     { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-pink-500 to-rose-600" },
 ];
+
+
 
 export default function UserSidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
-
+    const { data: session, status } = useSession();
+    //   console.log(session?.user.image, status)
     // Close sidebar when clicking outside on mobile
     useEffect(() => {
         const handleResize = () => {
@@ -86,19 +92,31 @@ export default function UserSidebar() {
                 </div>
 
                 {/* Desktop Header with 3D effect */}
-                <div className="hidden md:block p-6 border-b border-white/10 relative">
+                <div className="hidden md:block p-6 border-b border-gray-200 relative">
                     <div className="flex items-center gap-4">
                         <div
-                            className="w-14 h-14 bg-gradient-to-br from-violet-500 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
+                            className="w-14 h-14 rounded-2xl border-2 border-[#c45627] flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
                             style={{
                                 boxShadow: '0 10px 25px rgba(124,58,237,0.4), inset 0 1px 0 rgba(255,255,255,0.3)'
                             }}
                         >
-                            <User size={24} className="text-white drop-shadow-lg" />
+                            {
+                                session?.user?.image ?
+                                    <div>
+
+                                        <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
+
+                                    </div>
+                                    :
+
+                                    <FaUserCircle size={30} />
+
+
+                            }
                             <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-500 rounded-full animate-pulse shadow-lg" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent drop-shadow-sm">User Panel</h2>
+                            <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent drop-shadow-sm"> {session?.user?.name}</h2>
                             <p className="text-sm text-gray-500 font-medium">Manage your digital world</p>
                         </div>
                     </div>
@@ -134,8 +152,8 @@ export default function UserSidebar() {
                                 key={item.name}
                                 href={item.href}
                                 className={`group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 ${isActive
-                                        ? `bg-gradient-to-r ${item.gradient} text-white shadow-2xl scale-105`
-                                        : "text-gray-700 hover:bg-white/20 hover:text-gray-800 hover:shadow-xl"
+                                    ? `bg-gradient-to-r ${item.gradient} text-white shadow-2xl scale-105`
+                                    : "text-gray-700 hover:bg-white/20 hover:text-gray-800 hover:shadow-xl"
                                     }`}
                                 style={{
                                     animationDelay: `${index * 100}ms`,
@@ -149,8 +167,8 @@ export default function UserSidebar() {
                                 {/* 3D Icon Container */}
                                 <div
                                     className={`flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-300 transform group-hover:rotate-6 relative ${isActive
-                                            ? "bg-white/25 shadow-inner"
-                                            : "bg-white/30 group-hover:bg-white/40 shadow-md"
+                                        ? "bg-white/25 shadow-inner"
+                                        : "bg-white/30 group-hover:bg-white/40 shadow-md"
                                         }`}
                                     style={{
                                         boxShadow: isActive
@@ -167,8 +185,8 @@ export default function UserSidebar() {
 
                                 {/* Label with gradient */}
                                 <span className={`font-semibold flex-1 transition-all duration-300 ${isActive
-                                        ? "text-white drop-shadow-sm"
-                                        : "group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-600 group-hover:bg-clip-text group-hover:text-transparent"
+                                    ? "text-white drop-shadow-sm"
+                                    : "group-hover:bg-gradient-to-r group-hover:from-gray-800 group-hover:to-gray-600 group-hover:bg-clip-text group-hover:text-transparent"
                                     }`}>
                                     {item.name}
                                 </span>

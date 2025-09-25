@@ -1,4 +1,3 @@
-
 import Footer from "@/app/(main)/components/footer/Footer";
 import Navbar from "@/app/(main)/components/Navbar/Navbar";
 import SignupFrom from "./componants/SignUpForm";

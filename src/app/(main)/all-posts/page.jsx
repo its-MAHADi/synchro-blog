@@ -3,7 +3,11 @@ import PostCart from './PostCart';
 import AllPostHeader from './ui/AllPostHeader';
 import dbConnect from '@/lib/dbConnect';
 
-
+export const metadata = {
+  title: "All Posts",
+  description:
+    "The purpose of Synchro - AI-Powered Blogging Site is to simplify and enhance the process of creating, managing, and publishing blog content by leveraging artificial intelligence.",
+};
 
 
 const AllPostPage = async () => {

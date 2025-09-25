@@ -8,6 +8,12 @@ import PopularTopic from "./components/popularTopic/PopularTopic";
 import RecentPosts from "./components/RecentPosts/RecentPosts";
 import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfile";
 
+export const metadata = {
+  title: "Home | Synchro",
+  description:
+    "The purpose of Synchro - AI-Powered Blogging Site is to simplify and enhance the process of creating, managing, and publishing blog content by leveraging artificial intelligence.",
+};
+
 export default function Home() {
   return (
     <section className="max-w-11/12 mx-auto">

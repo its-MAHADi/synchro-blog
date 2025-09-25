@@ -14,10 +14,8 @@ export default function DashboardLayout({ children }) {
       {role === "admin" ? <AdminSidebar /> : <UserSidebar />}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-gray-50">
-        {/* যদি আলাদা Navbar দরকার হয়, এখানে বসাতে পারো */}
-        {/* <Navbar /> */}
-        <main className="flex-1 p-6 max-w-[90%] mx-auto">{children}</main>
+      <div className="flex-1  bg-gray-50">
+        <main className="flex-1 p-6 h-screen overflow-y-auto max-w-[90%] mx-auto">{children}</main>
       </div>
     </div>
   );

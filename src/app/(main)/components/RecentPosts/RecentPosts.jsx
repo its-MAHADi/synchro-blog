@@ -149,9 +149,15 @@ const RecentPosts = () => {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#c45627] via-[#c45627dc] to-[#ec6d36]"></div>
-                        <div className="p-8 md:p-10">
+                    <div className="relative rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-[url('https://i.ibb.co.com/PZhDNhwj/natuer-image.png')] bg-cover bg-center">
+                        {/* Glass overlay */}
+                        <div className="absolute inset-0 bg-white/5 backdrop-blur-lg"></div>
+                        {/* Optional dark overlay for text contrast */}
+                        <div className="absolute inset-0  bg-black/10"></div>
+
+                        <div className="relative p-8 md:p-10">
+                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#c45627] via-[#c45627dc] to-[#ec6d36]"></div>
+
                             <div className="flex items-center gap-3 mb-4">
                                 <span
                                     className={`px-3 py-1 text-xs font-semibold rounded-full ${getCategoryColor(
@@ -168,14 +174,16 @@ const RecentPosts = () => {
                                     {recentPosts[0].category}
                                 </span>
                             </div>
-                            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 hover:text-[#c45627] transition-colors duration-300">
+
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 hover:text-[#c45627] transition-colors duration-300">
                                 {recentPosts[0].title}
                             </h3>
-                            <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+                            <p className="text-gray-200 text-lg mb-6 leading-relaxed">
                                 {recentPosts[0].description}
                             </p>
+
                             <div className="flex flex-col lg:flex-row items-center justify-between">
-                                <div className="flex items-center gap-4 text-sm text-gray-500 whitespace-nowrap">
+                                <div className="flex items-center gap-4 text-sm text-gray-300 whitespace-nowrap">
                                     <span className="flex items-center gap-1">
                                         📅 {recentPosts[0].publish_date}
                                     </span>

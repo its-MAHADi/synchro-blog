@@ -17,7 +17,6 @@ export const authOptions = {
 
             async authorize(credentials) {
                 // loginUser কল করার সময় অবশ্যই await দিতে হবে
-
                 const user = await loginUser(credentials);
                 console.log("User found:", user);
                 console.log("Credentials received:", credentials)

@@ -11,6 +11,15 @@ import Link from "next/link";
 export default function SignUpForm() {
   const router = useRouter();
 
+  const handleGoogleLogin = () => {
+  signIn("google", { callbackUrl: "/" }); // redirect to homepage after login
+};
+
+const handleGithubLogin = () => {
+  signIn("github", { callbackUrl: "/" }); // redirect to homepage after login
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -117,17 +126,40 @@ export default function SignUpForm() {
               </div>
 
               {/* Google Sign In */}
-              <button className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer">
-                <Image
-                  src="https://www.svgrepo.com/show/475656/google-color.svg"
-                  alt="Google"
-                  width={24}
-                  height={24}
-                />
-                <span className="text-[#213943] font-medium">
-                  Continue with Google
-                </span>
-              </button>
+              <button
+  onClick={handleGoogleLogin}
+  type="button"
+  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+>
+  <Image
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    alt="Google"
+    width={24}
+    height={24}
+  />
+  <span className="text-[#213943] font-medium">
+    Continue with Google
+  </span>
+</button>
+
+
+{/* github btn */}
+
+<button
+  onClick={handleGithubLogin}
+  type="button"
+  className="mt-3 w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+>
+  <Image
+    src="https://www.svgrepo.com/show/512317/github-142.svg"
+    alt="GitHub"
+    width={24}
+    height={24}
+  />
+  <span className="text-[#213943] font-medium">
+    Continue with GitHub
+  </span>
+</button>
 
               {/* Sign Up Link */}
               <p className="text-sm text-center text-gray-500 mt-6">

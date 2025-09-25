@@ -1,4 +1,13 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
+
+export const collectionNameObj = {
+  usersCollection : 'users',
+  eventCollection : 'events',
+  blogCollection : 'blogs',
+  followerCollection : 'followers',
+  featuresCollection : 'features',
+}
+
 export default function dbConnect(collectionName){
 
 
@@ -11,5 +20,5 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 }); 
-return client.db(process.env.DB_NAME).collection(collectionName)
+return client.db(process.env.DB_NAME).collection(collectionName);
 }

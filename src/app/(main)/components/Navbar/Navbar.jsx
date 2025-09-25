@@ -104,11 +104,11 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 {
                   session?.user?.image ?
-                   <div>
+                    <div>
                       <Link href={"/user-dashboard"}>
-                    <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
-                    </Link>
-                  </div>
+                        <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
+                      </Link>
+                    </div>
                     :
                     <Link href={"/user-dashboard"}>
                       <FaUserCircle size={30} />

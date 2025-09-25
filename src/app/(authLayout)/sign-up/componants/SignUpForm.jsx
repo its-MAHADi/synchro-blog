@@ -2,10 +2,8 @@
 
 import { registerUser } from "@/app/actions/auth/registerUser";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // App Router
 import Swal from "sweetalert2";
 import React from "react";
-import { signIn } from "next-auth/react";
 
 export default function SignUpForm() {
   const router = useRouter();

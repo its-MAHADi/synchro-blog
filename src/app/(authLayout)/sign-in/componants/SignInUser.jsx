@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 export default function SignInForm() {
   const router = useRouter();
 
+  //Sign in handle
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;

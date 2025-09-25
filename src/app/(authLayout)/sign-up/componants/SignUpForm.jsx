@@ -19,52 +19,63 @@ const handleGithubLogin = () => {
   signIn("github", { callbackUrl: "/" }); // redirect to homepage after login
 };
 
-
+  //Registration submit ,Note: if you change handleSubmit then otp wont work
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
     const password = form.password.value;
 
-    try {
-      const result = await registerUser({ name, email, password });
+    if (!name || !email || !password) {
+      Swal.fire({ icon: "warning", title: "All fields are required" });
+      return;
+    }
 
-      if (result?.insertedId) {
-        // ✅ প্রথমে success alert দেখাও
+    try {
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        if (data.alreadyExists) {
+          // 🔥 Show alert if account already exists
+          Swal.fire({
+            icon: "warning",
+            title: "Account Already Exists",
+            text: "This email is already registered. Please sign in instead.",
+          });
+          return;
+        }
+
+        // ✅ New account, OTP sent
         Swal.fire({
           icon: "success",
-          title: "Registration Successful",
-          text: "Your account has been created!",
+          title: "OTP Sent",
+          text: "Check your email for the OTP",
           timer: 1500,
           showConfirmButton: false,
         });
 
-        // ✅ সরাসরি signIn করে session বানাও
-        const loginResult = await signIn("credentials", {
-          email,
-          password,
-          redirect: false, // যাতে auto redirect না হয়
-        });
-
-        if (loginResult?.ok) {
-          // ✅ session ready হলে redirect করো
-          router.push("/signupCoverProfile");
-        } else {
-          console.log("Auto login failed:", loginResult);
-        }
-      }
-      else{
-         Swal.fire({
-          icon: "error",
-          title: "This email is already exists!",
-          text: "Please add new email!",
-          timer: 1500,
-          showConfirmButton: false,
-        });
+        router.push(
+          `/otp-verification?email=${encodeURIComponent(
+            email
+          )}&password=${encodeURIComponent(password)}`
+        );
+      } else {
+        Swal.fire({ icon: "error", title: "Error", text: data.message });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong. Please try again.",
+      });
     }
   };
 

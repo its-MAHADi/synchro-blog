@@ -89,7 +89,8 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* Desktop Buttons */}
+         <div className="hidden lg:block">
+           {/* Desktop Buttons */}
           {
             !session?.user ?
               <div className="hidden lg:flex items-center gap-3">
@@ -116,6 +117,7 @@ const Navbar = () => {
                 </Link>
               </div>
           }
+         </div>
 
 
           {/* Mobile Menu Button */}
@@ -129,80 +131,94 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Sidebar */}
-     <div
-  className={`fixed top-0 left-0 h-full w-64 bg-base-200 shadow-lg transform transition-transform duration-300 z-50 ${
-    open ? "translate-x-0" : "-translate-x-full"
-  }`}
->
-  <div className="flex justify-between items-center p-4 border-b bg-white">
-    <h2 className="text-lg font-bold text-[#c45627]">Menu</h2>
-    <button onClick={() => setOpen(false)}>
-      <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#c45627]" />
-    </button>
-  </div>
-  <ul className="p-4 space-y-3 font-medium bg-white min-h-screen">
-    <li>
-      <Link
-        href="/"
-        onClick={() => setOpen(false)}
-        className="flex items-center gap-2 hover:text-[#c45627]"
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-base-200 shadow-lg transform transition-transform duration-300 z-50 ${open ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
-        <GoHome /> Home
-      </Link>
-    </li>
-    <li>
-      <Link
-        href="/all-posts"
-        onClick={() => setOpen(false)}
-        className="flex items-center gap-2 hover:text-[#c45627]"
-      >
-        <FaRegFileAlt /> All Blog Posts
-      </Link>
-    </li>
-    <li>
-      <Link
-        href="/events"
-        onClick={() => setOpen(false)}
-        className="flex items-center gap-2 hover:text-[#c45627]"
-      >
-        <MdOutlineEmojiEvents /> Events
-      </Link>
-    </li>
-    <li>
-      <Link
-        href="/dashboard"
-        onClick={() => setOpen(false)}
-        className="flex items-center gap-2 hover:text-[#c45627]"
-      >
-        <FaTachometerAlt /> Dashboard
-      </Link>
-    </li>
+        <div className="flex justify-between items-center p-4 border-b bg-white">
+          <h2 className="text-lg font-bold text-[#c45627]">Menu</h2>
+          <button onClick={() => setOpen(false)}>
+            <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#c45627]" />
+          </button>
+        </div>
+        <ul className="p-4 space-y-3 font-medium bg-white min-h-screen">
+          <li>
+            <Link
+              href="/"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 hover:text-[#c45627]"
+            >
+              <GoHome /> Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/all-posts"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 hover:text-[#c45627]"
+            >
+              <FaRegFileAlt /> All Blog Posts
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/events"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 hover:text-[#c45627]"
+            >
+              <MdOutlineEmojiEvents /> Events
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 hover:text-[#c45627]"
+            >
+              <FaTachometerAlt /> Dashboard
+            </Link>
+          </li>
 
-    {/* Auth Buttons */}
-    <div className="mt-4 flex flex-col gap-2">
-      <Link
-        href="/login"
-        className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
-        onClick={() => setOpen(false)}
-      >
-        Login
-      </Link>
-      <Link
-        href="/register"
-        className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
-        onClick={() => setOpen(false)}
-      >
-        Register
-      </Link>
-    </div>
-  </ul>
-</div>
+          {/* Auth Buttons */}
+          <div className="mt-4 flex flex-col gap-2">
+            {session?.user ? (
+              <button
+                onClick={() => {
+                  signOut();
+                  setOpen(false);
+                }}
+                className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+                  onClick={() => setOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
+
+        </ul>
+      </div>
 
 
       {/* Overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-black/40 z-40"
+          className="fixed inset-0 bg-black/40 z-40 min-h-screen"
           onClick={() => setOpen(false)}
         ></div>
       )}

@@ -10,7 +10,8 @@ const Footer = () => {
         {/* Branding */}
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <span className="text-2xl font-bold">📝Synchro</span>
+            <img src="/main_logo.png" alt="main-logo" className="w-10" />
+            <span className="text-2xl font-bold">Synchro</span>
           </div>
           <p className="text-[#c45627] text-sm">
             Helping students organize, plan, and succeed. Stay productive with our all-in-one toolkit.

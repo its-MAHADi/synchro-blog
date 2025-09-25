@@ -38,8 +38,6 @@ export default function Home() {
       {/* contact page */}
       <Contact/>
 
-      <SignupCoverProfile/>
-
     </section>
   );
 }

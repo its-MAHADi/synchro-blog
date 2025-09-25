@@ -1,7 +1,7 @@
-import { SessionProvider } from "next-auth/react";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import NextProvider from "@/Provider/NextProvider";
+
 
 
 

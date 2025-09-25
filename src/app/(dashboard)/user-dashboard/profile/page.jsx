@@ -24,25 +24,37 @@ import {
   Star,
   Filter,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("posts");
   const [viewMode, setViewMode] = useState("grid");
-
+  const { data: session, status } = useSession();
+  console.log(session?.user.name, status)
   return (
-    <div className="flex-1 flex flex-col bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
+    <div className="flex-1 h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
       {/* Floating Header */}
       <div className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-orange-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           {/* Left: Profile Pic + Name */}
           <div className="flex items-center gap-3 sm:gap-4">
-            <img
-              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face"
-              alt="Profile"
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-[#c45627]"
-            />
+            {
+              session?.user?.image ?
+
+
+                <img className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 p-1 border-[#c45627]" src={session?.user?.image} alt="" />
+
+
+                :
+
+                <FaUserCircle size={30} />
+
+
+            }
+
             <span className="font-bold text-sm sm:text-base text-gray-900">
-              জন ডো
+              {session?.user?.name}
             </span>
           </div>
 
@@ -59,14 +71,14 @@ export default function Profile() {
       </div>
 
       {/* Main Layout */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-full mx-auto w-full">
+        <div className="grid grid-cols-1  gap-6 lg:gap-8">
           {/* Left Sidebar */}
           <div className="xl:col-span-4 space-y-6 order-1 xl:order-none">
             {/* Profile Card */}
             <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden border border-orange-100">
               {/* Cover */}
-              <div className="relative h-28 sm:h-32 bg-gradient-to-r from-[#c45627] via-[#d4651f] to-[#e67317] overflow-hidden">
+              <div className="relative h-28 md:h-56 bg-gradient-to-r from-[#c45627] via-[#d4651f] to-[#e67317] overflow-hidden">
                 <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
                   <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all">
                     <Camera size={14} className="sm:size-16" />
@@ -78,12 +90,21 @@ export default function Profile() {
                 {/* Profile Picture */}
                 <div className="flex justify-center -mt-10 sm:-mt-12 mb-3 sm:mb-4">
                   <div className="relative">
-                    <img
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&crop=face"
-                      alt="Profile"
-                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl border-4 border-white shadow-lg"
-                    />
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 bg-[#c45627] rounded-lg sm:rounded-xl flex items-center justify-center">
+                    {
+                      session?.user?.image ?
+                        <div>
+                          
+                            <img className="w-20 h-20 sm:w-32 sm:h-32 rounded-full  border-4 border-white shadow-lg" src={session?.user?.image} alt="" />
+                          
+                        </div>
+                        :
+                        
+                          <FaUserCircle size={30} />
+                       
+
+                    }
+                   
+                    <div className="absolute -bottom-1 right-3 w-6 h-6 sm:w-7 sm:h-7 bg-[#c45627] rounded-lg sm:rounded-xl flex items-center justify-center">
                       <Camera size={12} className="text-white" />
                     </div>
                     <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center">
@@ -95,7 +116,7 @@ export default function Profile() {
                 {/* Info */}
                 <div className="text-center mb-4 sm:mb-6">
                   <h1 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">
-                    জন ডো
+                     {session?.user?.name}
                   </h1>
                   <p className="text-[#c45627] font-semibold text-sm sm:text-base mb-1">
                     প্রফেশনাল ব্লগার ও রাইটার

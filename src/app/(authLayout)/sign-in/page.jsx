@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 
 export default function SignInPage() {
   const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/" }); 
+    signIn("google", { callbackUrl: "/" });
     // redirect to /dashboard after login (you can change)
   };
 
@@ -64,20 +64,21 @@ export default function SignInPage() {
               </span>
             </button>
 
+            {/* Github */}
             <button
-  onClick={() => signIn("github", { callbackUrl: "/" })}
-  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition mt-3"
->
-  <img
-    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
-    alt="GitHub"
-    width={24}
-    height={24}
-  />
-  <span className="text-[#213943] font-medium">
-    Continue with GitHub
-  </span>
-</button>
+              onClick={() => signIn("github", { callbackUrl: "/" })}
+              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition mt-3"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                alt="GitHub"
+                width={24}
+                height={24}
+              />
+              <span className="text-[#213943] font-medium">
+                Continue with GitHub
+              </span>
+            </button>
 
 
             {/* Sign Up Link */}

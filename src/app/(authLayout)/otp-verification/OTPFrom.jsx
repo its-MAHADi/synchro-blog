@@ -1,13 +1,13 @@
 "use client";
 import React, { useState } from 'react';
-import { useSearchParams, useRouter } from "next/navigation";
+
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 
-const OTPFrom = () => {
+const OTPFrom = ({router, searchParams}) => {
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
+    
+   
     const email = searchParams.get("email") || "";
     const password = searchParams.get("password") || "";
 

@@ -1,16 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { Upload, Image } from "lucide-react";
 import {
   FileText,
-  Image,
-  Tag,
+
+
   Clock,
   AlertTriangle,
-  Save,
+
   Eye,
   Sparkles,
 } from "lucide-react";
+import { TbCategoryPlus } from "react-icons/tb";
 import { useSession } from "next-auth/react";
+import { GoAlert } from "react-icons/go";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
 
 export default function BlogForm() {
   const { data } = useSession();
@@ -30,6 +34,9 @@ export default function BlogForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [featuredPreview, setFeaturedPreview] = useState(null);
+  const [isDragOver, setIsDragOver] = useState(false); // ✅ state
+  const featuredInputRef = useRef(null);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -46,6 +53,32 @@ export default function BlogForm() {
       }));
     }
   };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragOver(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setFeaturedPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFeaturedPreview(URL.createObjectURL(file));
+    }
+  };
+
 
   // Form validation
   const validateForm = () => {
@@ -88,7 +121,7 @@ export default function BlogForm() {
       try {
         console.log("Form Data Submitted:", formData);
         // alert("Form submitted successfully! Check console for data.");
-        
+
       } catch (error) {
         console.error("Error submitting form:", error);
         alert("Something went wrong!");
@@ -98,7 +131,7 @@ export default function BlogForm() {
     }
   };
 
-  
+
 
   // Preview handler
   const handlePreview = () => {
@@ -139,31 +172,55 @@ export default function BlogForm() {
                       Basic Information
                     </h2>
                   </div>
-
-                  {/* Blog Title */}
-                  <div className="space-y-2 mb-5">
-                    <label className="flex items-center text-sm font-semibold text-gray-700">
-                      <FileText className="w-4 h-4 mr-2 text-gray-500" />
-                      Blog Title
-                    </label>
-                    <input
-                      name="blog_title"
-                      type="text"
-                      value={formData.blog_title}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${
-                        errors.blog_title
+                  <div className="md:flex items-center gap-3">
+                    {/* Blog Title */}
+                    <div className="flex-3 mt-2">
+                      <label className="flex items-center mb-2 text-sm font-semibold text-gray-700">
+                        <FileText className="w-4 h-4 mr-2 text-gray-500" />
+                        Blog Title
+                      </label>
+                      <input
+                        name="blog_title"
+                        type="text"
+                        value={formData.blog_title}
+                        onChange={handleInputChange}
+                        className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
                           ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
                           : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
-                      }`}
-                      placeholder="Enter an engaging blog title..."
-                    />
-                    {errors.blog_title && (
-                      <p className="flex items-center text-sm text-red-600 mt-1">
-                        <AlertTriangle className="w-4 h-4 mr-1" />
-                        {errors.blog_title}
-                      </p>
-                    )}
+                          }`}
+                        placeholder="Enter an engaging blog title..."
+                      />
+                      {errors.blog_title && (
+                        <p className="flex items-center text-sm text-red-600 mt-1">
+                          <AlertTriangle className="w-4 h-4 mr-1" />
+                          {errors.blog_title}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Tags */}
+                    <div className="flex-2 mt-2">
+                      <label className="flex items-center text-sm mb-2 font-semibold text-gray-700">
+
+                        <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" />
+                        Category
+                      </label>
+                      <input
+                        name="tags"
+                        type="text"
+                        required
+                        value={formData.tags}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:outline-none focus:border-[#c45627] focus:bg-white hover:border-gray-300 transition-all duration-200"
+                        placeholder="technology, web development, react, javascript"
+                      />
+
+                    </div>
+                  </div>
+
+                  <div className="md:flex justify-between ">
+                    <p className="flex items-center text-xs md:text-sm mb-2 gap-1 text-red-400"><GoAlert /> If you are not a premium user you Generate Description 5 times.</p>
+                    <button className="btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500">Generate Description</button>
                   </div>
 
                   {/* Description */}
@@ -177,11 +234,10 @@ export default function BlogForm() {
                       rows={4}
                       value={formData.description}
                       onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none resize-none ${
-                        errors.description
-                          ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
-                          : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
-                      }`}
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none resize-none ${errors.description
+                        ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
+                        : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
+                        }`}
                       placeholder="Write a compelling description for your blog post..."
                     />
                     {errors.description && (
@@ -205,49 +261,64 @@ export default function BlogForm() {
                   </div>
 
                   {/* Featured Image */}
-                  <div className="space-y-2">
-                    <label className="flex items-center text-sm font-semibold text-gray-700">
-                      <Image className="w-4 h-4 mr-2 text-gray-500" />
-                      Featured Image URL
-                    </label>
-                    <input
-                      name="featured_image"
-                      type="url"
-                      value={formData.featured_image}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none ${
-                        errors.featured_image
-                          ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
-                          : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
-                      }`}
-                      placeholder="https://example.com/featured-image.jpg"
-                    />
-                    {errors.featured_image && (
-                      <p className="flex items-center text-sm text-red-600 mt-1">
-                        <AlertTriangle className="w-4 h-4 mr-1" />
-                        {errors.featured_image}
-                      </p>
-                    )}
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Image className="w-5 h-5 text-[#c45627]" />
+                      <label className="text-lg font-semibold text-gray-800">
+                        Featured Image
+                      </label>
+                    </div>
+
+                    <div
+                      className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
+                          ? "border-[#c45627] bg-orange-50 scale-102"
+                          : featuredPreview
+                            ? "border-transparent"
+                            : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627] hover:bg-orange-50"
+                        }`}
+                      onClick={() => featuredInputRef.current?.click()}
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                    >
+                      {featuredPreview ? (
+                        <div className="relative w-full h-full group">
+                          <img
+                            src={featuredPreview}
+                            alt="Featured preview"
+                            className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <div className="text-white text-center">
+                              <Upload className="w-8 h-8 mx-auto mb-2" />
+                              <p className="font-medium">Change Featured</p>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center text-center p-6">
+                          <div className="w-16 h-16 bg-gradient-to-r from-[#c45627] to-yellow-600 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                            <Upload className="w-8 h-8 text-white" />
+                          </div>
+                          <div className="text-lg font-semibold text-gray-800 mb-2">
+                            {isDragOver ? "Drop your image here!" : "Drag & drop or click to upload"}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            Recommended size: 800×600 • JPG, PNG, WEBP • Max 3MB
+                          </div>
+                        </div>
+                      )}
+
+                      <input
+                        ref={featuredInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        className="hidden"
+                      />
+                    </div>
                   </div>
 
-                  {/* Tags */}
-                  <div className="space-y-2">
-                    <label className="flex items-center text-sm font-semibold text-gray-700">
-                      <Tag className="w-4 h-4 mr-2 text-gray-500" />
-                      Tags
-                    </label>
-                    <input
-                      name="tags"
-                      type="text"
-                      value={formData.tags}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:outline-none focus:border-[#c45627] focus:bg-white hover:border-gray-300 transition-all duration-200"
-                      placeholder="technology, web development, react, javascript"
-                    />
-                    <p className="text-sm text-gray-500">
-                      Separate tags with commas
-                    </p>
-                  </div>
                 </div>
 
                 {/* Read Time */}
@@ -262,11 +333,10 @@ export default function BlogForm() {
                     min="1"
                     value={formData.read_time}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none ${
-                      errors.read_time
-                        ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
-                        : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none ${errors.read_time
+                      ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
+                      : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
+                      }`}
                     placeholder="5"
                   />
                   {errors.read_time && (
@@ -285,10 +355,11 @@ export default function BlogForm() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="cursor-pointer flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-600 text-white font-semibold rounded-2xl hover:from-amber-700 hover:to-amber-700 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="cursor-pointer flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-600 text-white  rounded-2xl hover:from-amber-700 hover:to-amber-700 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
-                  <Save className="w-5 h-5 mr-2" />
-                  {isSubmitting ? "Saving Blog Post..." : "Save Blog Post"}
+
+                  <MdOutlinePublishedWithChanges className="w-5 h-5 mr-2" />
+                  {isSubmitting ? "Publishing your Post..." : "Publish"}
                 </button>
 
                 <button

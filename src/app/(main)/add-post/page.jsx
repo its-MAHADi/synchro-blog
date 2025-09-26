@@ -212,12 +212,13 @@ export default function BlogForm() {
                         value={formData.tags}
                         onChange={handleInputChange}
                         className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:outline-none focus:border-[#c45627] focus:bg-white hover:border-gray-300 transition-all duration-200"
-                        placeholder="technology, web development, react, javascript"
+                        placeholder="Any kind of category........"
                       />
 
                     </div>
                   </div>
 
+                  {/* Generate Button */}
                   <div className="md:flex justify-between ">
                     <p className="flex items-center text-xs md:text-sm mb-2 gap-1 text-red-400"><GoAlert /> If you are not a premium user you Generate Description 5 times.</p>
                     <button className="btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500">Generate Description</button>
@@ -262,19 +263,14 @@ export default function BlogForm() {
 
                   {/* Featured Image */}
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <Image className="w-5 h-5 text-[#c45627]" />
-                      <label className="text-lg font-semibold text-gray-800">
-                        Featured Image
-                      </label>
-                    </div>
+
 
                     <div
                       className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
-                          ? "border-[#c45627] bg-orange-50 scale-102"
-                          : featuredPreview
-                            ? "border-transparent"
-                            : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627] hover:bg-orange-50"
+                        ? "border-[#c45627] bg-orange-50 scale-102"
+                        : featuredPreview
+                          ? "border-transparent"
+                          : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627] hover:bg-orange-50"
                         }`}
                       onClick={() => featuredInputRef.current?.click()}
                       onDragOver={handleDragOver}
@@ -321,31 +317,7 @@ export default function BlogForm() {
 
                 </div>
 
-                {/* Read Time */}
-                <div className="space-y-2">
-                  <label className="flex items-center text-sm font-semibold text-gray-700">
-                    <Clock className="w-4 h-4 mr-2 text-gray-500" />
-                    Read Time (minutes)
-                  </label>
-                  <input
-                    name="read_time"
-                    type="number"
-                    min="1"
-                    value={formData.read_time}
-                    onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none ${errors.read_time
-                      ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50"
-                      : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"
-                      }`}
-                    placeholder="5"
-                  />
-                  {errors.read_time && (
-                    <p className="flex items-center text-sm text-red-600 mt-1">
-                      <AlertTriangle className="w-4 h-4 mr-1" />
-                      {errors.read_time}
-                    </p>
-                  )}
-                </div>
+
               </div>
             </div>
 

@@ -67,14 +67,6 @@ const Navbar = () => {
               </Link>
             </li> */}
             <li>
-              <Link href="/user-dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <FaTachometerAlt /> Dashboard
-              </Link>
-            </li>
-            <li>
               <Link href="/events" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/events"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
@@ -88,6 +80,14 @@ const Navbar = () => {
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaPlusCircle /> Add Post
+              </Link>
+            </li>
+              <li>
+              <Link href="/user-dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
+                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+                : "text-gray-700 hover:text-[#213943]"
+                }`}>
+                <FaTachometerAlt /> Dashboard
               </Link>
             </li>
             <li>

@@ -1,5 +1,6 @@
 import React from 'react';
-import OTPForm from "./OTPForm";
+import OTPForm from './OTPFrom';
+// import OTPForm from "./OTPForm";
 
 export const metadata = {
   title: "OTP | Synchro",

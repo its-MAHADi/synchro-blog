@@ -36,24 +36,14 @@ export const loginUser = async ({ email, password }) => {
     let lockUntil = null;
     let errorMessage = "Invalid email or password";
 
-    // Warning after 3rd failed attempt
     if (failedLoginAttempts === 3) {
-      errorMessage = "warning-2-left"; // frontend shows SweetAlert
+      errorMessage = "warning-2-left"; // frontend handles this
     }
 
-    // Lockout thresholds
     if (failedLoginAttempts === 5) {
       lockUntil = new Date(now.getTime() + 15 * 60 * 1000); // 15 min
       errorMessage = "Your account is locked for 15 minutes.";
     }
-
-    //  else if (failedLoginAttempts === 7) {
-    //   lockUntil = new Date(now.getTime() + 30 * 60 * 1000); // 30 min
-    //   errorMessage = "Your account is locked for 30 minutes.";
-    // } else if (failedLoginAttempts >= 8) {
-    //   lockUntil = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour
-    //   errorMessage = "Your account is locked for 1 hour.";
-    // }
 
     await userCollection.updateOne(
       { _id: user._id },
@@ -75,5 +65,13 @@ export const loginUser = async ({ email, password }) => {
     }
   );
 
-  return { user };
+  // ✅ Explicitly return fields NextAuth needs
+  return {
+    user: {
+      _id: user._id,
+      userName: user.userName, // DB field
+      name: user.userName,     // alias for NextAuth
+      email: user.email,
+    },
+  };
 };

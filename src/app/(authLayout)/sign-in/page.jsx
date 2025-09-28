@@ -51,7 +51,7 @@ export default function SignInPage() {
             {/* Google Sign In */}
             <button
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer"
             >
               <Image
                 src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -67,7 +67,7 @@ export default function SignInPage() {
             {/* Github */}
             <button
               onClick={() => signIn("github", { callbackUrl: "/" })}
-              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition mt-3"
+              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition mt-3 cursor-pointer"
             >
               <img
                 src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"

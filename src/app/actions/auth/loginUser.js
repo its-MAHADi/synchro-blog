@@ -11,7 +11,7 @@ export const loginUser = async ({ email, password }) => {
 
   const now = new Date();
 
-  // 1️⃣ Reset failedLoginAttempts if lockUntil has passed
+  // 1️⃣ Reset failed login attempts if lockUntil has passed
   if (user.lockUntil && user.lockUntil <= now) {
     await userCollection.updateOne(
       { _id: user._id },
@@ -29,7 +29,11 @@ export const loginUser = async ({ email, password }) => {
     };
   }
 
-  // 3️⃣ Check password
+  // 3️⃣ Check password (guard in case no password is set)
+  if (!user.password) {
+    return { error: "This account has no password set. Please use social login." };
+  }
+
   const isPasswordOk = await bcrypt.compare(password, user.password);
   if (!isPasswordOk) {
     let failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
@@ -41,7 +45,7 @@ export const loginUser = async ({ email, password }) => {
     }
 
     if (failedLoginAttempts === 5) {
-      lockUntil = new Date(now.getTime() + 15 * 60 * 1000); // 15 min
+      lockUntil = new Date(now.getTime() + 15 * 60 * 1000); // 15 minutes
       errorMessage = "Your account is locked for 15 minutes.";
     }
 
@@ -53,7 +57,7 @@ export const loginUser = async ({ email, password }) => {
     return { error: errorMessage };
   }
 
-  // 4️⃣ Successful login → reset counters
+  // 4️⃣ Successful login → reset counters + update last login
   await userCollection.updateOne(
     { _id: user._id },
     {
@@ -69,9 +73,10 @@ export const loginUser = async ({ email, password }) => {
   return {
     user: {
       _id: user._id,
-      userName: user.userName, // DB field
-      name: user.userName,     // alias for NextAuth
+      userName: user.userName ?? null,   // optional
+      name: user.userName ?? user.email, // fallback to email
       email: user.email,
+      userRole: user.userRole ?? "user", // ✅ include role
     },
   };
 };

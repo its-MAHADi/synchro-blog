@@ -3,25 +3,33 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
 const PostCart = ({ postData }) => {
+    console.log(postData);
     // Description handle
     const text = postData?.description || "";
     const maxLength = 140;
     const truncated = text.length > maxLength ? text.slice(0, maxLength) + " ..." : text;
 
     // Title handle
-    const titleText = postData?.title || "Untitled Post";
+    const titleText = postData?.blog_title || "Untitled Post";
     const tileMaxLength = 60;
     const titleTruncated = titleText.length > tileMaxLength ? titleText.slice(0, tileMaxLength) + " ..." : titleText;
 
     // Fallbacks for other fields
-    const image = postData?.image || "/default-cover.jpg";  
-    const authorImage = postData?.author_image || "/default-author.png";
+    const image = postData?.featured_image || "/default-cover.png";
+    const authorImage = postData?.author_image || "/defult_profile.jpg";
     const authorName = postData?.author_name || "Unknown Author";
-    const publishDate = postData?.publish_date || "Unknown Date";
+    const publishDate = postData?.created_at
+        ? new Date(postData.created_at).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        })
+        : "Unknown Date";
+
     const id = postData?._id?.toString() || "#";  // MongoDB ObjectId safe
 
     return (
-        <div className="max-w-sm mx-auto bg-[#f6f5ea] rounded-lg overflow-hidden shadow flex flex-col h-full">
+        <div className="w-full mx-auto bg-[#f6f5ea] rounded-lg overflow-hidden shadow flex flex-col h-full">
             {/* Image */}
             <div className="relative">
                 <img

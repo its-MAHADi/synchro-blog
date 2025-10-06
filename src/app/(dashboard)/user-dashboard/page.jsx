@@ -5,14 +5,12 @@ import {
     Crown,
     Bell,
     TrendingUp,
-    Users,
     Eye,
     Heart,
     MessageCircle,
     Star,
     Calendar,
     Award,
-    Zap,
     ChevronRight,
     Sparkles
 } from 'lucide-react';
@@ -61,10 +59,10 @@ export default function UserDashboard() {
             value: stats.posts,
             subtitle: "Published articles",
             icon: FileText,
-            gradient: "from-blue-500 via-blue-600 to-cyan-600",
-            shadowColor: "rgba(59, 130, 246, 0.3)",
-            bgPattern: "from-blue-50/80 to-cyan-50/80",
-            iconBg: "from-blue-500 to-cyan-600",
+            gradient: "from-yellow-500 via-yellow-600 to-yellow-600",
+            shadowColor: "from-amber-500 to-amber-500",
+            bgPattern: "from-amber-50/80 to-amber-50/80",
+            iconBg: "from-amber-500 to-amber-600",
             trend: "+2 this week",
             trendIcon: TrendingUp,
             particles: [
@@ -78,10 +76,10 @@ export default function UserDashboard() {
             value: "Premium",
             subtitle: "Active subscription",
             icon: Crown,
-            gradient: "from-purple-500 via-pink-600 to-rose-600",
-            shadowColor: "rgba(147, 51, 234, 0.3)",
-            bgPattern: "from-purple-50/80 to-pink-50/80",
-            iconBg: "from-purple-500 to-pink-600",
+            gradient: "from-yellow-500 via-yellow-600 to-yellow-600",
+            shadowColor: "from-amber-500 to-amber-500",
+            bgPattern: "from-amber-50 to-amber-50",
+            iconBg: "from-gray-900 via-gray-500 to-gray-900",
             trend: "Expires in 30 days",
             trendIcon: Calendar,
             particles: [
@@ -95,10 +93,10 @@ export default function UserDashboard() {
             value: "3",
             subtitle: "Unread messages",
             icon: Bell,
-            gradient: "from-emerald-500 via-teal-600 to-green-600",
-            shadowColor: "rgba(16, 185, 129, 0.3)",
-            bgPattern: "from-emerald-50/80 to-teal-50/80",
-            iconBg: "from-emerald-500 to-teal-600",
+            gradient: "from-yellow-500 via-yellow-600 to-yellow-600",
+            shadowColor: "from-amber-500 to-amber-500",
+            bgPattern: "from-amber-50/80 to-amber-50/80",
+            iconBg: "from-amber-500 to-amber-600",
             trend: "2 new today",
             trendIcon: Sparkles,
             particles: [
@@ -121,21 +119,21 @@ export default function UserDashboard() {
             icon: Heart,
             title: "Total Likes",
             value: stats.likes,
-            gradient: "from-rose-500 to-pink-600",
+            gradient: "from-amber-500 to-amber-600",
             bgGradient: "from-rose-50/80 to-pink-50/80"
         },
         {
             icon: MessageCircle,
             title: "Comments",
             value: stats.comments,
-            gradient: "from-indigo-500 to-purple-600",
+            gradient: "from-amber-500 to-amber-600",
             bgGradient: "from-indigo-50/80 to-purple-50/80"
         },
         {
             icon: Star,
             title: "Rating",
             value: "4.8",
-            gradient: "from-yellow-500 to-amber-600",
+            gradient: "from-orange-500 to-red-600",
             bgGradient: "from-yellow-50/80 to-amber-50/80"
         }
     ];
@@ -187,7 +185,7 @@ export default function UserDashboard() {
                                 <div
                                     className={`relative p-8 bg-gradient-to-br ${card.bgPattern} backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden`}
                                     style={{
-                                        boxShadow: `0 25px 50px ${card.shadowColor}, inset 0 1px 0 rgba(255,255,255,0.3)`
+                                        boxShadow: `0 25px 50px ${card.shadowColor}, inset 0 1px 0 `
                                     }}
                                 >
                                     {/* Floating Particles */}
@@ -251,7 +249,7 @@ export default function UserDashboard() {
                 {/* Activity Overview */}
                 <div className="mb-8">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
                             <TrendingUp size={20} className="text-white" />
                         </div>
                         <h2 className="text-2xl font-bold text-gray-800">Activity Overview</h2>

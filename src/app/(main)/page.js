@@ -1,4 +1,3 @@
-
 import SynchroFeatures from "./components/FeaturesOfSynchor/SynchroFeatures";
 import SynchroWorks from "./components/HowSynchroWorks/SynchroWorks";
 import Banner from "./components/Banner/Banner";

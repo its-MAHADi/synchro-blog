@@ -12,11 +12,11 @@ export default function DashboardLayout({ children }) {
   return (
     <>
       <div className="md:flex min-h-screen">
-        {/* Sidebar */}
+        {/* Sidebar /}
         {role === "admin" ? <AdminSidebar /> : <UserSidebar />}
 
 
-        {/* Main Content */}
+        {/ Main Content */}
         <div className="flex-1  bg-gray-50">
             <div className="my-5 mx-5 ml-260">
               <Link href="/" className="btn border-[#c45627] text-[#c45627] text-xl font-bold hover:bg-[#c45627] hover:text-white rounded-sm">Home</Link>
@@ -24,7 +24,7 @@ export default function DashboardLayout({ children }) {
           <main className="flex-1 p-6 h-screen overflow-x-auto max-w-[90%] mx-auto">{children}</main>
         </div>
       </div>
-      
+
     </>
   );
 }

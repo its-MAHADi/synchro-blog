@@ -27,11 +27,23 @@ import {
 import { useSession } from "next-auth/react";
 import { FaUserCircle } from "react-icons/fa";
 
-export default function Profile() {
+
+export default async function Profile() {
   const [activeTab, setActiveTab] = useState("posts");
   const [viewMode, setViewMode] = useState("grid");
   const { data: session, status } = useSession();
-  console.log(session?.user.name, status)
+  // const [blogs, setBlogs] = useState([]);
+  //  useEffect(() => {
+  //   const fetchBlogs = async () => {
+  //     const res = await fetch("/api/blog");
+  //     const data = await res.json();
+  //     setBlogs(data);
+  //   };
+  //   fetchBlogs();
+  // }, []);
+
+  // console.log(blogs)
+
   return (
     <div className="flex-1 h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
       {/* Floating Header */}

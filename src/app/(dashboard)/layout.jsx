@@ -8,7 +8,7 @@ export default function DashboardLayout({ children }) {
   const { data: session } = useSession();
   const [userData, setUserData] = useState(null);
 
-  console.log(userData);
+  // console.log(userData);
 
   useEffect(() => {
     const fetchUser = async () => {

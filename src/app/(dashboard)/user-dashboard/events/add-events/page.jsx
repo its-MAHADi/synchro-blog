@@ -35,7 +35,7 @@ export default function EventForm() {
           name="title"
           placeholder="Event Title"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
 
         {/* Description */}
@@ -44,7 +44,7 @@ export default function EventForm() {
           placeholder="Event Description"
           required
           rows="4"
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         ></textarea>
 
         {/* Image (Optional) */}
@@ -60,7 +60,7 @@ export default function EventForm() {
           type="datetime-local"
           name="time"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
 
         {/* Host Info */}
@@ -69,21 +69,21 @@ export default function EventForm() {
           name="hostBy"
           placeholder="Event Hosted By (Organization)"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
         <input
           type="email"
           name="hostEmail"
           placeholder="Host Email"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
         <input
           type="text"
           name="hostName"
           placeholder="Host Name"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
 
         {/* Publish Date */}
@@ -91,7 +91,7 @@ export default function EventForm() {
           type="date"
           name="publishDate"
           required
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
         />
 
         {/* Event Location Type */}
@@ -124,14 +124,14 @@ export default function EventForm() {
             type="text"
             name="location"
             placeholder="Enter Physical Address"
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-amber-500"
           />
         )}
 
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+          className="w-full bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 transition"
         >
           Create Event
         </button>

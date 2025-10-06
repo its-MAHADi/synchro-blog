@@ -8,12 +8,12 @@ import { useSession } from "next-auth/react";
 import { FaUserCircle } from "react-icons/fa";
 
 const navItems = [
-    { name: "Dashboard", href: "/user-dashboard", icon: Home, gradient: "from-violet-500 to-purple-600" },
-    { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-emerald-500 to-teal-600" },
-    { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-orange-500 to-red-600" },
-    { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-blue-500 to-cyan-600" },
-    { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-lime-500 to-green-600" },
-    { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-pink-500 to-rose-600" },
+    { name: "Dashboard", href: "/user-dashboard", icon: Home, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-amber-500 to-[#c45627]" },
+    // { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-amber-500 to-[#c45627]" },
 ];
 
 
@@ -22,7 +22,9 @@ export default function UserSidebar() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const { data: session, status } = useSession();
-    //   console.log(session?.user.image, status)
+      console.log(session?.user?.image, status)
+      console.log(session?.user?.image)
+
     // Close sidebar when clicking outside on mobile
     useEffect(() => {
         const handleResize = () => {
@@ -51,7 +53,7 @@ export default function UserSidebar() {
             )}
 
             {/* Mobile Header with 3D effect */}
-            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between p-4 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 shadow-2xl">
+            <div className="md:hidden sticky top-0 z-30 flex items-center justify-between p-4 bg-amber-600 shadow-2xl">
                 <div className="absolute inset-0 bg-white/10 backdrop-blur-xl" />
                 <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -72,24 +74,24 @@ export default function UserSidebar() {
             {/* 3D Glassmorphism Sidebar */}
             <aside
                 className={`fixed md:static top-0 left-0 h-screen w-72 md:w-80 transform transition-all duration-500 ease-out z-50 
-        ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
-                style={{
-                    background: 'white',
-                    backdropFilter: 'blur(20px)',
-                    borderRight: '1px solid rgba(255,255,255,0.2)',
-                    boxShadow: '0 25px 50px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)'
-                }}
-            >
-                {/* Animated Background Pattern */}
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0" style={{
-                        backgroundImage: `
-                            radial-gradient(circle at 20% 20%, rgba(120,119,198,0.3) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 80%, rgba(255,119,198,0.3) 0%, transparent 50%),
-                            radial-gradient(circle at 40% 60%, rgba(119,255,198,0.3) 0%, transparent 50%)
-                        `
-                    }} />
-                </div>
+                ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+                        style={{
+                            background: 'white',
+                            backdropFilter: 'blur(20px)',
+                            borderRight: '1px solid rgba(255,255,255,0.2)',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.2)'
+                        }}
+                    >
+                        {/* Animated Background Pattern */}
+                        <div className="absolute inset-0 opacity-10">
+                            <div className="absolute inset-0" style={{
+                                backgroundImage: `
+                                    radial-gradient(circle at 20% 20%, rgba(120,119,198,0.3) 0%, transparent 50%),
+                                    radial-gradient(circle at 80% 80%, rgba(255,119,198,0.3) 0%, transparent 50%),
+                                    radial-gradient(circle at 40% 60%, rgba(119,255,198,0.3) 0%, transparent 50%)
+                                `
+                            }} />
+                        </div>
 
                 {/* Desktop Header with 3D effect */}
                 <div className="hidden md:block p-6 border-b border-gray-200 relative">
@@ -104,20 +106,17 @@ export default function UserSidebar() {
                                 session?.user?.image ?
                                     <div>
 
-                                        <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
+                                        <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="userImage" />
 
                                     </div>
                                     :
-
                                     <FaUserCircle size={30} />
-
-
                             }
                             <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-500 rounded-full animate-pulse shadow-lg" />
                         </div>
                         <div>
                             <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent drop-shadow-sm"> {session?.user?.name}</h2>
-                            <p className="text-sm text-gray-500 font-medium">Manage your digital world</p>
+                            <p className="text-sm text-gray-500 font-medium">Manage your writings digitally</p>
                         </div>
                     </div>
                 </div>

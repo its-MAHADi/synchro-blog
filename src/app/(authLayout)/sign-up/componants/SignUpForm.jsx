@@ -140,7 +140,7 @@ const handleGithubLogin = () => {
               <button
   onClick={handleGoogleLogin}
   type="button"
-  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+  className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer"
 >
   <Image
     src="https://www.svgrepo.com/show/475656/google-color.svg"
@@ -159,7 +159,7 @@ const handleGithubLogin = () => {
 <button
   onClick={handleGithubLogin}
   type="button"
-  className="mt-3 w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition"
+  className="mt-3 w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer"
 >
   <Image
     src="https://www.svgrepo.com/show/512317/github-142.svg"

@@ -58,14 +58,14 @@ const Navbar = () => {
                 <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegStar /> Popular Post
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link href="/events" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/events"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
@@ -82,6 +82,14 @@ const Navbar = () => {
                 <FaPlusCircle /> Add Post
               </Link>
             </li>
+              <li>
+              <Link href="/user-dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
+                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+                : "text-gray-700 hover:text-[#213943]"
+                }`}>
+                <FaTachometerAlt /> Dashboard
+              </Link>
+            </li>
             <li>
               <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/aboutUs"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
@@ -93,37 +101,39 @@ const Navbar = () => {
           </ul>
 
           {/* Desktop Buttons */}
-          {
-            !session?.user ?
-              <div className="hidden lg:flex items-center gap-3">
-                <Link href="/sign-in" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
-                  Login
-                </Link>
-                <Link href="/sign-up" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
-                  Register
-                </Link>
-              </div>
-              :
-              <div className="flex items-center gap-2">
-                {
-                  session?.user?.image ?
-                    <div>
+          <div className="hidden lg:block">
+            {
+              !session?.user ?
+                <div className="hidden lg:flex items-center gap-3">
+                  <Link href="/sign-in" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                    Login
+                  </Link>
+                  <Link href="/sign-up" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                    Register
+                  </Link>
+                </div>
+                :
+                <div className="flex items-center gap-2">
+                  {
+                    session?.user?.image ?
+                      <div>
+                        <Link href={"/user-dashboard"}>
+                          <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
+                        </Link>
+                      </div>
+                      :
                       <Link href={"/user-dashboard"}>
-                        <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
+                        <FaUserCircle size={30} />
                       </Link>
-                    </div>
-                    :
-                    <Link href={"/user-dashboard"}>
-                      <FaUserCircle size={30} />
-                    </Link>
 
-                }
+                  }
 
-                <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
-                  Logout
-                </Link>
-              </div>
-          }
+                  <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                    Logout
+                  </Link>
+                </div>
+            }
+          </div>
 
 
           {/* Mobile Menu Button */}
@@ -177,7 +187,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
-              href="/dashboard"
+              href="/user-dashboard"
               onClick={() => setOpen(false)}
               className="flex items-center gap-2 hover:text-[#c45627]"
             >
@@ -187,21 +197,36 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="mt-4 flex flex-col gap-2">
-            <Link
-              href="/login"
-              className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
-              onClick={() => setOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
-              onClick={() => setOpen(false)}
-            >
-              Register
-            </Link>
+            {session?.user ? (
+              <button
+                onClick={() => {
+                  signOut();
+                  setOpen(false);
+                }}
+                className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+                  onClick={() => setOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
+
         </ul>
       </div>
 
@@ -209,7 +234,7 @@ const Navbar = () => {
       {/* Overlay */}
       {open && (
         <div
-          className="fixed inset-0 bg-black/40 z-40"
+          className="fixed inset-0 bg-black/40 z-40 min-h-screen"
           onClick={() => setOpen(false)}
         ></div>
       )}

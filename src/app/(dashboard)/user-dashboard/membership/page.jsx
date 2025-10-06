@@ -15,7 +15,7 @@ export default function MembershipPage() {
 
         <div className="p-4 border rounded-lg flex justify-between items-center">
           <span>Pro Plan</span>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">
+          <button className="bg-amber-600 text-white px-4 py-2 rounded-lg">
             Upgrade
           </button>
         </div>

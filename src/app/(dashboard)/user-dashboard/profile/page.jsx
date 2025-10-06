@@ -140,7 +140,7 @@ export default async function Profile() {
 
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                  <div className="flex items-center gap-1 text-center bg-gradient-to-br from-[#c45627]/5 to-[#c45627]/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
+                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-[#c45627]/5 to-[#c45627]/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
                     <div className="text-[10px] sm:text-xs text-gray-600">
                       <BsPostcard size={15} className="text-[#c45627]" />
                     </div>
@@ -149,19 +149,19 @@ export default async function Profile() {
                     </div>
 
                   </div>
-                  <div className="flex items-center gap-1 text-center bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
+                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
                     <div className="text-[10px] sm:text-xs text-gray-600">
-                      <SlUserFollowing size={15} className="text-blue-600" />
+                      <SlUserFollowing size={15} className="text-[#c45627]" />
                     </div>
-                    <div className="text-base sm:text-sm font-bold text-blue-600">
+                    <div className="text-base sm:text-sm font-bold text-[#c45627]">
                       12.5K
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-center bg-gradient-to-br from-green-500/5 to-green-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
+                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-amber-500/5 to-amber-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
                     <div className="text-[10px] sm:text-xs text-gray-600">
-                      <IoEyeOutline size={15} className="text-green-600" />
+                      <IoEyeOutline size={15} className="text-[#c45627]" />
                     </div>
-                    <div className="text-base sm:text-sm font-bold text-green-600">
+                    <div className="text-base sm:text-sm font-bold text-[#c45627]">
                       250K
                     </div>
 

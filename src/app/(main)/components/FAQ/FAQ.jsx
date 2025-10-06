@@ -2,7 +2,7 @@
 import { BadgeQuestionMark } from 'lucide-react';
 import { Plus, Minus } from 'lucide-react';
 import React, { useState } from 'react';
-// #c45627 #213943 #f6f5ea  mhkhandakar57@gmail.com
+// #c45627 #213943 #f6f5ea  
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(null); // Keep track of the open/close state of each FAQ
 

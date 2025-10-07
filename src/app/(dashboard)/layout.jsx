@@ -18,10 +18,10 @@ export default function DashboardLayout({ children }) {
 
          {/* Main Content */}
         <div className="flex-1  bg-gray-50">
-            <div className="my-5 mx-5 ml-260">
+            {/* <div className="my-5 mx-5 ml-260">
               <Link href="/" className="btn border-[#c45627] text-[#c45627] text-xl font-bold hover:bg-[#c45627] hover:text-white rounded-sm">Home</Link>
-            </div>
-          <main className="flex-1 p-6 h-screen overflow-x-auto max-w-[90%] mx-auto">{children}</main>
+            </div> */}
+          <main className="flex-1  h-screen overflow-x-auto max-w-[100%] mx-auto">{children}</main>
         </div>
       </div>
 

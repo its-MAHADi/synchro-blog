@@ -3,16 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, User, FilePlus, List, CreditCard, Menu, X, ChevronRight, Sparkles } from "lucide-react";
+import { User, FilePlus, CreditCard, Menu, X, ChevronRight, Sparkles, HomeIcon, LayoutDashboard } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { FaUserCircle } from "react-icons/fa";
 
 const navItems = [
-    { name: "Dashboard", href: "/user-dashboard", icon: Home, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "Dashboard", href: "/user-dashboard", icon: LayoutDashboard, gradient: "from-amber-500 to-[#c45627]" },
     { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-amber-500 to-[#c45627]" },
-    { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-amber-500 to-[#c45627]" },
+    // { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-amber-500 to-[#c45627]" },
     // { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
     { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "Home", href: "/", icon: HomeIcon, gradient: "from-amber-500 to-[#c45627]" },
     { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-amber-500 to-[#c45627]" },
 ];
 
@@ -115,7 +116,7 @@ export default function UserSidebar() {
                             <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-500 rounded-full animate-pulse shadow-lg" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent drop-shadow-sm"> {session?.user?.name}</h2>
+                            <h2 className="text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent drop-shadow-sm"> {session?.user?.name}</h2>
                             <p className="text-sm text-gray-500 font-medium">Manage your writings digitally</p>
                         </div>
                     </div>

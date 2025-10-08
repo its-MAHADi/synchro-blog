@@ -9,13 +9,13 @@ import Swal from "sweetalert2";
 
 export default function BlogForm() {
   const { data } = useSession();
-  console.log(data);
 
   const [formData, setFormData] = useState({
     blog_title: "",
     description: "",
     author_name: "",
     author_email: "",
+    author_image: "",
     featured_image: "",
     category: "",
     likes: 0,
@@ -23,13 +23,14 @@ export default function BlogForm() {
     created_at: new Date().toISOString(),
     modified_at: null,
   });
-  
+
   useEffect(() => {
     if (data?.user) {
       setFormData((prev) => ({
         ...prev,
         author_name: data.user.name || "",
         author_email: data.user.email || "",
+        author_image: data.user.image || "",
       }));
     }
   }, [data]);
@@ -74,6 +75,7 @@ export default function BlogForm() {
 
   const handleWordCountChange = (e) => setWordCount(e.target.value);
 
+  // ---------------- AI Content Generation ----------------
   const generateContent = async (e) => {
     e.preventDefault();
     if (!formData.blog_title.trim() || !formData.category.trim()) {
@@ -111,10 +113,7 @@ Requirements:
       response = await response.json();
 
       const aiText = response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      setFormData((prev) => ({
-        ...prev,
-        description: aiText.trim(),
-      }));
+      setFormData((prev) => ({ ...prev, description: aiText.trim() }));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -126,6 +125,7 @@ Requirements:
     }
   };
 
+  // ---------------- Validation ----------------
   const validateForm = () => {
     const newErrors = {};
     if (!formData.blog_title.trim())
@@ -142,7 +142,7 @@ Requirements:
     return Object.keys(newErrors).length === 0;
   };
 
-  // submit handle for Post
+  // ---------------- Submit Form ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -181,6 +181,7 @@ Requirements:
         featured_image: imageUrl,
         author_name: data.user.name,
         author_email: data.user.email,
+        author_image: data.user.image,
       };
 
       const res = await fetch("/api/add-post", {
@@ -201,8 +202,9 @@ Requirements:
           description: "",
           author_name: data.user.name,
           author_email: data.user.email,
+          author_image: data.user.image,
           featured_image: "",
-          category: "", // ✅ FIX: Corrected typo from "catagory" to "category"
+          category: "",
           likes: 0,
           comment: 0,
           created_at: new Date().toISOString(),
@@ -227,6 +229,9 @@ Requirements:
     }
   };
 
+console.log("Featured File:", formData.featured_image);
+
+
   // ---------------- UI ----------------
   return (
     <div className="min-h-screen">
@@ -242,8 +247,7 @@ Requirements:
             Blog Post Management
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Create and manage your blog content with our intuitive form
-            interface
+            Create and manage your blog content with our intuitive form interface
           </p>
         </div>
 
@@ -259,16 +263,13 @@ Requirements:
                 <div className="p-2 bg-yellow-100 rounded-lg">
                   <FileText className="w-5 h-5 text-[#c45627]" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Basic Information
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
               </div>
 
               <div className="md:flex items-center gap-3">
                 <div className="flex-3 mt-2">
                   <label className="flex items-center mb-2 text-sm font-semibold text-gray-700">
-                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog
-                    Title
+                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog Title
                   </label>
                   <input
                     name="blog_title"
@@ -292,8 +293,7 @@ Requirements:
 
                 <div className="flex-2 mt-2">
                   <label className="flex items-center text-sm mb-2 font-semibold text-gray-700">
-                    <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" />{" "}
-                    Category
+                    <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" /> Category
                   </label>
                   <input
                     name="category"
@@ -309,9 +309,7 @@ Requirements:
 
               {/* Word Count & AI */}
               <div className="mt-4 flex items-center gap-3">
-                <label className="text-sm font-semibold text-gray-700">
-                  Word Count
-                </label>
+                <label className="text-sm font-semibold text-gray-700">Word Count</label>
                 <input
                   type="number"
                   min={50}
@@ -340,9 +338,7 @@ Requirements:
                 <textarea
                   name="description"
                   rows={10}
-                  value={
-                    isGenerating ? "Generating content..." : formData.description
-                  }
+                  value={isGenerating ? "Generating content..." : formData.description}
                   onChange={handleInputChange}
                   className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${
                     errors.description
@@ -396,9 +392,7 @@ Requirements:
                       <Upload className="w-8 h-8 text-white" />
                     </div>
                     <div className="text-lg font-semibold text-gray-800 mb-2">
-                      {isDragOver
-                        ? "Drop your image here!"
-                        : "Drag & drop or click to upload"}
+                      {isDragOver ? "Drop your image here!" : "Drag & drop or click to upload"}
                     </div>
                     <div className="text-sm text-gray-500">
                       Recommended size: 800×600 • JPG, PNG, WEBP • Max 3MB
@@ -451,11 +445,19 @@ Requirements:
               <h1 className="text-3xl font-bold mb-3">
                 {formData.blog_title || "Untitled Blog Post"}
               </h1>
-              <p className="text-gray-500 text-sm mb-6">
-                By {formData.author_name || "Unknown Author"} (
-                {formData.author_email || "No Email"}) •{" "}
-                {new Date(formData.created_at).toLocaleString()}
-              </p>
+              <div className="flex items-center mb-4 gap-3">
+                {formData.author_image && (
+                  <img
+                    src={formData.author_image}
+                    alt={formData.author_name}
+                    className="w-12 h-12 rounded-full"
+                  />
+                )}
+                <p className="text-gray-500 text-sm">
+                  By {formData.author_name || "Unknown Author"} ({formData.author_email || "No Email"}) •{" "}
+                  {new Date(formData.created_at).toLocaleString()}
+                </p>
+              </div>
               {featuredPreview && (
                 <img
                   src={featuredPreview}

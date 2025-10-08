@@ -50,14 +50,14 @@ const Navbar = () => {
                 <GoHome /> Home
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/all-posts"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
-            </li>
+            </li> */}
             {/* <li>
               <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
@@ -74,15 +74,15 @@ const Navbar = () => {
                 <MdOutlineEmojiEvents /> Events
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/add-post"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaPlusCircle /> Add Post
               </Link>
-            </li>
-              <li>
+            </li> */}
+            <li>
               <Link href="/user-dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"

@@ -6,6 +6,9 @@ import FAQ from "./components/FAQ/FAQ";
 import PopularTopic from "./components/popularTopic/PopularTopic";
 import RecentPosts from "./components/RecentPosts/RecentPosts";
 import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfile";
+import BlogPost from "./components/BlogPost/BlogPost";
+import PostField from "./components/PostField/PostField";
+import AllPosts from "./components/AllPosts/AllPosts";
 
 export const metadata = {
   title: "Home | Synchro",
@@ -16,27 +19,35 @@ export const metadata = {
 export default function Home() {
   return (
     <section className="max-w-11/12 mx-auto">
-      {/* banner */}
-      <Banner/>
-
-      {/* Recent Post */}
-      <RecentPosts/>
-
-      {/*Features of Synchro */}
-      <SynchroFeatures/>
-
-      {/* How synchro works */}
-      <SynchroWorks/>
-
-      {/* PopularTopic */}
-      <PopularTopic/>
-
-      {/* FAQ section */}
-      <FAQ></FAQ>
-      
-      {/* contact page */}
-      <Contact/>
-
+     <PostField/>
+     <AllPosts/>
     </section>
   );
 }
+
+
+
+
+
+//  {/* banner */}
+//       <Banner/>
+
+//       {/* Recent Post */}
+//       <RecentPosts/>
+
+//       {/*Features of Synchro */}
+//       <SynchroFeatures/>
+
+//       {/* How synchro works */}
+//       <SynchroWorks/>
+
+//       {/* PopularTopic */}
+//       <PopularTopic/>
+
+//       {/* FAQ section */}
+//       <FAQ></FAQ>
+      
+//       {/* contact page */}
+//       <Contact/>
+
+//       <BlogPost/>

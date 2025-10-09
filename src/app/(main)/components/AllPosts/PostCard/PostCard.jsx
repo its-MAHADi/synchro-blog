@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Heart, MessageCircle, Share2, X } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
+import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 
 const formatFacebookDate = (dateString) => {
@@ -30,12 +31,15 @@ const formatFacebookDate = (dateString) => {
 };
 
 const PostCard = ({ postData }) => {
+
+    // console.log(postData);
     const [showFull, setShowFull] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState(postData?.commentsList || []);
     const [newComment, setNewComment] = useState("");
     const { data: session, status } = useSession();
     const likes = postData?.likes;
+    // const TotalComments = postData?.comment;
     const commentsCount = comments.length;
     const shares = postData?.shares || 4;
 
@@ -51,18 +55,93 @@ const PostCard = ({ postData }) => {
     const isLong = descText.length > mobileLimit;
     const shortDesc = descText.slice(0, mobileLimit) + "...";
 
-    const handleAddComment = () => {
+    //Handle Comments 
+    // const handleAddComment = () => {
+    //     if (newComment.trim() === "") return;
+    //     const commentObj = {
+    //         id: Date.now(),
+    //         comment_id: postData?._id,
+    //         text: newComment,
+    //         author_name: session?.user?.name,
+    //         author_image: session?.user?.image,
+    //         created_at: new Date().toISOString(),
+    //     };
+    //     setComments([commentObj, ...comments]);
+    //     setNewComment("");
+    // };
+
+    const handleAddComment = async () => {
+        if (!session) {
+            Swal.fire({
+                icon: "warning",
+                title: "You must be logged in to comment!",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            return;
+        }
+
         if (newComment.trim() === "") return;
+
         const commentObj = {
             id: Date.now(),
+            post_id: postData?._id,
             text: newComment,
             author_name: session?.user?.name,
             author_image: session?.user?.image,
             created_at: new Date().toISOString(),
         };
-        setComments([commentObj, ...comments]);
-        setNewComment("");
+
+        try {
+            const res = await fetch("/api/add-comment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(commentObj),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setComments([commentObj, ...comments]);
+                setNewComment("");
+
+                Swal.fire({
+                    icon: "success",
+                    title: "Comment added successfully!",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Failed to add comment",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            }
+        } catch (err) {
+            console.error("Error adding comment:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Something went wrong. Please try again.",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        }
     };
+
 
     // Card content
     const CardContent = () => (

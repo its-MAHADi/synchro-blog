@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Heart, MessageCircle, Share2, X } from "lucide-react";
+import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
@@ -13,7 +13,6 @@ const formatFacebookDate = (dateString) => {
     const diffMin = Math.floor(diffSec / 60);
     const diffHrs = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHrs / 24);
-
 
     if (diffDays === 0) {
         if (diffHrs > 0) return `${diffHrs}h ago`;
@@ -31,17 +30,15 @@ const formatFacebookDate = (dateString) => {
 };
 
 const PostCard = ({ postData }) => {
-
-    // console.log(postData);
     const [showFull, setShowFull] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState(postData?.commentsList || []);
     const [newComment, setNewComment] = useState("");
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
-    const likes = postData?.likes;
-    //For counting comments
-    const [totalComments, setTotalComments] = useState(postData?.comment || 0); 
+    const [likes, setLikes] = useState(postData?.likes || 0);
+    const [liked, setLiked] = useState(false);
+    const [totalComments, setTotalComments] = useState(postData?.comment || 0);
     const shares = postData?.shares || 4;
 
     const titleText = postData?.blog_title || "Untitled Post";
@@ -56,7 +53,7 @@ const PostCard = ({ postData }) => {
     const isLong = descText.length > mobileLimit;
     const shortDesc = descText.slice(0, mobileLimit) + "...";
 
-    //Handle Comments 
+    // 🟢 Add Comment Handler
     const handleAddComment = async () => {
         if (!session) {
             Swal.fire({
@@ -92,11 +89,8 @@ const PostCard = ({ postData }) => {
             const data = await res.json();
 
             if (data.success) {
-                // ⬇️ Update comments instantly
                 setComments((prev) => [commentObj, ...prev]);
                 setNewComment("");
-
-                // ⬇️ Smart live comment count
                 setTotalComments((prev) => prev + 1);
 
                 Swal.fire({
@@ -133,9 +127,68 @@ const PostCard = ({ postData }) => {
         }
     };
 
+    // ❤️ Handle Like Function
+    const handleLike = async () => {
+        if (!session) {
+            Swal.fire({
+                icon: "warning",
+                title: "You must be logged in to like!",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+            return;
+        }
 
+        try {
+            const res = await fetch("/api/add-likes", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ blogId: postData?._id }),
+            });
 
-    // Card content
+            const data = await res.json();
+
+            if (data.success) {
+                setLikes((prev) => prev + 1);
+                setLiked(true);
+                Swal.fire({
+                    icon: "success",
+                    title: "You liked this post ❤️",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: data.message || "Failed to like post",
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                });
+            }
+        } catch (err) {
+            console.error("Error liking post:", err);
+            Swal.fire({
+                icon: "error",
+                title: "Something went wrong. Please try again.",
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+            });
+        }
+    };
+
+    // 🧱 Post Card Content
     const CardContent = () => (
         <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">
             {/* Author Info */}
@@ -191,9 +244,16 @@ const PostCard = ({ postData }) => {
 
             {/* Footer icons */}
             <div className="flex justify-around items-center text-gray-600">
-                <button className="flex items-center gap-1 hover:text-blue-600 transition">
-                    <Heart size={18} /> Like
+                {/* Like button */}
+                <button
+                    onClick={handleLike}
+                    className={`flex items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"
+                        }`}
+                    disabled={liked}
+                >
+                    <Heart size={18} fill={liked ? "red" : "none"} /> {liked ? "Liked" : "Like"}
                 </button>
+
                 <button
                     onClick={() => setModalOpen(true)}
                     className="flex items-center gap-1 hover:text-blue-600 transition"
@@ -212,12 +272,9 @@ const PostCard = ({ postData }) => {
             <CardContent />
 
             {/* Modal */}
-            {/* Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-start justify-center z-50 overflow-y-auto p-4">
-                    {/* Use overflow-y-auto on the modal container, NOT inside comment list */}
                     <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full relative flex flex-col overflow-visible">
-                        {/* Close Button */}
                         <button
                             onClick={() => setModalOpen(false)}
                             className="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-xl z-50"
@@ -225,12 +282,10 @@ const PostCard = ({ postData }) => {
                             ✖
                         </button>
 
-                        {/* Card Content */}
                         <div className="p-4">
                             <CardContent />
                         </div>
 
-                        {/* Comment Input */}
                         <div className="flex gap-2 border-t border-gray-200 p-3 bg-white">
                             <img
                                 src={session?.user?.image}
@@ -245,15 +300,11 @@ const PostCard = ({ postData }) => {
                                 onChange={(e) => setNewComment(e.target.value)}
                                 onKeyDown={(e) => e.key === "Enter" && handleAddComment()}
                             />
-                            <button
-                                onClick={handleAddComment}
-                                className="text-blue-600 font-semibold px-2"
-                            >
+                            <button onClick={handleAddComment} className="text-blue-600 font-semibold px-2">
                                 Post
                             </button>
                         </div>
 
-                        {/* Comment List */}
                         <div className="space-y-3 p-4">
                             {comments.length === 0 && (
                                 <p className="text-gray-400 text-sm text-center">No comments yet</p>
@@ -268,7 +319,9 @@ const PostCard = ({ postData }) => {
                                     <div className="bg-gray-100 p-2 rounded-xl flex-1">
                                         <p className="text-sm font-medium">{comment.author_name}</p>
                                         <p className="text-sm text-gray-700">{comment.text}</p>
-                                        <small className="text-gray-400 text-xs">{formatFacebookDate(comment.created_at)}</small>
+                                        <small className="text-gray-400 text-xs">
+                                            {formatFacebookDate(comment.created_at)}
+                                        </small>
                                     </div>
                                 </div>
                             ))}
@@ -276,7 +329,6 @@ const PostCard = ({ postData }) => {
                     </div>
                 </div>
             )}
-
         </>
     );
 };

@@ -6,10 +6,13 @@ import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { useSession } from "next-auth/react";
 import { AI_URL } from "@/Ai/constant";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
-export default function BlogForm() {
+
+
+export default function BlogForm({ onClose }) {
   const { data } = useSession();
-
+  const router = useRouter();
   const [formData, setFormData] = useState({
     blog_title: "",
     description: "",
@@ -50,6 +53,7 @@ export default function BlogForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -210,7 +214,9 @@ Requirements:
           created_at: new Date().toISOString(),
           modified_at: null,
         });
+        router.push("/");
         setFeaturedPreview(null);
+          if (onClose) onClose();
       } else {
         Swal.fire({
           icon: "error",
@@ -229,7 +235,7 @@ Requirements:
     }
   };
 
-console.log("Featured File:", formData.featured_image);
+  // console.log("Featured File:", formData.featured_image);
 
 
   // ---------------- UI ----------------
@@ -276,11 +282,10 @@ console.log("Featured File:", formData.featured_image);
                     type="text"
                     value={formData.blog_title}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${
-                      errors.blog_title
-                        ? "border-red-300 bg-red-50 focus:border-red-500"
-                        : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
-                    }`}
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
+                      ? "border-red-300 bg-red-50 focus:border-red-500"
+                      : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
+                      }`}
                     placeholder="Enter an engaging blog title..."
                   />
                   {errors.blog_title && (
@@ -322,9 +327,8 @@ console.log("Featured File:", formData.featured_image);
                   onClick={generateContent}
                   type="button"
                   disabled={isGenerating}
-                  className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${
-                    isGenerating ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                 >
                   {isGenerating ? "Generating..." : "Generate Content"}
                 </button>
@@ -340,11 +344,10 @@ console.log("Featured File:", formData.featured_image);
                   rows={10}
                   value={isGenerating ? "Generating content..." : formData.description}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${
-                    errors.description
-                      ? "border-red-300 bg-red-50 focus:border-red-500"
-                      : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
-                  }`}
+                  className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
+                    ? "border-red-300 bg-red-50 focus:border-red-500"
+                    : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
+                    }`}
                   disabled={isGenerating}
                   placeholder="Write a compelling description..."
                 />
@@ -360,13 +363,12 @@ console.log("Featured File:", formData.featured_image);
             {/* Featured Image */}
             <div className="space-y-4">
               <div
-                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                  isDragOver
-                    ? "border-[#c45627] bg-orange-50 scale-102"
-                    : featuredPreview
+                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
+                  ? "border-[#c45627] bg-orange-50 scale-102"
+                  : featuredPreview
                     ? "border-transparent"
                     : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627]"
-                }`}
+                  }`}
                 onClick={() => featuredInputRef.current?.click()}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -413,6 +415,7 @@ console.log("Featured File:", formData.featured_image);
           {/* Action Buttons */}
           <div className="px-8 py-6 bg-gray-50 flex flex-col sm:flex-row gap-4">
             <button
+
               type="submit"
               disabled={isSubmitting}
               className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-600 text-white rounded-2xl hover:from-amber-700 disabled:opacity-50"

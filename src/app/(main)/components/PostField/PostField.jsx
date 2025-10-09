@@ -30,7 +30,7 @@ const PostField = () => {
 
           <div
             onClick={() => setShowModal(true)}
-            className="cursor-pointer w-96 md:w-[1080px]"
+            className="cursor-pointer w-96 md:w-[700px]"
           >
             <input
               readOnly
@@ -54,9 +54,11 @@ const PostField = () => {
             </button>
 
             {/* Blog Form */}
+            {/* Blog Form */}
             <div className="pt-6">
-              <BlogForm />
+              <BlogForm onClose={() => setShowModal(false)} />
             </div>
+
           </div>
         </div>
       )}

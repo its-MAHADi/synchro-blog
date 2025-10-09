@@ -6,6 +6,7 @@ export const collectionNameObj = {
   blogCollection : 'blogs',
   followerCollection : 'followers',
   featuresCollection : 'features',
+  commentCollection : 'comments'
 }
 
 export default function dbConnect(collectionName){

@@ -9,6 +9,7 @@ import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfi
 import BlogPost from "./components/BlogPost/BlogPost";
 import PostField from "./components/PostField/PostField";
 import AllPosts from "./components/AllPosts/AllPosts";
+import MessageBar from "./components/MessageBar/MessageBar";
 
 export const metadata = {
   title: "Home | Synchro",
@@ -18,9 +19,14 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <section className="">
-     <PostField/>
+    <section >
+     <div>
+      <PostField/>
      <AllPosts/>
+     </div>
+     {/* <aside className="w-4/12  sticky top-[90px] overflow-y-auto">
+      <MessageBar />
+     </aside> */}
     </section>
   );
 }

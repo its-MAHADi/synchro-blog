@@ -8,13 +8,17 @@ import { GoHome } from "react-icons/go";
 import { LucideSquareMenu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-
+import { RiMessengerLine } from "react-icons/ri";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { useMessage } from "@/app/contexts/MessageContext";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const { toggleMessageBar, toggleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
+
   // console.log(session?.user.image, status)
 
 
@@ -114,6 +118,23 @@ const Navbar = () => {
                 </div>
                 :
                 <div className="flex items-center gap-2">
+                  <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
+                    <RiMessengerLine
+                      color={showMessageBar ? 'white' : "#c45627"}
+                      size={19}
+                      className="cursor-pointer"
+                      onClick={toggleMessageBar}
+                    />
+                  </div>
+                  <div className={` shadow-lg rounded-full p-3 ${showNotificationBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
+                    <IoNotificationsOutline
+                      color={showNotificationBar ? 'white' : "#c45627"}
+                      size={19}
+                      className="cursor-pointer"
+                      onClick={toggleNotificationBar}
+                    />
+                    
+                  </div>
                   {
                     session?.user?.image ?
                       <div>
@@ -128,9 +149,9 @@ const Navbar = () => {
 
                   }
 
-                  <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                  {/* <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
                     Logout
-                  </Link>
+                  </Link> */}
                 </div>
             }
           </div>

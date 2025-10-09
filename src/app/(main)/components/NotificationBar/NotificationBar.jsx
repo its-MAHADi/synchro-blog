@@ -47,7 +47,7 @@ const dummyChats = [
   },
 ];
 
-export default function MessageBar() {
+export default function NotificationBar() {
   const [search, setSearch] = useState("");
 
   const filteredChats = dummyChats.filter((chat) =>
@@ -60,25 +60,12 @@ export default function MessageBar() {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
           <MessageSquare className="text-[#c45627]" size={20} />
-          Chats
+          Notifications
         </h2>
         <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
       </div>
 
-      {/* Search */}
-      <div className="relative mb-4">
-        <Search
-          size={16}
-          className="absolute top-3 left-3 text-gray-400"
-        />
-        <input
-          type="text"
-          placeholder="Search chats..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:outline-none focus:border-[#c45627]"
-        />
-      </div>
+    
 
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-2">

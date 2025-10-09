@@ -3,12 +3,13 @@
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import BlogForm from "../BlogForm/BlogForm";
+import { useMessage } from "@/app/contexts/MessageContext";
 
 
 const PostField = () => {
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
-
+ const { showMessageBar } = useMessage();
   return (
     <>
       {/* Post Input Box */}
@@ -30,7 +31,7 @@ const PostField = () => {
 
           <div
             onClick={() => setShowModal(true)}
-            className="cursor-pointer w-96 md:w-[700px]"
+            className={`cursor-pointer w-96 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]' }`}
           >
             <input
               readOnly

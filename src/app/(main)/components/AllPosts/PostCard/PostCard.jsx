@@ -38,9 +38,10 @@ const PostCard = ({ postData }) => {
     const [comments, setComments] = useState(postData?.commentsList || []);
     const [newComment, setNewComment] = useState("");
     const { data: session, status } = useSession();
+
     const likes = postData?.likes;
-    // const TotalComments = postData?.comment;
-    const commentsCount = comments.length;
+    //For counting comments
+    const [totalComments, setTotalComments] = useState(postData?.comment || 0); 
     const shares = postData?.shares || 4;
 
     const titleText = postData?.blog_title || "Untitled Post";
@@ -56,20 +57,6 @@ const PostCard = ({ postData }) => {
     const shortDesc = descText.slice(0, mobileLimit) + "...";
 
     //Handle Comments 
-    // const handleAddComment = () => {
-    //     if (newComment.trim() === "") return;
-    //     const commentObj = {
-    //         id: Date.now(),
-    //         comment_id: postData?._id,
-    //         text: newComment,
-    //         author_name: session?.user?.name,
-    //         author_image: session?.user?.image,
-    //         created_at: new Date().toISOString(),
-    //     };
-    //     setComments([commentObj, ...comments]);
-    //     setNewComment("");
-    // };
-
     const handleAddComment = async () => {
         if (!session) {
             Swal.fire({
@@ -105,8 +92,12 @@ const PostCard = ({ postData }) => {
             const data = await res.json();
 
             if (data.success) {
-                setComments([commentObj, ...comments]);
+                // ⬇️ Update comments instantly
+                setComments((prev) => [commentObj, ...prev]);
                 setNewComment("");
+
+                // ⬇️ Smart live comment count
+                setTotalComments((prev) => prev + 1);
 
                 Swal.fire({
                     icon: "success",
@@ -141,6 +132,7 @@ const PostCard = ({ postData }) => {
             });
         }
     };
+
 
 
     // Card content
@@ -190,7 +182,7 @@ const PostCard = ({ postData }) => {
                     <span>{likes} Likes</span>
                 </div>
                 <div className="flex items-center gap-5">
-                    <span>{commentsCount} Comments</span>
+                    <span>{totalComments} Comments</span>
                     <span>{shares} Shares</span>
                 </div>
             </div>

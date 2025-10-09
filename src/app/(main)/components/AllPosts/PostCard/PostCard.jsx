@@ -35,7 +35,7 @@ const PostCard = ({ postData }) => {
     const [comments, setComments] = useState(postData?.commentsList || []);
     const [newComment, setNewComment] = useState("");
     const { data: session, status } = useSession();
-    const likes = postData?.likes || 23;
+    const likes = postData?.likes;
     const commentsCount = comments.length;
     const shares = postData?.shares || 4;
 

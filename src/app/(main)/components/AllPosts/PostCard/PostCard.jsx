@@ -204,9 +204,8 @@ const PostCard = ({ postData }) => {
             {image ? (
                 <img src={image} alt={titleText} className="w-full h-52 md:h-72 object-cover rounded-lg" />
             ) : (
-                <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 text-lg font-semibold">
-                    No Image
-                </div>
+                // 
+                ''
             )}
 
             {/* Title */}
@@ -244,6 +243,8 @@ const PostCard = ({ postData }) => {
 
             {/* Footer icons */}
             <div className="flex justify-around items-center text-gray-600">
+                <button className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition">
+                    <Heart size={18} /> Like
                 {/* Like button */}
                 <button
                     onClick={handleLike}
@@ -256,11 +257,11 @@ const PostCard = ({ postData }) => {
 
                 <button
                     onClick={() => setModalOpen(true)}
-                    className="flex items-center gap-1 hover:text-blue-600 transition"
+                    className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition"
                 >
                     <MessageCircle size={18} /> Comment
                 </button>
-                <button className="flex items-center gap-1 hover:text-blue-600 transition">
+                <button className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition">
                     <Share2 size={18} /> Share
                 </button>
             </div>

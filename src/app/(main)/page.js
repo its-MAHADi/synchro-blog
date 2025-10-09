@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <section className="max-w-11/12 mx-auto">
+    <section className="">
      <PostField/>
      <AllPosts/>
     </section>

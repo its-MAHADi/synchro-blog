@@ -204,8 +204,8 @@ const PostCard = ({ postData }) => {
             {image ? (
                 <img src={image} alt={titleText} className="w-full h-52 md:h-72 object-cover rounded-lg" />
             ) : (
-                // 
-                ''
+            
+                ""
             )}
 
             {/* Title */}
@@ -243,12 +243,10 @@ const PostCard = ({ postData }) => {
 
             {/* Footer icons */}
             <div className="flex justify-around items-center text-gray-600">
-                <button className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition">
-                    <Heart size={18} /> Like
                 {/* Like button */}
                 <button
                     onClick={handleLike}
-                    className={`flex items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"
+                    className={`flex cursor-pointer items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"
                         }`}
                     disabled={liked}
                 >

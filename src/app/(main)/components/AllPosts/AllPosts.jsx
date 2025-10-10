@@ -13,7 +13,7 @@ async function getAllPosts() {
     // ✅ Determine base URL (works in dev + production)
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL ||
-      process.env.VERCEL_URL
+        process.env.VERCEL_URL
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000";
 
@@ -34,10 +34,39 @@ async function getAllPosts() {
   }
 }
 
+// user find
+async function getAllUsers() {
+  try {
+    // ✅ Determine base URL (works in dev + production)
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+        process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000";
+
+    // ✅ Fetch data from your backend API route
+    const res = await fetch(`${baseUrl}/api/user`, {
+      cache: "no-store", // always get fresh data
+      next: { revalidate: 0 },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch blog posts");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    return [];
+  }
+}
+
+
 const AllPosts = async () => {
   // ✅ Fetch posts from backend
   const postsData = await getAllPosts();
-
+  const usersData = await getAllUsers();
+console.log(usersData.email)
   // 🔹 Sort posts by created_at descending (recent posts first)
   const sortedPosts = postsData.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -45,7 +74,7 @@ const AllPosts = async () => {
 
   return (
     <section className="mt-10">
-     
+
 
       <div className="grid grid-cols-1  gap-10">
         {sortedPosts.length > 0 ? (

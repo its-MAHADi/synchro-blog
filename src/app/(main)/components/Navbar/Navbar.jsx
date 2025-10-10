@@ -82,7 +82,7 @@ const Navbar = () => {
                 <span className="text-[#c45627]">CHRO</span>{" "}
               </Link>
             </div>
-            {/* Search Bar */}
+             {/* Search Bar */}
             <div className="relative hidden md:flex flex-1 max-w-md items-center">
               {/* Search Icon */}
               <Search

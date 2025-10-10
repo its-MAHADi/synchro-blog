@@ -72,14 +72,7 @@ const Navbar = () => {
               <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
             </div>
             {/* Search Bar */}
-            <div className="relative hidden md:flex flex-1 max-w-md items-center">
-              {/* Search Icon */}
-              <Search
-                size={17}
-                className="absolute left-3 text-[#c45627]  pointer-events-none"
-              />
-
-              {/* Input Field */}
+            <div className="relative hidden md:flex flex-1 max-w-md">
               <input
                 type="text"
                 placeholder="Search users..."

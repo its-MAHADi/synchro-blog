@@ -10,7 +10,7 @@ export async function GET(req) {
       { status: 400, headers: { "Content-Type": "application/json" } }
     );
   }
-
+ 
   try {
     const blogsCollection = await dbConnect(collectionNameObj.blogCollection);
     const posts = await blogsCollection

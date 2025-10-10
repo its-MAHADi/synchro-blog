@@ -198,7 +198,9 @@ const PostCard = ({ postData }) => {
                 <div className="-space-y-1">
                     <div className="flex items-center gap-2">
                         <p className="text-gray-900 font-medium">{authorName}</p>
-                        <button className="text-blue-600 font-bold text-xs">Follow</button>
+                       {
+                        session?.user?.email &&  <button className="text-blue-600 font-bold text-xs">Follow</button>
+                       }
                     </div>
                     <small className="text-gray-500 text-xs">{fbTime}</small>
                 </div>

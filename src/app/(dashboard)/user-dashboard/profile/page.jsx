@@ -546,7 +546,7 @@ export default function Profile() {
                     <img
                       src={post.featured_image}
                       alt={post.blog_title}
-                      className="w-full h-auto max-h-[500px] object-cover rounded-lg"
+                      className="w-full h-auto max-h-[500px] object-contain rounded-lg"
                     />
                   )}
 

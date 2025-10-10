@@ -206,7 +206,13 @@ const PostCard = ({ postData }) => {
 
             {/* Image */}
             {image ? (
-                <img src={image} alt={titleText} className={`w-full h-auto max-h-[500px] object-cover rounded-lg`} />
+
+                <img
+                    src={image}
+                    alt={titleText}
+                    className="w-full h-auto max-h-[500px] object-contain rounded-lg"
+                />
+
             ) : (
 
                 ""

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaRegStar, FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react-icons/fa";
+import { FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
@@ -40,7 +40,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex justify-center items-center">
-            <img src="main_logo.png" alt="main logo" className="w-10 pr-2" />
+            <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
             <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
           </div>
 
@@ -138,12 +138,12 @@ const Navbar = () => {
                   {
                     session?.user?.image ?
                       <div>
-                        <Link href={"/user-dashboard"}>
+                        <Link href={"/user-dashboard/profile"}>
                           <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
                         </Link>
                       </div>
                       :
-                      <Link href={"/user-dashboard"}>
+                      <Link href={"/user-dashboard/profile"}>
                         <FaUserCircle size={30} />
                       </Link>
 

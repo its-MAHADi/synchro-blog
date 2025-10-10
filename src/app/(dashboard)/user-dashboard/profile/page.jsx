@@ -1,311 +1,590 @@
 "use client";
-import React, { useState } from "react";
-import { IoEyeOutline } from "react-icons/io5";
-import { SlUserFollowing } from "react-icons/sl";
-import { BsPostcard } from "react-icons/bs";
-import {
-  Camera,
-  Edit,
-  MapPin,
-  Briefcase,
-  GraduationCap,
-  Calendar,
-  UserPlus,
-  MessageCircle,
-  Share2,
-  Award,
-  TrendingUp,
-  Eye,
-  ThumbsUp,
-  Bookmark,
-  BookOpen,
-  PenTool,
-  Settings,
-  Star,
-  Filter,
-} from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaHeart } from "react-icons/fa";
+import { Camera, Settings, Briefcase, GraduationCap, MapPin, Calendar, MessageCircle, Share2, Heart, UserPlus, Languages, Globe, Mail, X, } from "lucide-react";
+import { BsPostcard } from "react-icons/bs";
+import { SlUserFollowing } from "react-icons/sl";
+import { FiEdit, FiPhone } from "react-icons/fi";
+import PostField from "@/app/(main)/components/PostField/PostField";
+// =======================
+// Facebook style date formatter
+// =======================
+const formatFacebookDate = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHrs = Math.floor(diffMin / 60);
+  const diffDays = Math.floor(diffHrs / 24);
+
+  if (diffDays === 0) {
+    if (diffHrs > 0) return `${diffHrs}h ago`;
+    if (diffMin > 0) return `${diffMin}m ago`;
+    return "Just now";
+  }
+  if (diffDays === 1) return `Yesterday`;
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "short" });
+  return `${day} ${month}`;
+};
+
+// =======================
+// Profile Component
+// =======================
+export default function Profile() {
+  const { data: session } = useSession();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [coverImage, setCoverImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
+  const [isEditing, setIsEditing] = useState(false); // for Edit Bio
+  const [isModalOpen, setIsModalOpen] = useState(false); // for Edit Details modal
+
+  const [bio, setBio] = useState(
+    "আমি একজন উৎসাহী কন্টেন্ট রাইটার এবং টেকনোলজি প্রেমী। নতুন বিষয় শেখা, লেখার মাধ্যমে জ্ঞান ভাগাভাগি করা, এবং মানুষের সাথে সংযোগ স্থাপন করা আমার পছন্দের কাজ। আমি টিমওয়ার্কে বিশ্বাস করি এবং প্রতিদিন নিজের দক্ষতা উন্নত করার চেষ্টা করি।"
+  );
+  const [tempBio, setTempBio] = useState(bio);
+
+  const [details, setDetails] = useState({
+    work: "সিনিয়র কন্টেন্ট রাইটার - টেক কোম্পানি",
+    education: "কম্পিউটার সাইন্স - ঢাকা বিশ্ববিদ্যালয়",
+    location: "ঢাকা, বাংলাদেশ",
+    joined: "জানুয়ারি ২০২২ থেকে",
+    skills: ["Content Writing", "SEO", "JavaScript", "React.js", "Teamwork"],
+    email: "example@email.com",
+    phone: "+8801XXXXXXXXX",
+    website: "https://www.yourportfolio.com",
+    languages: "বাংলা, English",
+    joinedDate: "March 2023",
+  });
+
+  const [tempDetails, setTempDetails] = useState(details);
+  const hasChanges = JSON.stringify(tempDetails) !== JSON.stringify(details);
+  const handleCancel = () => {
+    setTempBio(bio);
+    setIsEditing(false);
+  };
+
+  const handleSaveBio = () => {
+    setBio(tempBio);
+    setIsEditing(false);
+  };
+
+  const handleModalSave = () => {
+    setDetails(tempDetails);
+    setIsModalOpen(false);
+  };
+
+  const handleModalCancel = () => {
+    setTempDetails(details);
+    setIsModalOpen(false);
+  };
 
 
-export default async function Profile() {
-  const [activeTab, setActiveTab] = useState("posts");
-  const [viewMode, setViewMode] = useState("grid");
-  const { data: session, status } = useSession();
-  // const [blogs, setBlogs] = useState([]);
-  //  useEffect(() => {
-  //   const fetchBlogs = async () => {
-  //     const res = await fetch("/api/blog");
-  //     const data = await res.json();
-  //     setBlogs(data);
-  //   };
-  //   fetchBlogs();
-  // }, []);
 
-  // console.log(blogs)
+
+
+  useEffect(() => {
+    if (!session?.user?.email) return;
+
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`/api/get-user-posts?email=${session.user.email}`);
+        const data = await res.json();
+        if (data.success) setPosts(data.posts);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, [session]);
+
+
+
+  if (loading) return <p className="text-center mt-10">Loading posts...</p>;
 
   return (
-    <div className="flex-1 h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
-      {/* Floating Header */}
-      <div className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-orange-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Left: Profile Pic + Name */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {
-              session?.user?.image ?
+    <div className="min-h-screen md:mt-16 bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
+      {/* ================== Profile Header ================== */}
+      {/* ================== Profile Header ================== */}
+      <div className="relative w-full shadow-md">
+        {/* Cover Image */}
+        <div className="h-40 sm:h-60 relative bg-gray-200">
+          {coverImage && (
+            <img
+              src={URL.createObjectURL(coverImage)}
+              alt="Cover Preview"
+              className="w-full h-full object-cover"
+            />
+          )}
 
+          {/* Cover Image Overlay */}
+          <label className="absolute top-3 right-3 bg-white/80 hover:bg-white/100 text-gray-900 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center gap-1 transition-all">
+            <Camera size={16} />
+            Change Cover
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setCoverImage(e.target.files[0])}
+              className="hidden"
+            />
+          </label>
+        </div>
 
-                <img className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 p-1 border-[#c45627]" src={session?.user?.image} alt="" />
+        {/* Profile Image */}
+        <div className="relative flex flex-col items-center -mt-16 pb-6 ">
+          <div className="relative group">
+            {profileImage ? (
+              <img
+                src={URL.createObjectURL(profileImage)}
+                alt="Profile Preview"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
+              />
+            ) : session?.user?.image ? (
+              <img
+                src={session.user.image}
+                alt="Profile"
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
+              />
+            ) : (
+              <FaUserCircle size={100} className="text-white" />
+            )}
 
-
-                :
-
-                <FaUserCircle size={30} />
-
-
-            }
-
-            <span className="font-bold text-sm sm:text-base text-gray-900">
-              {session?.user?.name}
-            </span>
+            {/* Camera icon overlay only on profile image */}
+            <label className="absolute bottom-0 right-0 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer text-white">
+              <Camera size={16} />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setProfileImage(e.target.files[0])}
+                className="hidden"
+              />
+            </label>
           </div>
 
-          {/* Right: Settings + Edit Button */}
-          <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-[#c45627]/10 rounded-lg transition-colors">
-              <Settings size={18} className="text-[#c45627]" />
-            </button>
-            <button className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#c45627] text-white rounded-lg hover:bg-[#a8401f] transition-colors text-sm sm:text-base font-medium">
-              এডিট প্রোফাইল
-            </button>
+          <h1 className="mt-4 text-lg sm:text-2xl font-bold">{session?.user?.name || "Anonymous User"}</h1>
+          <p className="text-sm sm:text-base opacity-90">প্রফেশনাল ব্লগার ও রাইটার</p>
+
+          {/* Edit Profile button outside profile image, aligned center or header */}
+          <div className="w-full mt-3 flex justify-between ">
+            <div className="px-4 grid grid-cols-2 gap-3 sm:gap-10 text-center">
+              <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
+                <BsPostcard className="text-[#c45627]" />
+                <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">{posts.length} Posts</span>
+              </div>
+              <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
+                <SlUserFollowing className="text-[#c45627]" />
+                <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">12.5K Followers</span>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <button className="px-4 cursor-pointer text-[#c45627] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
+                {/* <Settings size={16} /> */}
+                <FiEdit size={30} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main Layout */}
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-full mx-auto w-full">
-        <div className="grid grid-cols-1  gap-6 lg:gap-8">
-          {/* Left Sidebar */}
-          <div className="xl:col-span-4 space-y-6 order-1 xl:order-none">
-            {/* Profile Card */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden border border-orange-100">
-              {/* Cover */}
-              <div className="relative h-28 md:h-56 bg-gradient-to-r from-[#c45627] via-[#d4651f] to-[#e67317] overflow-hidden">
-                <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
-                  <button className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all">
-                    <Camera size={14} className="sm:size-16" />
+
+      {/* ================== Profile Stats ================== */}
+      {/* <div className="max-w-5xl mx-auto mt-4 px-4 grid grid-cols-2 gap-3 sm:gap-4 text-center">
+        <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
+          <BsPostcard className="text-[#c45627]" />
+          <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">{posts.length} Posts</span>
+        </div>
+        <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
+          <SlUserFollowing className="text-[#c45627]" />
+          <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">12.5K Followers</span>
+        </div>
+      </div> */}
+
+      <div className="max-w-6xl mx-auto px-4">
+        <PostField />
+      </div>
+
+      {/* ================== Main Content Layout ================== */}
+      <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left: About Section */}
+        <div className="lg:col-span-4">
+          <div className="bg-white min-h-screen rounded-2xl shadow-lg p-5 border border-orange-100">
+            <h3 className="text-lg font-bold text-gray-900">সম্পর্কে</h3>
+
+            {/* --- Bio Section --- */}
+            <div className="leading-relaxed pt-4 pb-4">
+              {!isEditing ? (
+                <>
+                  <p className="text-gray-600 text-sm whitespace-pre-line">{bio}</p>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="btn w-full border-[#c45627] rounded-lg text-[#c45627] mt-3 hover:bg-orange-50 transition"
+                  >
+                    Edit bio
                   </button>
-                </div>
-              </div>
-
-              <div className="relative px-4 sm:px-6 pb-6">
-                {/* Profile Picture */}
-                <div className="flex justify-center -mt-10 sm:-mt-12 mb-3 sm:mb-4">
-                  <div className="relative">
-                    {
-                      session?.user?.image ?
-                        <div>
-                          
-                            <img className="w-20 h-20 sm:w-32 sm:h-32 rounded-full  border-4 border-white shadow-lg" src={session?.user?.image} alt="" />
-                          
-                        </div>
-                        :
-                        
-                          <FaUserCircle size={50} />
-                       
-
-                    }
-                   
-                    <div className="absolute -bottom-1 right-3 w-6 h-6 sm:w-7 sm:h-7 bg-[#c45627] rounded-lg sm:rounded-xl flex items-center justify-center">
-                      <Camera size={12} className="text-white" />
-                    </div>
-                    <div className="absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                      <Star size={10} className="text-white fill-white" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="text-center mb-4 sm:mb-6">
-                  <h1 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1">
-                     {session?.user?.name}
-                  </h1>
-                  <p className="text-[#c45627] font-semibold text-sm sm:text-base mb-1">
-                    প্রফেশনাল ব্লগার ও রাইটার
-                  </p>
-                  <p className="text-gray-600 text-xs sm:text-sm">
-                    আমি প্রযুক্তি এবং জীবনযাত্রা নিয়ে লিখি
-                  </p>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-[#c45627]/5 to-[#c45627]/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
-                    <div className="text-[10px] sm:text-xs text-gray-600">
-                      <BsPostcard size={15} className="text-[#c45627]" />
-                    </div>
-                    <div className="text-base sm:text-sm font-bold text-[#c45627]">
-                      85
-                    </div>
-
-                  </div>
-                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-blue-500/5 to-blue-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
-                    <div className="text-[10px] sm:text-xs text-gray-600">
-                      <SlUserFollowing size={15} className="text-[#c45627]" />
-                    </div>
-                    <div className="text-base sm:text-sm font-bold text-[#c45627]">
-                      12.5K
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center gap-1 text-center bg-gradient-to-br from-amber-500/5 to-amber-500/10 rounded-xl sm:rounded-2xl py-2 sm:py-3">
-                    <div className="text-[10px] sm:text-xs text-gray-600">
-                      <IoEyeOutline size={15} className="text-[#c45627]" />
-                    </div>
-                    <div className="text-base sm:text-sm font-bold text-[#c45627]">
-                      250K
-                    </div>
-
-                  </div>
-                </div>
-
-                {/* Buttons */}
-                <div className="flex gap-2 sm:gap-3">
-                  <button className="flex-1 bg-[#c45627] text-white px-2 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-sm sm:text-base font-semibold hover:bg-[#a8401f] transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-1 sm:gap-2">
-                    <UserPlus size={14} className="sm:size-5" />
-                    follow
-                  </button>
-                  <button className="p-2 sm:px-4 sm:py-3 bg-gray-100 text-gray-700 rounded-xl sm:rounded-2xl hover:bg-gray-200">
-                    <MessageCircle size={14} />
-                  </button>
-                  <button className="p-2 sm:px-4 sm:py-3 bg-gray-100 text-gray-700 rounded-xl sm:rounded-2xl hover:bg-gray-200">
-                    <Share2 size={14} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Achievements + About */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-4 sm:p-6 border border-orange-100">
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-3 sm:mb-4">
-                সম্পর্কে
-              </h3>
-              <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Briefcase size={14} className="text-[#c45627]" />
-                  <span>সিনিয়র কন্টেন্ট রাইটার - টেক কোম্পানি</span>
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <GraduationCap size={14} className="text-[#c45627]" />
-                  <span>কম্পিউটার সাইন্স - ঢাকা বিশ্ববিদ্যালয়</span>
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <MapPin size={14} className="text-[#c45627]" />
-                  <span>ঢাকা, বাংলাদেশ</span>
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <Calendar size={14} className="text-[#c45627]" />
-                  <span>জানুয়ারি ২০২২ থেকে</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Content */}
-          <div className="xl:col-span-8 space-y-4 sm:space-y-6 order-2 xl:order-none">
-            {/* Tabs */}
-            <div className="bg-white rounded-2xl sm:rounded-3xl shadow-lg p-2 border border-orange-100">
-              <div className="flex items-center justify-between">
-                <div className="flex gap-1 overflow-x-auto scrollbar-hide">
-                  {[
-                    { key: "posts", label: "ব্লগ পোস্ট", icon: BookOpen },
-                    { key: "articles", label: "আর্টিকেল", icon: PenTool },
-                    { key: "saved", label: "সংরক্ষিত", icon: Bookmark },
-                    { key: "analytics", label: "পরিসংখ্যান", icon: TrendingUp },
-                  ].map((tab) => (
+                </>
+              ) : (
+                <>
+                  <textarea
+                    className="w-full h-40 border border-orange-200 rounded-lg p-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#c45627]"
+                    rows="8"
+                    value={tempBio}
+                    onChange={(e) => setTempBio(e.target.value)}
+                  />
+                  <div className="flex gap-2 mt-3">
                     <button
-                      key={tab.key}
-                      onClick={() => setActiveTab(tab.key)}
-                      className={`px-4 sm:px-4 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-all flex items-center gap-1 sm:gap-2 whitespace-nowrap ${activeTab === tab.key
-                        ? "bg-[#c45627] text-white shadow-md"
-                        : "text-gray-600 hover:bg-gray-50"
+                      onClick={handleCancel}
+                      className="w-1/2 border rounded-lg py-2 text-gray-600 hover:bg-gray-100 transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSaveBio}
+                      disabled={tempBio.trim() === bio.trim()}
+                      className={`w-1/2 rounded-lg py-2 text-white transition ${tempBio.trim() === bio.trim()
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-[#c45627] hover:bg-[#a9471c]"
                         }`}
                     >
-                      <tab.icon className="sm:size-5" />
-                      {tab.label}
+                      Save
                     </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() =>
-                    setViewMode(viewMode === "grid" ? "list" : "grid")
-                  }
-                  className="p-2 sm:p-3 text-gray-600 hover:bg-gray-50 rounded-xl sm:rounded-2xl transition-colors"
-                >
-                  <Filter size={14} />
-                </button>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* --- Basic Info --- */}
+            <div className="space-y-3 text-sm text-gray-700">
+              <div className="flex items-center gap-3">
+                <Briefcase size={14} className="text-[#c45627]" />
+                <span>{details.work}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <GraduationCap size={14} className="text-[#c45627]" />
+                <span>{details.education}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <MapPin size={14} className="text-[#c45627]" />
+                <span>{details.location}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Calendar size={14} className="text-[#c45627]" />
+                <span>{details.joined}</span>
               </div>
             </div>
 
-            {/* Posts */}
-            {activeTab === "posts" && (
-              <div
-                className={
-                  viewMode === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
-                    : "space-y-4 sm:space-y-6"
-                }
-              >
-                {[1, 2, 3, 4].map((id) => (
-                  <article
-                    key={id}
-                    className="bg-white rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all border border-orange-100 group"
+            {/* --- Skills --- */}
+            <div className="mt-5 border-t pt-4">
+              <h4 className="font-semibold text-gray-900 mb-2 text-sm">
+                দক্ষতা (Skills)
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {details.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-3 py-1 text-xs bg-orange-50 text-[#c45627] rounded-full border border-orange-200"
                   >
-                    <div className="relative">
-                      <img
-                        src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&h=300&fit=crop"
-                        alt="Post"
-                        className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute top-3 right-3">
-                        <button className="bg-white/90 hover:bg-white p-1.5 sm:p-2 rounded-lg sm:rounded-xl backdrop-blur-sm transition-all">
-                          <Bookmark size={12} />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="p-4 sm:p-6">
-                      <h3 className="text-sm sm:text-lg font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-[#c45627] transition-colors cursor-pointer">
-                        Example Blog Post {id}
-                      </h3>
-                      <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      </p>
-                      <div className="flex items-center justify-between text-[10px] sm:text-xs text-gray-500">
-                        <div className="flex gap-3 sm:gap-4">
-                          <div className="flex items-center gap-1">
-                            <Eye size={12} /> <span>২.৩K</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <ThumbsUp size={12} /> <span>145</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MessageCircle size={12} /> <span>23</span>
-                          </div>
-                        </div>
-                        <span>২ দিন আগে</span>
-                      </div>
-                    </div>
-                  </article>
+                    {skill}
+                  </span>
                 ))}
+              </div>
+            </div>
+
+            {/* --- Contact Info --- */}
+            <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">
+              <div className="flex items-center gap-3">
+                <Mail size={14} className="text-[#c45627]" />
+                <span>{details.email}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Mail size={14} className="text-[#c45627]" />
+                <span>{details.email}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <FiPhone  size={14} className="text-[#c45627]" />
+                <span>{details.phone}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <Globe size={14} className="text-[#c45627]" />
+                <a
+                  href={details.website}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  {details.website}
+                </a>
+              </div>
+              <div className="flex items-center gap-3">
+                <Languages size={14} className="text-[#c45627]" />
+                <span>{details.languages}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <UserPlus size={14} className="text-[#c45627]" />
+                <span>Joined: {details.joinedDate}</span>
+              </div>
+            </div>
+
+            {/* --- Edit Button --- */}
+            <div className="mt-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="btn border bg-[#c45627] text-white w-full rounded-lg hover:bg-[#a9471c] transition"
+              >
+                Edit details
+              </button>
+            </div>
+
+            {/* --- Edit Modal (Facebook-style) --- */}
+            {isModalOpen && (
+              <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50 transition-all duration-300">
+                <div className="bg-white w-full sm:max-w-lg rounded-xl shadow-2xl p-6 relative animate-fade-in scale-100 max-h-[90vh] overflow-y-auto">
+
+                  {/* Close Button */}
+                  <button
+                    onClick={handleModalCancel}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
+                  >
+                    <X size={22} />
+                  </button>
+
+                  {/* Header */}
+                  <h3 className="text-xl font-semibold text-gray-800 mb-5 text-center border-b pb-3">
+                    Edit Details
+                  </h3>
+
+                  {/* Inputs */}
+                  <div className="space-y-4 text-sm">
+                    {[
+                      { label: "Work / Profession", field: "work" },
+                      { label: "Education", field: "education" },
+                      { label: "Location", field: "location" },
+                    ].map(({ label, field }) => (
+                      <div key={field}>
+                        <label className="block text-gray-600 font-medium mb-1">{label}</label>
+                        <input
+                          type="text"
+                          value={tempDetails[field]}
+                          onChange={(e) =>
+                            setTempDetails({
+                              ...tempDetails,
+                              [field]: e.target.value,
+                            })
+                          }
+                          placeholder={label}
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                        />
+                      </div>
+                    ))}
+
+                    {/* Skills */}
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">
+                        Skills (comma separated)
+                      </label>
+                      <input
+                        type="text"
+                        value={tempDetails.skills.join(", ")}
+                        onChange={(e) =>
+                          setTempDetails({
+                            ...tempDetails,
+                            skills: e.target.value
+                              .split(",")
+                              .map((s) => s.trim())
+                              .filter(Boolean),
+                          })
+                        }
+                        placeholder="e.g. React, SEO, Writing"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+
+                    {/* Contact Info */}
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">Email</label>
+                      <input
+                        type="email"
+                        value={tempDetails.email}
+                        onChange={(e) =>
+                          setTempDetails({ ...tempDetails, email: e.target.value })
+                        }
+                        placeholder="example@email.com"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">Phone Number</label>
+                      <input
+                        type="text"
+                        value={tempDetails.phone}
+                        onChange={(e) =>
+                          setTempDetails({ ...tempDetails, phone: e.target.value })
+                        }
+                        placeholder="+8801XXXXXXXXX"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">Website</label>
+                      <input
+                        type="text"
+                        value={tempDetails.website}
+                        onChange={(e) =>
+                          setTempDetails({ ...tempDetails, website: e.target.value })
+                        }
+                        placeholder="https://yourportfolio.com"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">Languages</label>
+                      <input
+                        type="text"
+                        value={tempDetails.languages}
+                        onChange={(e) =>
+                          setTempDetails({ ...tempDetails, languages: e.target.value })
+                        }
+                        placeholder="বাংলা, English"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-600 font-medium mb-1">Joined Date</label>
+                      <input
+                        type="text"
+                        value={tempDetails.joinedDate}
+                        onChange={(e) =>
+                          setTempDetails({ ...tempDetails, joinedDate: e.target.value })
+                        }
+                        readOnly
+                        placeholder="March 2023"
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="flex gap-3 mt-6 border-t pt-4">
+                    <button
+                      onClick={handleModalCancel}
+                      className="w-1/2 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleModalSave}
+                      disabled={!hasChanges}
+                      className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
+                        ? "bg-gray-300 cursor-not-allowed"
+                        : "bg-[#c45627] hover:bg-[#a9471c]"
+                        }`}
+                    >
+                      Save Details
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
 
-            {/* Load More */}
-            <div className="text-center">
-              <button className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-[#c45627] to-[#d4651f] text-white rounded-xl sm:rounded-2xl hover:shadow-lg font-semibold transition-all hover:scale-105 text-sm sm:text-base">
-                আরও পোস্ট লোড করুন
-              </button>
-            </div>
           </div>
+
+          {/* --- Modal Animation --- */}
+          <style jsx>{`
+        @keyframes slide-up {
+          0% {
+            transform: translateY(40px);
+            opacity: 0;
+          }
+          100% {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-up {
+          animation: slide-up 0.3s ease-out;
+        }
+      `}</style>
+        </div>
+
+
+        {/* Right: Posts Section */}
+        <div className="lg:col-span-8 h-screen overflow-y-auto space-y-6">
+          {posts.length === 0 ? (
+            <p className="text-center mt-10">কোনো পোস্ট নেই।</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6">
+              {posts.map((post) => (
+                <article
+                  key={post._id}
+                  className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white shadow-sm hover:shadow-md transition-all"
+                >
+                  {/* Author Info */}
+                  <div className="flex items-center gap-3">
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src={session.user.image || "/default-avatar.png"}
+                      alt="Author"
+                    />
+                    <div className="-space-y-1">
+                      <p className="text-gray-900 font-medium">{session.user.name}</p>
+                      <small className="text-gray-500 text-xs">{formatFacebookDate(post.created_at)}</small>
+                    </div>
+                  </div>
+
+                  {/* Post Image */}
+                  {post.featured_image && (
+                    <img
+                      src={post.featured_image}
+                      alt={post.blog_title}
+                      className="w-full h-auto max-h-[500px] object-cover rounded-lg"
+                    />
+                  )}
+
+                  {/* Title */}
+                  <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">{post.blog_title}</h2>
+
+                  {/* Description */}
+                  <p className="text-gray-600 text-sm line-clamp-3">{post.description}</p>
+
+                  {/* Stats */}
+                  <div className="flex justify-between items-end text-sm text-gray-500 mt-1">
+                    <div className="flex items-center gap-1">
+                      <FaHeart size={14} color="red" /> <span>{post.likes || 0} Likes</span>
+                    </div>
+                    <div className="flex items-center gap-5">
+                      <span>{post.comment || 0} Comments</span>
+                      <span>{post.shares || 0} Shares</span>
+                    </div>
+                  </div>
+
+                  <hr className="border-gray-200" />
+
+                  {/* Footer buttons */}
+                  <div className="flex justify-around items-center text-gray-600">
+                    <button className="flex items-center gap-1 hover:text-red-500 transition">
+                      <Heart size={18} /> Like
+                    </button>
+                    <button className="flex items-center gap-1 hover:text-blue-600 transition">
+                      <MessageCircle size={18} /> Comment
+                    </button>
+                    <button className="flex items-center gap-1 hover:text-blue-600 transition">
+                      <Share2 size={18} /> Share
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>

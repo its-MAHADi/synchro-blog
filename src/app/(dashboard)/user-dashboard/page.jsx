@@ -139,7 +139,7 @@ export default function UserDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 p-4 md:p-6 lg:p-8 relative overflow-hidden">
+        <div className="min-h-screen my-20 bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50/30 p-4 md:p-6 lg:p-8 relative overflow-hidden">
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-full blur-3xl animate-pulse" />

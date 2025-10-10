@@ -5,6 +5,7 @@ import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 
+
 const formatFacebookDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -13,7 +14,7 @@ const formatFacebookDate = (dateString) => {
     const diffMin = Math.floor(diffSec / 60);
     const diffHrs = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHrs / 24);
-
+    
     if (diffDays === 0) {
         if (diffHrs > 0) return `${diffHrs}h ago`;
         if (diffMin > 0) return `${diffMin}m ago`;
@@ -202,9 +203,9 @@ const PostCard = ({ postData }) => {
 
             {/* Image */}
             {image ? (
-                <img src={image} alt={titleText} className="w-full h-52 md:h-72 object-cover rounded-lg" />
+                <img src={image} alt={titleText} className={`w-full h-auto max-h-[500px] object-cover rounded-lg`} />
             ) : (
-            
+
                 ""
             )}
 

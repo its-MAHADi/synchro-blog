@@ -14,4 +14,4 @@ export async function GET(req) {
     console.error("API Error:", error);
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
-}
+} 

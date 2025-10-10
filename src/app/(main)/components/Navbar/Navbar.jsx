@@ -67,8 +67,10 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex justify-center items-center gap-5">
-            <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
-            <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+            <div className="flex items-center">
+              <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
+              <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+            </div>
             {/* Search Bar */}
             <div className="relative hidden md:flex flex-1 max-w-md">
               <input

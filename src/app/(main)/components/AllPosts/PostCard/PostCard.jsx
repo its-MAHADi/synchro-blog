@@ -14,7 +14,7 @@ const formatFacebookDate = (dateString) => {
     const diffMin = Math.floor(diffSec / 60);
     const diffHrs = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHrs / 24);
-    
+
     if (diffDays === 0) {
         if (diffHrs > 0) return `${diffHrs}h ago`;
         if (diffMin > 0) return `${diffMin}m ago`;
@@ -196,7 +196,10 @@ const PostCard = ({ postData }) => {
             <div className="flex items-center gap-3">
                 <img className="w-10 h-10 rounded-full" src={authorAvatar} alt="" />
                 <div className="-space-y-1">
-                    <p className="text-gray-900 font-medium">{authorName}</p>
+                    <div className="flex items-center gap-2">
+                        <p className="text-gray-900 font-medium">{authorName}</p>
+                        <button className="text-blue-600 font-bold text-xs">Follow</button>
+                    </div>
                     <small className="text-gray-500 text-xs">{fbTime}</small>
                 </div>
             </div>

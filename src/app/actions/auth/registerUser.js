@@ -35,10 +35,21 @@ export const registerUser = async (payload) => {
     userName: name,
     password: hashedPassword,
     createdAt: new Date(),
-    last_log_in: null,
+    last_log_in:new Date(),
     memberStatus: false,
     failedLoginAttempts: 0,
-    lockUntil: null
+    lockUntil: null,
+    bio: "",
+    work: "",
+    education: "",
+    location: "",
+    skills: [],
+    contact_email:"",
+    contact_number:null,
+    website:"",
+    language:[],
+
+
   };
 
   // Insert into DB

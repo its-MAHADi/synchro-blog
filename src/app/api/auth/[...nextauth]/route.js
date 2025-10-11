@@ -72,6 +72,15 @@ export const authOptions = {
               memberStatus: false,
               failedLoginAttempts: 0,
               lockUntil: null,
+              bio: "",
+              work: "",
+              education: "",
+              location: "",
+              skills: [],
+              contact_email: "",
+              contact_number: null,
+              website: "",
+              language: [],
             });
           } else {
             // আগের ইউজার হলে শুধু last_log_in update করো

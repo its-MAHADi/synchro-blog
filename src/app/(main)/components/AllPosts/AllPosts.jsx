@@ -66,7 +66,7 @@ const AllPosts = async () => {
   // ✅ Fetch posts from backend
   const postsData = await getAllPosts();
   const usersData = await getAllUsers();
-console.log(usersData.email)
+console.log(usersData)
   // 🔹 Sort posts by created_at descending (recent posts first)
   const sortedPosts = postsData.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)

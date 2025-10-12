@@ -72,7 +72,7 @@ const Navbar = () => {
               <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
             </div>
             {/* Search Bar */}
-            <div className="relative hidden md:flex flex-1 max-w-md">
+            {/* <div className="relative hidden md:flex flex-1 max-w-md">
               <input
                 type="text"
                 placeholder="Search users..."
@@ -97,7 +97,7 @@ const Navbar = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
           </div>
 
@@ -111,14 +111,14 @@ const Navbar = () => {
                 <GoHome /> Home
               </Link>
             </li>
-            {/* <li>
+            <li>
               <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/all-posts"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
-            </li> */}
+            </li>
             {/* <li>
               <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style

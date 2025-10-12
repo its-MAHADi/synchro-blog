@@ -302,10 +302,7 @@ export default function Profile() {
                 <Mail size={14} className="text-[#c45627]" />
                 <span>{details.email}</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail size={14} className="text-[#c45627]" />
-                <span>{details.email}</span>
-              </div>
+              
               <div className="flex items-center gap-3">
                 <FiPhone  size={14} className="text-[#c45627]" />
                 <span>{details.phone}</span>

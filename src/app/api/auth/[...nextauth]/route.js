@@ -66,6 +66,7 @@ export const authOptions = {
               email: user.email ?? null,
               userName: user.name ?? null,
               image: user.image ?? null,
+              cover_image: null,
               password: null,
               createdAt: new Date(),
               last_log_in: new Date(),
@@ -81,6 +82,7 @@ export const authOptions = {
               contact_number: null,
               website: "",
               language: [],
+              followers: [],
             });
           } else {
             // আগের ইউজার হলে শুধু last_log_in update করো

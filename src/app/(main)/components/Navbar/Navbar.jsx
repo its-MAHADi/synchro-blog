@@ -5,7 +5,7 @@ import { FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
-import { LucideSquareMenu, Search } from "lucide-react";
+import { LucideSquareMenu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { RiMessengerLine } from "react-icons/ri";
@@ -72,35 +72,20 @@ const Navbar = () => {
               <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
             </div>
             {/* Search Bar */}
-            <div className="relative hidden md:flex flex-1 max-w-md items-center">
-              {/* Search Icon */}
-              <Search
-                size={17}
-                className="absolute left-3 text-[#c45627]  pointer-events-none"
-              />
-
-              {/* Input Field */}
+            {/* <div className="relative hidden md:flex flex-1 max-w-md">
               <input
                 type="text"
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-3 py-1 rounded-2xl border border-gray-300 
-               focus:outline-none focus:ring-2 focus:ring-[#c45627] 
-               transition duration-200 ease-in-out
-               placeholder-gray-400 text-gray-700"
+                className="w-full px-3 py-1 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#c45627]"
               />
-
-              {/* Search Results Dropdown */}
               {searchResults.length > 0 && (
-                <div
-                  className="absolute top-full left-0 w-full bg-white border border-gray-200 
-                    rounded-lg mt-2 shadow-lg z-50 max-h-60 overflow-y-auto animate-fadeIn"
-                >
+                <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg z-50 max-h-60 overflow-y-auto">
                   {searchResults.map((user) => (
                     <div
                       key={user.id}
-                      className="px-3 py-2 hover:bg-[#fef2e9] cursor-pointer transition-colors duration-200"
+                      className="px-3 py-2 hover:bg-[#fef2e9] cursor-pointer"
                       onClick={() => {
                         console.log("Selected user:", user.name);
                         setSearchQuery("");
@@ -112,7 +97,7 @@ const Navbar = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
           </div>
 
@@ -126,14 +111,14 @@ const Navbar = () => {
                 <GoHome /> Home
               </Link>
             </li>
-            {/* <li>
+            <li>
               <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/all-posts"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
-            </li> */}
+            </li>
             {/* <li>
               <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style

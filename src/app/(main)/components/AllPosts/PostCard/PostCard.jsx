@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
@@ -30,7 +30,7 @@ const formatFacebookDate = (dateString) => {
     return `${day} ${month} at ${time}`;
 };
 
-const PostCard = ({ postData }) => {
+const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [showFull, setShowFull] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState(postData?.commentsList || []);
@@ -41,7 +41,7 @@ const PostCard = ({ postData }) => {
     const [liked, setLiked] = useState(false);
     const [totalComments, setTotalComments] = useState(postData?.comment || 0);
     const shares = postData?.shares || 4;
-
+    const [isFollowing, setIsFollowing] = useState(false);
     const titleText = postData?.blog_title || "Untitled Post";
     const descText = postData?.description || "";
     const image = postData?.featured_image || null;
@@ -54,6 +54,7 @@ const PostCard = ({ postData }) => {
     const isLong = descText.length > mobileLimit;
     const shortDesc = descText.slice(0, mobileLimit) + "...";
 
+    // console.log(postData)
     // 🟢 Add Comment Handler
     const handleAddComment = async () => {
         if (!session) {
@@ -94,15 +95,7 @@ const PostCard = ({ postData }) => {
                 setNewComment("");
                 setTotalComments((prev) => prev + 1);
 
-                Swal.fire({
-                    icon: "success",
-                    title: "Comment added successfully!",
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                });
+
             } else {
                 Swal.fire({
                     icon: "error",
@@ -127,6 +120,14 @@ const PostCard = ({ postData }) => {
             });
         }
     };
+
+
+
+    useEffect(() => {
+        if (session?.user?.email) {
+            setLiked(postData?.likedUsers?.includes(session.user.email));
+        }
+    }, [session, postData?.likedUsers]);
 
     // ❤️ Handle Like Function
     const handleLike = async () => {
@@ -153,17 +154,8 @@ const PostCard = ({ postData }) => {
             const data = await res.json();
 
             if (data.success) {
-                setLikes((prev) => prev + 1);
-                setLiked(true);
-                Swal.fire({
-                    icon: "success",
-                    title: "You liked this post ❤️",
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                });
+                setLikes(data.likes);
+                setLiked(data.liked); // true বা false
             } else {
                 Swal.fire({
                     icon: "error",
@@ -189,6 +181,40 @@ const PostCard = ({ postData }) => {
         }
     };
 
+    // Follow
+    useEffect(() => {
+        if (session?.user?.email && postData?.author_email) {
+            const followingStatus = postData.followers?.some(
+                email => email.toLowerCase() === session.user.email.toLowerCase()
+            );
+            setIsFollowing(followingStatus);
+        }
+    }, [session, postData?.followers, postData?.author_email]);
+
+    const handleFollow = async () => {
+        if (!session) return;
+
+        try {
+            const res = await fetch("/api/follow", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ targetEmail: postData.author_email }),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                setIsFollowing(data.following);
+
+                // Call parent handler to update all posts by same author
+                onFollowUpdate(postData.author_email, data.following);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    console.log(usersData)
+
     // 🧱 Post Card Content
     const CardContent = () => (
         <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">
@@ -198,9 +224,15 @@ const PostCard = ({ postData }) => {
                 <div className="-space-y-1">
                     <div className="flex items-center gap-2">
                         <p className="text-gray-900 font-medium">{authorName}</p>
-                       {
-                        session?.user?.email &&  <button className="text-blue-600 font-bold text-xs">Follow</button>
-                       }
+                        {session?.user?.email !== postData.author_email && (
+                            <button
+                                onClick={handleFollow}
+                                className="text-blue-600 cursor-pointer text-xs font-bold"
+                            >
+                                {isFollowing ? "Following" : "Follow"}
+                            </button>
+                        )}
+
                     </div>
                     <small className="text-gray-500 text-xs">{fbTime}</small>
                 </div>
@@ -258,12 +290,11 @@ const PostCard = ({ postData }) => {
                 {/* Like button */}
                 <button
                     onClick={handleLike}
-                    className={`flex cursor-pointer items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"
-                        }`}
-                    disabled={liked}
+                    className={`flex cursor-pointer items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"}`}
                 >
                     <Heart size={18} fill={liked ? "red" : "none"} /> {liked ? "Liked" : "Like"}
                 </button>
+
 
                 <button
                     onClick={() => setModalOpen(true)}

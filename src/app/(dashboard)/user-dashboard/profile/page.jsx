@@ -261,7 +261,7 @@ export default function Profile() {
             </div>
 
             <div className="flex justify-center">
-              <button className="px-4 cursor-pointer text-[#c45627] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
+              <button className="px-4 cursor-pointer text-[#c45627] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
                 <FiEdit size={30} />
               </button>
             </div>

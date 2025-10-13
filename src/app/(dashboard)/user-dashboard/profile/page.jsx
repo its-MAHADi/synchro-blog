@@ -26,9 +26,10 @@ import {
 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { FaUserCircle } from "react-icons/fa";
+import { CiDiscount1 } from "react-icons/ci";
 
 
-export default async function Profile() {
+export default function Profile() {
   const [activeTab, setActiveTab] = useState("posts");
   const [viewMode, setViewMode] = useState("grid");
   const { data: session, status } = useSession();
@@ -43,6 +44,10 @@ export default async function Profile() {
   // }, []);
 
   // console.log(blogs)
+
+  // const SEOScore = seoScore();
+
+  // console.log(SEOScore)
 
   return (
     <div className="flex-1 h-screen overflow-y-auto flex flex-col bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
@@ -105,17 +110,11 @@ export default async function Profile() {
                     {
                       session?.user?.image ?
                         <div>
-                          
-                            <img className="w-20 h-20 sm:w-32 sm:h-32 rounded-full  border-4 border-white shadow-lg" src={session?.user?.image} alt="" />
-                          
+                          <img className="w-20 h-20 sm:w-32 sm:h-32 rounded-full  border-4 border-white shadow-lg" src={session?.user?.image} alt="" />
                         </div>
                         :
-                        
-                          <FaUserCircle size={50} />
-                       
-
+                        <FaUserCircle size={50} />
                     }
-                   
                     <div className="absolute -bottom-1 right-3 w-6 h-6 sm:w-7 sm:h-7 bg-[#c45627] rounded-lg sm:rounded-xl flex items-center justify-center">
                       <Camera size={12} className="text-white" />
                     </div>
@@ -290,6 +289,9 @@ export default async function Profile() {
                           <div className="flex items-center gap-1">
                             <MessageCircle size={12} /> <span>23</span>
                           </div>
+                          <button onClick={() => seoScore()} className="cursor-pointer border border-[#c45627] rounded-2xl p-1 font-semibold text-sm text-gray-600 flex items-center gap-1">
+                            <CiDiscount1  size={15} /> <span>SEO Score Count</span>
+                          </button>
                         </div>
                         <span>২ দিন আগে</span>
                       </div>

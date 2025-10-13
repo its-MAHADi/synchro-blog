@@ -33,12 +33,27 @@ export const registerUser = async (payload) => {
     userId: generateUserId(),
     email,
     userName: name,
+    image: null,
+    cover_image: null,
     password: hashedPassword,
     createdAt: new Date(),
-    last_log_in: null,
+    last_log_in: new Date(),
     memberStatus: false,
     failedLoginAttempts: 0,
-    lockUntil: null
+    lockUntil: null,
+    bio: "",
+    work: "",
+    education: "",
+    location: "",
+    skills: [],
+    contact_email: "",
+    contact_number: null,
+    website: "",
+    language: [],
+    followers: [],
+    following: [],
+
+
   };
 
   // Insert into DB

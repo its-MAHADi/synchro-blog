@@ -1,106 +1,140 @@
 "use client";
 
+import { Bell, MoreVertical, CheckCircle, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { Search, Circle, MessageSquare, MoreVertical } from "lucide-react";
+// import Image from "next/image";
 
-
-const dummyChats = [
+const dummyNotifications = [
   {
     id: 1,
-    name: "Mahadi Hasan",
-    img: "https://i.pravatar.cc/150?img=1",
-    message: "Hey! How’s your project going?",
-    time: "2m",
-    active: true,
+    title: "New comment on your post",
+    message: "Mahadi Hasan commented: “Awesome project bro!”",
+    time: "2m ago",
+    type: "comment",
+    read: false,
+    avatar: "https://i.pravatar.cc/150?img=5",
   },
   {
     id: 2,
-    name: "Ariyan Chowdhury",
-    img: "https://i.pravatar.cc/150?img=5",
-    message: "Let’s play eFootball tonight ⚽",
-    time: "10m",
-    active: true,
+    title: "Membership Activated",
+    message: "Congrats! Your premium membership is now active 🎉",
+    time: "30m ago",
+    type: "success",
+    read: false,
+    avatar: "https://i.pravatar.cc/150?img=11",
   },
   {
     id: 3,
-    name: "Sadia Noor",
-    img: "https://i.pravatar.cc/150?img=6",
-    message: "I’ll send the files soon!",
-    time: "1h",
-    active: false,
+    title: "Post Reported",
+    message: "Your post ‘Next.js Guide’ has been reported for review.",
+    time: "1h ago",
+    type: "warning",
+    read: true,
+    avatar: "https://i.pravatar.cc/150?img=9",
   },
   {
     id: 4,
-    name: "Farhan Rafi",
-    img: "https://i.pravatar.cc/150?img=3",
-    message: "Check your inbox please.",
-    time: "3h",
-    active: false,
+    title: "New Announcement",
+    message: "Admin published: ‘Weekly Forum Updates’",
+    time: "3h ago",
+    type: "info",
+    read: true,
+    avatar: "https://i.pravatar.cc/150?img=2",
   },
   {
     id: 5,
-    name: "Tuhin Rahman",
-    img: "https://i.pravatar.cc/150?img=9",
-    message: "Bro, nice UI design 🔥",
-    time: "5h",
-    active: false,
+    title: "Badge Unlocked",
+    message: "You earned the ‘Helpful Member’ badge 🏅",
+    time: "6h ago",
+    type: "success",
+    read: true,
+    avatar: "https://i.pravatar.cc/150?img=7",
   },
 ];
 
 export default function NotificationBar() {
-  const [search, setSearch] = useState("");
+  const [notifications, setNotifications] = useState(dummyNotifications);
 
-  const filteredChats = dummyChats.filter((chat) =>
-    chat.name.toLowerCase().includes(search.toLowerCase())
-  );
- 
+  const markAsRead = (id) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+  };
+
   return (
     <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <MessageSquare className="text-[#c45627]" size={20} />
+          <Bell className="text-[#c45627]" size={20} />
           Notifications
         </h2>
         <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
       </div>
 
-    
-
-      {/* Chat List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-2">
-        {filteredChats.map((chat) => (
-          <div
-            key={chat.id}
-            className="flex items-center justify-between hover:bg-gray-100 transition-all cursor-pointer p-2 rounded-xl"
+      {/* Notification List */}
+      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-3">
+        {notifications.map((noti) => (
+          <motion.div
+            key={noti.id}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className={`flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all duration-300 border ${
+              noti.read
+                ? "bg-gray-50 border-gray-100"
+                : "bg-[#fff5f0] border-[#c4562725]"
+            } hover:shadow-md hover:scale-[1.01]`}
+            onClick={() => markAsRead(noti.id)}
           >
-            <div className="flex items-center gap-3">
-              <div className="relative">
+            {/* Left Part: Avatar + Icon + Text */}
+            <div className="flex items-start gap-3 w-full">
+              {/* Avatar */}
+              <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
                 <img
-                  src={chat.img}
-                  alt={chat.name}
-                 
-                  className="rounded-full border w-10 h-10 border-gray-200"
+                  src={noti.avatar}
+                  alt={noti.title}
+                  className="object-cover rounded-full w-10 h-10"
                 />
-                {chat.active && (
-                  <span className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
-                )}
               </div>
 
-              <div className="flex flex-col">
-                <h3 className="text-sm font-medium text-gray-800">{chat.name}</h3>
-                <p className="text-xs text-gray-500 truncate w-[160px]">
-                  {chat.message}
-                </p>
+              {/* Message Section */}
+              <div className="flex-1">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    {noti.title}
+                  </h3>
+                  <span className="text-[10px] text-gray-400">{noti.time}</span>
+                </div>
+                <p className="text-xs text-gray-600 mt-0.5">{noti.message}</p>
               </div>
             </div>
-            <span className="text-[10px] text-gray-400">{chat.time}</span>
-          </div>
+
+            {/* Type Icon */}
+            <div
+              className={`p-2 rounded-full ml-2 ${
+                noti.type === "success"
+                  ? "bg-green-100 text-green-600"
+                  : noti.type === "warning"
+                  ? "bg-red-100 text-red-600"
+                  : "bg-[#c4562720] text-[#c45627]"
+              }`}
+            >
+              {noti.type === "success" ? (
+                <CheckCircle size={18} />
+              ) : noti.type === "warning" ? (
+                <AlertCircle size={18} />
+              ) : (
+                <Bell size={18} />
+              )}
+            </div>
+          </motion.div>
         ))}
 
-        {filteredChats.length === 0 && (
+        {notifications.length === 0 && (
           <p className="text-center text-sm text-gray-400 mt-8">
-            No chats found 😢
+            No notifications 🔕
           </p>
         )}
       </div>

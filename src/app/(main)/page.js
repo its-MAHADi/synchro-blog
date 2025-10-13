@@ -20,9 +20,31 @@ export const metadata = {
 export default function Home() {
   return (
     <section >
-     <div>
-      <PostField/>
-     <AllPosts/>
+     <div className="space-y-10">
+       {/* banner */}
+      <Banner/>
+
+      {/* Recent Post */}
+      <RecentPosts/>
+
+      {/*Features of Synchro */}
+      <SynchroFeatures/>
+
+      {/* How synchro works */}
+      <SynchroWorks/>
+
+      {/* PopularTopic */}
+      <PopularTopic/>
+
+      {/* FAQ section */}
+      <FAQ></FAQ>
+      
+      {/* contact page */}
+      <Contact/>
+
+      <BlogPost/>
+      {/* <PostField/>
+     <AllPosts/> */}
      </div>
      {/* <aside className="w-4/12  sticky top-[90px] overflow-y-auto">
       <MessageBar />
@@ -35,25 +57,3 @@ export default function Home() {
 
 
 
-//  {/* banner */}
-//       <Banner/>
-
-//       {/* Recent Post */}
-//       <RecentPosts/>
-
-//       {/*Features of Synchro */}
-//       <SynchroFeatures/>
-
-//       {/* How synchro works */}
-//       <SynchroWorks/>
-
-//       {/* PopularTopic */}
-//       <PopularTopic/>
-
-//       {/* FAQ section */}
-//       <FAQ></FAQ>
-      
-//       {/* contact page */}
-//       <Contact/>
-
-//       <BlogPost/>

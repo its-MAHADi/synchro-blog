@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaRegStar, FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react-icons/fa";
+import { FaTachometerAlt, FaRegFileAlt, FaUserCircle, FaPlusCircle } from "react-icons/fa";
 import { AiOutlineCloseCircle, AiOutlineInfoCircle } from "react-icons/ai";
 import { MdOutlineEmojiEvents, } from "react-icons/md";
 import { GoHome } from "react-icons/go";
@@ -18,6 +18,33 @@ const Navbar = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const { toggleMessageBar, toggleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
+  // Navbar component এর state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+
+  // Example dummy user data, তোমার API দিয়ে fetch করতে পারবে
+  const users = [
+    { id: 1, name: "Sudipto Mahadi" },
+    { id: 22, name: "Sudipto Mahadi" },
+    { id: 12, name: "Sudipto Mahadi" },
+    { id: 2, name: "Rakib Hasan" },
+    { id: 3, name: "Raisa Akter" },
+    { id: 4, name: "Tanvir Islam" },
+  ];
+
+  // Search logic
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
+
+    const results = users.filter((user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setSearchResults(results);
+  }, [searchQuery]);
+
 
   // console.log(session?.user.image, status)
 
@@ -39,9 +66,39 @@ const Navbar = () => {
       <div className="px-2">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex justify-center items-center">
-            <img src="main_logo.png" alt="main logo" className="w-10 pr-2" />
-            <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+          <div className="flex justify-center items-center gap-5">
+            <div className="flex items-center">
+              <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
+              <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+            </div>
+            {/* Search Bar */}
+            {/* <div className="relative hidden md:flex flex-1 max-w-md">
+              <input
+                type="text"
+                placeholder="Search users..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-3 py-1 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#c45627]"
+              />
+              {searchResults.length > 0 && (
+                <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg z-50 max-h-60 overflow-y-auto">
+                  {searchResults.map((user) => (
+                    <div
+                      key={user.id}
+                      className="px-3 py-2 hover:bg-[#fef2e9] cursor-pointer"
+                      onClick={() => {
+                        console.log("Selected user:", user.name);
+                        setSearchQuery("");
+                        setSearchResults([]);
+                      }}
+                    >
+                      {user.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div> */}
+
           </div>
 
           {/* Desktop Menu */}
@@ -54,14 +111,14 @@ const Navbar = () => {
                 <GoHome /> Home
               </Link>
             </li>
-            {/* <li>
+            <li>
               <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/all-posts"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
-            </li> */}
+            </li>
             {/* <li>
               <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
@@ -133,25 +190,25 @@ const Navbar = () => {
                       className="cursor-pointer"
                       onClick={toggleNotificationBar}
                     />
-                    
+
                   </div>
                   {
                     session?.user?.image ?
                       <div>
-                        <Link href={"/user-dashboard"}>
+                        <Link href={"/user-dashboard/profile"}>
                           <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
                         </Link>
                       </div>
                       :
-                      <Link href={"/user-dashboard"}>
+                      <Link href={"/user-dashboard/profile"}>
                         <FaUserCircle size={30} />
                       </Link>
 
                   }
 
-                  {/* <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                  <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
                     Logout
-                  </Link> */}
+                  </Link>
                 </div>
             }
           </div>

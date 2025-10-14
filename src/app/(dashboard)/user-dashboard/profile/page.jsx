@@ -12,6 +12,7 @@ import { FiEdit, FiPhone } from "react-icons/fi";
 import PostField from "@/app/(main)/components/PostField/PostField";
 import Swal from "sweetalert2";
 
+
 // Facebook-style date formatter
 const formatFacebookDate = (dateString) => {
   const date = new Date(dateString);
@@ -320,9 +321,17 @@ export default function Profile() {
           {/* Details */}
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {/* FIX: Use details?.work instead of details.work */}
-            {details?.work && <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div>}
-            {details?.education && <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>}
-            {details?.location && <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>}
+            {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div> :
+              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>add work</span></div>
+            }
+            {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>
+              :
+              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>add education</span></div>
+            }
+            {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>
+              :
+              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>add location</span></div>
+            }
           </div>
 
           {/* Skills - Correctly handling string splitting */}
@@ -344,10 +353,21 @@ export default function Profile() {
 
           {/* --- Contact Info --- */}
           <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">
-            {details?.contact_email && <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div>}
-            {details?.contact_number && <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>{details.contact_number}</span></div>}
-            {details?.website && <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>}
-            {details?.languages && <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>{details.languages}</span></div>}
+            {details?.contact_email ? <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div> :
+              <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>add email</span></div>
+            }
+            {details?.contact_number ? <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>{details.contact_number}</span></div>
+              :
+              <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>add number</span></div>
+            }
+            {details?.website ? <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>
+              :
+              <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a className="text-blue-600 hover:underline">https://example.com</a></div>
+            }
+            {details?.languages ? <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>{details?.languages}</span></div>
+              :
+              <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>add language</span></div>
+            }
           </div>
 
           <button
@@ -403,116 +423,118 @@ export default function Profile() {
             ))
           )}
         </div>
-      </main>
+      </main >
 
       {/* Modal for Editing Details */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white w-full sm:max-w-lg rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto animate-slide-up">
-            <button
-              onClick={handleModalCancel}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
-            >
-              <X size={22} />
-            </button>
+      {
+        isModalOpen && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white w-full sm:max-w-lg rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto animate-slide-up">
+              <button
+                onClick={handleModalCancel}
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
+              >
+                <X size={22} />
+              </button>
 
-            <h3 className="text-xl font-semibold text-gray-800 mb-5 text-center border-b pb-3">
-              Edit Details
-            </h3>
+              <h3 className="text-xl font-semibold text-gray-800 mb-5 text-center border-b pb-3">
+                Edit Details
+              </h3>
 
-            <div className="space-y-4 text-sm">
-              {[
-                { label: "Work / Profession", field: "work" },
-                { label: "Education", field: "education" },
-                { label: "Location", field: "location" },
-              ].map(({ label, field }) => (
-                // Added the required "key" prop here
-                <div key={field}>
-                  <label className="block text-gray-600 font-medium mb-1">{label}</label>
+              <div className="space-y-4 text-sm">
+                {[
+                  { label: "Work / Profession", field: "work" },
+                  { label: "Education", field: "education" },
+                  { label: "Location", field: "location" },
+                ].map(({ label, field }) => (
+                  // Added the required "key" prop here
+                  <div key={field}>
+                    <label className="block text-gray-600 font-medium mb-1">{label}</label>
+                    <input
+                      type="text"
+                      value={tempDetails[field] || ""}
+                      onChange={(e) => setTempDetails({ ...tempDetails, [field]: e.target.value })}
+                      placeholder={label}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    />
+                  </div>
+                ))}
+
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Skills (comma separated)</label>
                   <input
                     type="text"
-                    value={tempDetails[field] || ""}
-                    onChange={(e) => setTempDetails({ ...tempDetails, [field]: e.target.value })}
-                    placeholder={label}
+                    value={tempDetails.skills || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
+                    placeholder="React, Node.js, Next.js"
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
                   />
                 </div>
-              ))}
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Contact Email</label>
+                  <input
+                    type="email"
+                    value={tempDetails.contact_email || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, contact_email: e.target.value })}
+                    placeholder="example@email.com"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Phone Number</label>
+                  <input
+                    type="text"
+                    value={tempDetails.contact_number || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, contact_number: e.target.value })}
+                    placeholder="+8801XXXXXXXXX"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Website</label>
+                  <input
+                    type="text"
+                    value={tempDetails.website || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, website: e.target.value })}
+                    placeholder="https://yourportfolio.com"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Languages (comma separated)</label>
+                  <input
+                    type="text"
+                    value={tempDetails.languages || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, languages: e.target.value })}
+                    placeholder="Bangla, English"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+              </div>
 
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Skills (comma separated)</label>
-                <input
-                  type="text"
-                  value={tempDetails.skills || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
-                  placeholder="React, Node.js, Next.js"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
+              {/* Buttons */}
+              <div className="flex gap-3 mt-6 border-t pt-4">
+                <button
+                  onClick={handleModalCancel}
+                  className="w-1/2 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleModalSave}
+                  disabled={!hasChanges}
+                  className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#c45627] hover:bg-[#a9471c]"
+                    }`}
+                >
+                  Save Details
+                </button>
               </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Contact Email</label>
-                <input
-                  type="email"
-                  value={tempDetails.contact_email || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, contact_email: e.target.value })}
-                  placeholder="example@email.com"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Phone Number</label>
-                <input
-                  type="text"
-                  value={tempDetails.contact_number || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, contact_number: e.target.value })}
-                  placeholder="+8801XXXXXXXXX"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Website</label>
-                <input
-                  type="text"
-                  value={tempDetails.website || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, website: e.target.value })}
-                  placeholder="https://yourportfolio.com"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Languages (comma separated)</label>
-                <input
-                  type="text"
-                  value={tempDetails.languages || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, languages: e.target.value })}
-                  placeholder="Bangla, English"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-3 mt-6 border-t pt-4">
-              <button
-                onClick={handleModalCancel}
-                className="w-1/2 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleModalSave}
-                disabled={!hasChanges}
-                className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#c45627] hover:bg-[#a9471c]"
-                  }`}
-              >
-                Save Details
-              </button>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Modal Animation */}
       <style jsx>{`
@@ -530,6 +552,6 @@ export default function Profile() {
           animation: slide-up 0.3s ease-out;
         }
       `}</style>
-    </div>
+    </div >
   );
 }

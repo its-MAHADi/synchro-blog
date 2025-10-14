@@ -5,7 +5,6 @@ import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 
-
 const formatFacebookDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -33,7 +32,9 @@ const formatFacebookDate = (dateString) => {
 const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [showFull, setShowFull] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
-    const [comments, setComments] = useState(postData?.commentsList || []);
+    const [comments, setComments] = useState([]); // initially empty
+    const [loadingComments, setLoadingComments] = useState(false);
+
     const [newComment, setNewComment] = useState("");
     const { data: session } = useSession();
 
@@ -42,19 +43,45 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [totalComments, setTotalComments] = useState(postData?.comment || 0);
     const shares = postData?.shares || 4;
     const [isFollowing, setIsFollowing] = useState(false);
+
     const titleText = postData?.blog_title || "Untitled Post";
     const descText = postData?.description || "";
     const image = postData?.featured_image || null;
     const authorName = postData?.author_name || "Unknown Author";
-    const authorAvatar = postData?.author_image;
+    const authorAvatar = postData?.author_image ? postData.author_image : "/defult_profile.jpg";
 
     const fbTime = formatFacebookDate(postData?.created_at || new Date().toISOString());
-
     const mobileLimit = 100;
     const isLong = descText.length > mobileLimit;
     const shortDesc = descText.slice(0, mobileLimit) + "...";
 
-    // console.log(postData)
+    // 🟢 Fetch comments from backend
+    const fetchComments = async () => {
+        try {
+            setLoadingComments(true);
+            const res = await fetch(
+                `/api/single-post-comments/${postData?._id}?email=${postData?.author_email}`
+            );
+            const data = await res.json();
+            if (data.success) {
+                setComments(data.comments);
+            } else {
+                console.error("Failed to load comments:", data.message);
+            }
+        } catch (err) {
+            console.error("Error fetching comments:", err);
+        } finally {
+            setLoadingComments(false);
+        }
+    };
+
+    // 🟠 Auto-fetch comments when modal opens
+    useEffect(() => {
+        if (modalOpen && postData?._id) {
+            fetchComments();
+        }
+    }, [modalOpen]);
+
     // 🟢 Add Comment Handler
     const handleAddComment = async () => {
         if (!session) {
@@ -75,9 +102,11 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         const commentObj = {
             id: Date.now(),
             post_id: postData?._id,
+            post_author_email: postData?.author_email,
             text: newComment,
-            author_name: session?.user?.name,
-            author_image: session?.user?.image,
+            comment_author_name: session?.user?.name,
+            comment_author_email: session?.user?.email,
+            comment_author_image: session?.user?.image || null,
             created_at: new Date().toISOString(),
         };
 
@@ -94,8 +123,6 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 setComments((prev) => [commentObj, ...prev]);
                 setNewComment("");
                 setTotalComments((prev) => prev + 1);
-
-
             } else {
                 Swal.fire({
                     icon: "error",
@@ -121,15 +148,13 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         }
     };
 
-
-
+    // ❤️ Handle Like
     useEffect(() => {
         if (session?.user?.email) {
             setLiked(postData?.likedUsers?.includes(session.user.email));
         }
     }, [session, postData?.likedUsers]);
 
-    // ❤️ Handle Like Function
     const handleLike = async () => {
         if (!session) {
             Swal.fire({
@@ -150,42 +175,22 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ blogId: postData?._id }),
             });
-
             const data = await res.json();
 
             if (data.success) {
                 setLikes(data.likes);
-                setLiked(data.liked); // true বা false
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: data.message || "Failed to like post",
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                });
+                setLiked(data.liked);
             }
         } catch (err) {
             console.error("Error liking post:", err);
-            Swal.fire({
-                icon: "error",
-                title: "Something went wrong. Please try again.",
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-            });
         }
     };
 
-    // Follow
+    // 👤 Follow
     useEffect(() => {
         if (session?.user?.email && postData?.author_email) {
             const followingStatus = postData.followers?.some(
-                email => email.toLowerCase() === session.user.email.toLowerCase()
+                (email) => email.toLowerCase() === session.user.email.toLowerCase()
             );
             setIsFollowing(followingStatus);
         }
@@ -193,19 +198,15 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
 
     const handleFollow = async () => {
         if (!session) return;
-
         try {
             const res = await fetch("/api/follow", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ targetEmail: postData.author_email }),
             });
-
             const data = await res.json();
             if (data.success) {
                 setIsFollowing(data.following);
-
-                // Call parent handler to update all posts by same author
                 onFollowUpdate(postData.author_email, data.following);
             }
         } catch (err) {
@@ -213,14 +214,10 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         }
     };
 
-    console.log(usersData)
-
-    // 🧱 Post Card Content
     const CardContent = () => (
         <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">
-            {/* Author Info */}
             <div className="flex items-center gap-3">
-                <img className="w-10 h-10 rounded-full" src={authorAvatar} alt="" />
+                <img className="w-10 h-10 rounded-full" src={authorAvatar} alt="Author_photo" />
                 <div className="-space-y-1">
                     <div className="flex items-center gap-2">
                         <p className="text-gray-900 font-medium">{authorName}</p>
@@ -232,30 +229,20 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                                 {isFollowing ? "Following" : "Follow"}
                             </button>
                         )}
-
                     </div>
                     <small className="text-gray-500 text-xs">{fbTime}</small>
                 </div>
             </div>
 
-            {/* Image */}
-            {image ? (
-
+            {image && (
                 <img
                     src={image}
                     alt={titleText}
                     className="w-full h-auto max-h-[500px] object-contain rounded-lg"
                 />
-
-            ) : (
-
-                ""
             )}
 
-            {/* Title */}
             <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">{titleText}</h2>
-
-            {/* Description */}
             <p className="text-gray-600 text-sm">
                 <span className="block md:hidden">
                     {showFull ? descText : isLong ? shortDesc : descText}
@@ -271,7 +258,6 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 <span className="hidden md:block">{descText}</span>
             </p>
 
-            {/* Stats */}
             <div className="flex justify-between items-end text-sm text-gray-500 mt-1">
                 <div className="flex items-center gap-1">
                     <FaHeart size={14} color="red" />
@@ -285,24 +271,22 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
 
             <hr className="border-gray-200" />
 
-            {/* Footer icons */}
             <div className="flex justify-around items-center text-gray-600">
-                {/* Like button */}
                 <button
                     onClick={handleLike}
-                    className={`flex cursor-pointer items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"}`}
+                    className={`flex items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"}`}
                 >
                     <Heart size={18} fill={liked ? "red" : "none"} /> {liked ? "Liked" : "Like"}
                 </button>
 
-
                 <button
                     onClick={() => setModalOpen(true)}
-                    className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition"
+                    className="flex items-center gap-1 hover:text-blue-600 transition"
                 >
                     <MessageCircle size={18} /> Comment
                 </button>
-                <button className="flex cursor-pointer items-center gap-1 hover:text-blue-600 transition">
+
+                <button className="flex items-center gap-1 hover:text-blue-600 transition">
                     <Share2 size={18} /> Share
                 </button>
             </div>
@@ -313,13 +297,12 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         <>
             <CardContent />
 
-            {/* Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-start justify-center z-50 overflow-y-auto p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full relative flex flex-col overflow-visible">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full relative flex flex-col">
                         <button
                             onClick={() => setModalOpen(false)}
-                            className="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-xl z-50"
+                            className="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-xl"
                         >
                             ✖
                         </button>
@@ -328,9 +311,10 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                             <CardContent />
                         </div>
 
+                        {/* Comment Input */}
                         <div className="flex gap-2 border-t border-gray-200 p-3 bg-white">
                             <img
-                                src={session?.user?.image}
+                                src={session?.user?.image || "/defult_profile.jpg"}
                                 alt="user"
                                 className="w-10 h-10 rounded-full"
                             />
@@ -347,26 +331,35 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                             </button>
                         </div>
 
+                        {/* Comments */}
                         <div className="space-y-3 p-4">
-                            {comments.length === 0 && (
+                            {loadingComments ? (
+                                <p className="text-gray-400 text-sm text-center">Loading comments...</p>
+                            ) : comments.length === 0 ? (
                                 <p className="text-gray-400 text-sm text-center">No comments yet</p>
-                            )}
-                            {comments.map((comment) => (
-                                <div key={comment.id} className="flex gap-2">
-                                    <img
-                                        src={comment.author_image || "https://i.pravatar.cc/40"}
-                                        alt=""
-                                        className="w-8 h-8 rounded-full"
-                                    />
-                                    <div className="bg-gray-100 p-2 rounded-xl flex-1">
-                                        <p className="text-sm font-medium">{comment.author_name}</p>
-                                        <p className="text-sm text-gray-700">{comment.text}</p>
-                                        <small className="text-gray-400 text-xs">
-                                            {formatFacebookDate(comment.created_at)}
-                                        </small>
+                            ) : (
+                                comments.map((comment) => (
+                                    <div key={comment.id} className="flex gap-2">
+                                        <img
+                                            src={
+                                                comment.comment_author_image ||
+                                                "/defult_profile.jpg"
+                                            }
+                                            alt=""
+                                            className="w-8 h-8 rounded-full"
+                                        />
+                                        <div className="bg-gray-100 p-2 rounded-xl flex-1">
+                                            <p className="text-sm font-medium">
+                                                {comment.comment_author_name}
+                                            </p>
+                                            <p className="text-sm text-gray-700">{comment.text}</p>
+                                            <small className="text-gray-400 text-xs">
+                                                {formatFacebookDate(comment.created_at)}
+                                            </small>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

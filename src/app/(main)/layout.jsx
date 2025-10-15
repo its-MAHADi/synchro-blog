@@ -70,7 +70,7 @@ function FloatingChatPopup() {
       {/* Chat Floating Button */}
       <button
         onClick={() => setOpenChat(true)}
-        className={`fixed ${openChat && 'ml-40 mb-10'} bottom-6 right-6 bg-[#c45627] hover:bg-[#d35c29] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform hover:scale-105 z-50`}
+        className={`fixed ${openChat && 'ml-40 mb-10'} bottom-6 cursor-pointer right-6 bg-[#c45627] hover:bg-[#d35c29] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform hover:scale-105 z-50`}
       >
         <Bot size={20} />
         Chat with AI

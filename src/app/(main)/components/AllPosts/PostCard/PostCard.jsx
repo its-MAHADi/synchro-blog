@@ -394,11 +394,11 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
             </p>
 
             <div className="flex justify-between items-end text-sm text-gray-500 mt-1">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center cursor-pointer gap-1">
                     <FaHeart size={14} color="red" />
                     <span>{likes} Likes</span>
                 </div>
-                <div className="flex items-center gap-5">
+                <div className="flex items-center  gap-5">
                     <span>{totalComments} Comments</span>
                     <span>{shares} Shares</span>
                 </div>
@@ -409,19 +409,19 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
             <div className="flex justify-around items-center text-gray-600">
                 <button
                     onClick={handleLike}
-                    className={`flex items-center gap-1 transition ${liked ? "text-red-500" : "hover:text-blue-600"}`}
+                    className={`flex items-center gap-1 cursor-pointer transition ${liked ? "text-red-500" : "hover:text-[#c45627]"}`}
                 >
                     <Heart size={18} fill={liked ? "red" : "none"} /> {liked ? "Liked" : "Like"}
                 </button>
 
                 <button
                     onClick={() => setModalOpen(true)}
-                    className="flex items-center gap-1 hover:text-blue-600 transition"
+                    className="flex items-center cursor-pointer gap-1 hover:text-[#c45627] transition"
                 >
                     <MessageCircle size={18} /> Comment
                 </button>
 
-                <button className="flex items-center gap-1 hover:text-blue-600 transition">
+                <button className="flex cursor-pointer items-center gap-1 hover:text-[#c45627] transition">
                     <Share2 size={18} /> Share
                 </button>
             </div>

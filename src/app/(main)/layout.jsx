@@ -75,7 +75,7 @@ export default function MainLayout({ children }) {
           </header>
 
           {/* Main Content */}
-          <div className="max-w-11/12 mx-auto">
+          <div className="max-w-11/12 mx-auto min-h-[calc(100vh-4 .33px)]">
             <MainContent>{children}</MainContent>
           </div>
 

@@ -2,59 +2,79 @@
 
 import { MoreVertical, Search } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const dummyMessages = [
-  {
-    id: 1,
-    sender: "Mahadi Hasan",
-    message: "Hey! Can you check my last post?",
-    time: "2m ago",
-    avatar: "https://i.pravatar.cc/150?img=5",
-    read: false,
-  },
-  {
-    id: 2,
-    sender: "Admin",
-    message: "Your premium membership has been updated.",
-    time: "30m ago",
-    avatar: "https://i.pravatar.cc/150?img=11",
-    read: false,
-  },
-  {
-    id: 3,
-    sender: "Ali Raza",
-    message: "Thanks for your help on the project!",
-    time: "1h ago",
-    avatar: "https://i.pravatar.cc/150?img=9",
-    read: true,
-  },
-  {
-    id: 4,
-    sender: "Forum Team",
-    message: "Weekly forum updates are live now.",
-    time: "3h ago",
-    avatar: "https://i.pravatar.cc/150?img=2",
-    read: true,
-  },
-];
-
-export default function MessageWithUser() {
-  const [messages, setMessages] = useState(dummyMessages);
+export default function MessageWithUser({ currentUser }) {
+  const [messages, setMessages] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    async function fetchMessages() {
+      try {
+        const baseUrl =
+          process.env.NEXT_PUBLIC_BASE_URL ||
+          (process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : "http://localhost:3000");
+
+        // 🔹 1️⃣ Fetch current logged-in user
+        const resUser = await fetch(`${baseUrl}/api/user?email=${currentUser}`);
+        const currentUserData = await resUser.json();
+        // console.log("Logged-in User:", currentUserData);
+
+        const followingEmails = currentUserData.following || [];
+
+        if (followingEmails.length === 0) {
+          setMessages([]);
+          setLoading(false);
+          return;
+        }
+
+        // 🔹 2️⃣ Fetch all following users’ data at once
+        const resFollowing = await fetch(
+          `${baseUrl}/api/messageUser?emails=${followingEmails.join(",")}`
+        );
+        const followingUsers = await resFollowing.json();
+        // console.log("Following Users:", followingUsers);
+
+        // 🔹 3️⃣ Map them into message-style data
+        const messagesData = followingUsers.map((user, idx) => ({
+          id: idx + 1,
+          sender: user.name || user.userName || "Unknown User",
+          senderEmail: user.email,
+          message: "Hey! How are you doing today?",
+          time: "Just now",
+          avatar: user.image || "https://i.pravatar.cc/150?img=12",
+          read: false,
+        }));
+
+        setMessages(messagesData);
+      } catch (err) {
+        console.error("Message Fetch Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (currentUser) fetchMessages();
+  }, [currentUser]);
+
+  // 🔹 Mark as read
   const markAsRead = (id) => {
     setMessages((prev) =>
       prev.map((msg) => (msg.id === id ? { ...msg, read: true } : msg))
     );
   };
 
-  // Filter messages based on search term
+  // 🔹 Filter search
   const filteredMessages = messages.filter(
     (msg) =>
       msg.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
       msg.message.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) return <p className="text-center mt-4">Loading messages...</p>;
 
   return (
     <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
@@ -95,20 +115,17 @@ export default function MessageWithUser() {
               <div className="flex items-start gap-3 w-full">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
                   <img
-                    src={msg.avatar}
+                    src={msg.image}
                     alt={msg.sender}
                     className="object-cover rounded-full w-10 h-10"
                   />
                 </div>
-
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-gray-800">
                       {msg.sender}
                     </h3>
-                    <span className="text-[10px] text-gray-400">
-                      {msg.time}
-                    </span>
+                    <span className="text-[10px] text-gray-400">{msg.time}</span>
                   </div>
                   <p className="text-xs text-gray-600 mt-0.5">{msg.message}</p>
                 </div>

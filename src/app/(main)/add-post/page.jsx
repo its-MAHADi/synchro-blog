@@ -23,7 +23,7 @@ export default function BlogForm() {
     created_at: new Date().toISOString(),
     modified_at: null,
   });
-  
+
   useEffect(() => {
     if (data?.user) {
       setFormData((prev) => ({
@@ -275,11 +275,10 @@ Requirements:
                     type="text"
                     value={formData.blog_title}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${
-                      errors.blog_title
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
                         ? "border-red-300 bg-red-50 focus:border-red-500"
                         : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
-                    }`}
+                      }`}
                     placeholder="Enter an engaging blog title..."
                   />
                   {errors.blog_title && (
@@ -324,9 +323,8 @@ Requirements:
                   onClick={generateContent}
                   type="button"
                   disabled={isGenerating}
-                  className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${
-                    isGenerating ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
+                  className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                 >
                   {isGenerating ? "Generating..." : "Generate Content"}
                 </button>
@@ -344,11 +342,10 @@ Requirements:
                     isGenerating ? "Generating content..." : formData.description
                   }
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${
-                    errors.description
+                  className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
                       ? "border-red-300 bg-red-50 focus:border-red-500"
                       : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
-                  }`}
+                    }`}
                   disabled={isGenerating}
                   placeholder="Write a compelling description..."
                 />
@@ -364,13 +361,12 @@ Requirements:
             {/* Featured Image */}
             <div className="space-y-4">
               <div
-                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${
-                  isDragOver
+                className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
                     ? "border-[#c45627] bg-orange-50 scale-102"
                     : featuredPreview
-                    ? "border-transparent"
-                    : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627]"
-                }`}
+                      ? "border-transparent"
+                      : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627]"
+                  }`}
                 onClick={() => featuredInputRef.current?.click()}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}

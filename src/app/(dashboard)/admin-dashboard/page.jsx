@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="p-6 space-y-8">
+    <div className="p-6 space-y-8 my-20">
       {/* small inline keyframes for progress animation */}
       <style>{`
         @keyframes grow {

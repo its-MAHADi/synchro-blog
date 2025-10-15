@@ -322,15 +322,15 @@ export default function Profile() {
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {/* FIX: Use details?.work instead of details.work */}
             {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div> :
-              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>add work</span></div>
+              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>No workplaces to show</span></div>
             }
             {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>
               :
-              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>add education</span></div>
+              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>No schools/universities to show</span></div>
             }
             {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>
               :
-              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>add location</span></div>
+              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>No places to show</span></div>
             }
           </div>
 

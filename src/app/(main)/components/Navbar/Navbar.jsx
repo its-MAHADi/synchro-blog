@@ -174,6 +174,7 @@ const Navbar = () => {
                   </Link>
                 </div>
                 :
+                // massage bar and notification bar
                 <div className="flex items-center gap-2">
                   <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
                     <RiMessengerLine

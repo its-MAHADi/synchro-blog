@@ -10,11 +10,13 @@ import NotificationBar from "./components/NotificationBar/NotificationBar";
 import { useState } from "react";
 import { Bot, X } from "lucide-react";
 import MessageWithUser from "./components/MessageBar/MessageWithUser";
+import { useSession } from "next-auth/react";
 
 
 function MainContent({ children }) {
   const { showNotificationBar, showMessageBar } = useMessage();
-
+  const { data: session } = useSession();
+  const currentUser = session?.user?.email
   // এখন শুধু notification sidebar থাকবে (AI chat popup হবে)
   const activeSidebar = showMessageBar ? "message" : showNotificationBar ? "notification" : null;
 
@@ -39,7 +41,7 @@ function MainContent({ children }) {
       <AnimatePresence mode="wait">
         {/* message */}
         {activeSidebar === "message" && (<motion.aside key="messagebar" initial={{ x: 400, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 400, opacity: 0 }} transition={{ duration: 0.4, ease: "easeInOut" }} className="w-[35%] sticky top-[90px] h-fit bg-white shadow-md rounded-xl overflow-y-auto" >
-          <MessageWithUser/>
+          <MessageWithUser currentUser={currentUser}/>
         </motion.aside>)}
 
         {/* notification */}

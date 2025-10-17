@@ -231,7 +231,30 @@ const Navbar = () => {
           }`}
       >
         <div className="flex justify-between items-center p-4 border-b bg-white">
-          <h2 className="text-lg font-bold text-[#c45627]">Menu</h2>
+          <div>
+            <div className="flex items-center gap-3">
+              {session?.user ? (
+                <Link
+                  href="/user-dashboard/profile"
+                  className="flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
+                >
+                  <img
+                    src={session.user.image || "/defult_profile.jpg"}
+                    alt="User profile"
+                    className="w-10 h-10 rounded-full border border-gray-300"
+                  />
+                  <span className="font-medium text-gray-800">
+                    {session.user.name || "User"}
+                  </span>
+                </Link>
+              ) : (
+                <div>
+                  <h1 className="font-semibold text-[#c45627] text-lg">Menu</h1>
+                </div>
+              )}
+            </div>
+
+          </div>
           <button onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#c45627]" />
           </button>

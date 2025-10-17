@@ -6,20 +6,23 @@ import { useState, useEffect } from "react";
 import ChatPopup from "../ChatPopup/ChatPopup";
 import { useMessage } from "@/app/contexts/MessageContext";
 import { useChatPopup } from "@/app/contexts/ChatsContext";
+import { useSession } from "next-auth/react";
 
 export default function MessageWithUser() {
+  const { data: session } = useSession();
   const [users, setUsers] = useState([]);
+  const [recentMessages, setRecentMessages] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const { closeMessageBar } = useMessage();
+
   const { openPopupUser, openPopup, closePopup } = useChatPopup();
 
   const handleUserClick = (user) => {
-    openPopup(user);      // popup open
-    // closeMessageBar();    // message bar auto close
+    openPopup(user);
   };
 
+  // Fetch users
   useEffect(() => {
     async function fetchUsers() {
       try {
@@ -35,11 +38,35 @@ export default function MessageWithUser() {
     fetchUsers();
   }, []);
 
+  // Fetch recent message for each user
+  useEffect(() => {
+    async function fetchRecentMessages() {
+      if (!session?.user?.email) return;
+
+      const messagesObj = {};
+      for (let user of users) {
+        try {
+          const res = await fetch(
+            `/api/messages?email=${user.email}&currentUser=${session.user.email}`
+          );
+          const msgs = await res.json();
+          const lastMessage = msgs.length > 0 ? msgs[msgs.length - 1].message : "";
+          messagesObj[user.email] = lastMessage;
+        } catch (err) {
+          console.error("Recent message fetch error:", err);
+        }
+      }
+      setRecentMessages(messagesObj);
+    }
+
+    fetchRecentMessages();
+  }, [users, session]);
+
   const filteredUsers = users.filter((user) =>
     user.userName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p className="text-center mt-4">Loading chats...</p>;
+  if (loading) return <p className="text-center min-h-screen">Loading chats...</p>;
 
   return (
     <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
@@ -51,13 +78,12 @@ export default function MessageWithUser() {
 
       {/* Search Bar */}
       <div className="mb-4 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
         <input
           type="text"
           placeholder="Search users..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full pl-3 pr-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
       </div>
 
@@ -71,7 +97,7 @@ export default function MessageWithUser() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
               onClick={() => handleUserClick(user)}
-              className="flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all duration-300 border border-gray-300 bg-gray-50 hover:shadow-md hover:scale-[1.01]"
+              className="flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all duration-300  bg-gray-50 hover:shadow-md hover:scale-[1.01]"
             >
               <div className="flex items-center gap-3 w-full">
                 <img
@@ -83,7 +109,9 @@ export default function MessageWithUser() {
                   <h3 className="text-sm font-semibold text-gray-800">
                     {user.userName}
                   </h3>
-                  <p className="text-xs text-gray-500">{user.email}</p>
+                  <p className="text-xs text-gray-500">
+                    {recentMessages[user.email] || "No messages"}
+                  </p>
                 </div>
               </div>
             </motion.div>
@@ -94,16 +122,11 @@ export default function MessageWithUser() {
           </p>
         )}
       </div>
-      
-      <div>
-        {openPopupUser && (
-          <ChatPopup
-            user={openPopupUser}
-            onClose={closePopup}
-          />
-        )}
-      </div>
 
+      {/* Chat Popup */}
+      {openPopupUser && (
+        <ChatPopup user={openPopupUser} onClose={closePopup} />
+      )}
     </div>
   );
 }

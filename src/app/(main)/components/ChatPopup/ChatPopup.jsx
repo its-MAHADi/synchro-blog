@@ -2,45 +2,43 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Circle } from "lucide-react";
+import { X, Send } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 export default function ChatPopup({ user, onClose }) {
+  const { data: session } = useSession();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
-  // 🔹 Fetch messages from backend
+  // 🔹 Fetch messages
   useEffect(() => {
     async function fetchMessages() {
       try {
-        const res = await fetch(`/api/messages?email=${user.email}`);
+        const res = await fetch(
+          `/api/messages?email=${user.email}&currentUser=${session?.user?.email}`
+        );
         const data = await res.json();
         setMessages(data);
       } catch (err) {
         console.error("Fetch messages error:", err);
       }
     }
-    fetchMessages();
-  }, [user]);
+
+    if (session?.user?.email && user?.email) fetchMessages();
+  }, [user, session]);
 
   // 🔹 Send message
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
-
     const messageObj = {
       to: user.email,
-      from: session?.user?.email,  // logged in user
-      to: user.email,
+      from: session?.user?.email,
       message: newMessage,
       time: new Date().toISOString(),
+      deleted: false,
     };
-
-    // const messageObj = {
-    //   to: user.email,
-    //   message: newMessage,
-    //   time: new Date().toISOString(),
-    // };
 
     setMessages((prev) => [...prev, messageObj]);
     setNewMessage("");
@@ -52,10 +50,27 @@ export default function ChatPopup({ user, onClose }) {
     });
   };
 
-  // 🔹 Scroll to bottom when message updates
+  // 🔹 Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // 🔹 Delete for everyone
+  const deleteMessage = async (msgId) => {
+    try {
+      await fetch("/api/messagesDelete", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: msgId }),
+      });
+
+      setMessages((prev) =>
+        prev.map((m) => (m._id === msgId ? { ...m, deleted: true } : m))
+      );
+    } catch (err) {
+      console.error("Delete message failed:", err);
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -66,7 +81,7 @@ export default function ChatPopup({ user, onClose }) {
         transition={{ duration: 0.25 }}
         className="fixed bottom-20 right-20 w-80 h-[40vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col z-50"
       >
-        {/* 🔹 Header */}
+        {/* Header */}
         <div className="flex items-center justify-between px-3 py-2 bg-[#c45627] text-white">
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -78,7 +93,9 @@ export default function ChatPopup({ user, onClose }) {
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold">{user?.userName || "Unknown"}</h3>
+              <h3 className="text-sm font-semibold">
+                {user?.userName || "Unknown"}
+              </h3>
               <p className="text-xs text-white/80">Active now</p>
             </div>
           </div>
@@ -91,7 +108,7 @@ export default function ChatPopup({ user, onClose }) {
           </button>
         </div>
 
-        {/* 🔹 Messages area */}
+        {/* Messages */}
         <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-gray-50">
           {messages.length === 0 ? (
             <p className="text-center text-gray-400 text-sm mt-10">
@@ -99,20 +116,36 @@ export default function ChatPopup({ user, onClose }) {
             </p>
           ) : (
             messages.map((msg, idx) => {
-              const isMine = msg.to === user.email;
+              const isMine = msg.from === session?.user?.email;
               return (
                 <div
                   key={idx}
-                  className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                  className={`flex ${isMine ? "justify-end" : "justify-start"} items-center`}
                 >
                   <div
-                    className={`px-3 py-2 max-w-[75%] rounded-2xl text-sm shadow-sm ${isMine
+                    className={`px-3 py-2 max-w-[75%] rounded-2xl text-sm shadow-sm ${
+                      isMine
                         ? "bg-[#c45627] text-white rounded-br-none"
                         : "bg-white border border-gray-200 text-gray-800 rounded-bl-none"
-                      }`}
+                    }`}
                   >
-                    {msg.message}
+                    {msg.deleted ? (
+                      <em className="text-gray-400 italic text-sm">
+                        This message was deleted
+                      </em>
+                    ) : (
+                      msg.message
+                    )}
                   </div>
+
+                  {isMine && !msg.deleted && (
+                    <button
+                      onClick={() => deleteMessage(msg._id)}
+                      className="ml-1 text-red-500 hover:text-red-700"
+                    >
+                      X
+                    </button>
+                  )}
                 </div>
               );
             })
@@ -120,8 +153,8 @@ export default function ChatPopup({ user, onClose }) {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* 🔹 Typing input */}
-        <div className="flex items-center gap-2 px-3 py-2  bg-white">
+        {/* Input */}
+        <div className="flex items-center gap-2 px-3 py-2 bg-white">
           <input
             type="text"
             placeholder="Aa"
@@ -141,4 +174,3 @@ export default function ChatPopup({ user, onClose }) {
     </AnimatePresence>
   );
 }
-

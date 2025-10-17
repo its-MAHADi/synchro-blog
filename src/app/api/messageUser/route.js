@@ -1,31 +1,55 @@
 import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
-export async function GET(req) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(req.url);
-    const emailsParam = searchParams.get("emails");
+    const session = await getServerSession(authOptions);
 
-    if (!emailsParam) {
+    // 🔹 Check if logged in
+    if (!session || !session.user?.email) {
       return new Response(
-        JSON.stringify({ success: false, message: "No emails provided" }),
-        { status: 400 }
+        JSON.stringify({ success: false, message: "Unauthorized" }),
+        { status: 401 }
       );
     }
 
-    // 🔹 Split all comma-separated emails and clean spaces
-    const emails = emailsParam.split(",").map((e) => e.trim());
+    const currentUserEmail = session.user.email;
 
+    // ✅ Connect DB
     const usersCollection = await dbConnect(collectionNameObj.usersCollection);
 
-    // 🔹 Find all users whose email exists in this array
-    const users = await usersCollection
-      .find({ email: { $in: emails } })
-      .project({ name: 1, email: 1, image: 1, role: 1, _id: 0 })
-      .toArray();
+    // 🔹 Find current user and get following emails
+    const currentUser = await usersCollection.findOne(
+      { email: currentUserEmail },
+      { projection: { following: 1, _id: 0 } }
+    );
 
-    return new Response(JSON.stringify(users), { status: 200 });
-  } catch (err) {
-    console.error("API Error (/api/messageUser):", err);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500 });
+    if (!currentUser) {
+      return new Response(
+        JSON.stringify({ success: false, message: "User not found" }),
+        { status: 404 }
+      );
+    }
+
+    const followingEmails = currentUser.following || [];
+
+    // 🔹 If no following, return empty array
+    if (followingEmails.length === 0) {
+      return new Response(JSON.stringify([]), { status: 200 });
+    }
+
+    // 🔹 Get all followed users FULL DATA
+    const followedUsers = await usersCollection
+      .find({ email: { $in: followingEmails } })
+      .toArray(); // ⬅️ পুরো ডেটা নিচ্ছে (projection নাই)
+
+    return new Response(JSON.stringify(followedUsers), { status: 200 });
+  } catch (error) {
+    console.error("API Error (/api/messageUser):", error);
+    return new Response(
+      JSON.stringify({ success: false, error: error.message }),
+      { status: 500 }
+    );
   }
 }

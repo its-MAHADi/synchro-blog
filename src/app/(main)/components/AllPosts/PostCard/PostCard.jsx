@@ -34,7 +34,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [loadingComments, setLoadingComments] = useState(false);
-
+    console.log(usersData.following)
     const [newComment, setNewComment] = useState("");
     // ⭐ EDIT STATE: The ID of the comment being edited and its text
     const [editingCommentId, setEditingCommentId] = useState(null);
@@ -86,6 +86,9 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
             fetchComments();
         }
     }, [modalOpen]);
+
+
+
 
     // 🟢 Handler to START editing a comment
     const handleStartEdit = (comment) => {
@@ -328,6 +331,16 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         }
     }, [session, postData?.followers, postData?.author_email]);
 
+    // Check follow status considering usersData.following
+    useEffect(() => {
+        if (session?.user?.email && postData?.author_email) {
+            const followingStatus = usersData.following?.some(
+                (email) => email.toLowerCase() === postData.author_email.toLowerCase()
+            );
+            setIsFollowing(followingStatus);
+        }
+    }, [session, postData?.author_email, usersData.following]);
+
     // Handle follow
     const handleFollow = async () => {
         if (!session) return;
@@ -356,13 +369,23 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 <div className="-space-y-1">
                     <div className="flex items-center gap-2">
                         <p className="text-gray-900 font-medium">{authorName}</p>
+
                         {session?.user?.email !== postData.author_email && (
-                            <button
-                                onClick={handleFollow}
-                                className="text-blue-600 cursor-pointer text-xs font-bold"
-                            >
-                                {isFollowing ? "Following" : "Follow"}
-                            </button>
+                            isFollowing ? (
+                                <button
+                                    onClick={handleFollow}
+                                    className="text-blue-600 cursor-pointer text-xs font-bold"
+                                >
+                                    Following
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleFollow}
+                                    className="text-blue-600 cursor-pointer text-xs font-bold"
+                                >
+                                    Follow
+                                </button>
+                            )
                         )}
                     </div>
                     <small className="text-gray-500 text-xs">{fbTime}</small>

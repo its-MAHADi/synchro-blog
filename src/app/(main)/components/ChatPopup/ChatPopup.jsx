@@ -2,13 +2,14 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send } from "lucide-react";
+import { X, Send, Circle } from "lucide-react";
 
 export default function ChatPopup({ user, onClose }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
+  // 🔹 Fetch messages from backend
   useEffect(() => {
     async function fetchMessages() {
       try {
@@ -22,14 +23,24 @@ export default function ChatPopup({ user, onClose }) {
     fetchMessages();
   }, [user]);
 
+  // 🔹 Send message
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
+
     const messageObj = {
+      to: user.email,
+      from: session?.user?.email,  // logged in user
       to: user.email,
       message: newMessage,
       time: new Date().toISOString(),
     };
+
+    // const messageObj = {
+    //   to: user.email,
+    //   message: newMessage,
+    //   time: new Date().toISOString(),
+    // };
 
     setMessages((prev) => [...prev, messageObj]);
     setNewMessage("");
@@ -41,6 +52,7 @@ export default function ChatPopup({ user, onClose }) {
     });
   };
 
+  // 🔹 Scroll to bottom when message updates
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -52,67 +64,81 @@ export default function ChatPopup({ user, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.95 }}
         transition={{ duration: 0.25 }}
-        className="fixed bottom-20 right-20  h-[50vh] w-80 bg-white/90 backdrop-blur-lg border border-gray-200 shadow-2xl rounded-2xl overflow-hidden z-50 flex flex-col"
+        className="fixed bottom-20 right-20 w-80 h-[40vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col z-50"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#e2652fd2] text-white">
+        {/* 🔹 Header */}
+        <div className="flex items-center justify-between px-3 py-2 bg-[#c45627] text-white">
           <div className="flex items-center gap-2">
-            <img
-              src={user?.image || "https://i.pravatar.cc/100"}
-              alt="avatar"
-              className="w-8 h-8 rounded-full border border-white/40"
-            />
-            <h3 className="font-semibold text-sm">{user?.userName || "Unknown"}</h3>
+            <div className="relative">
+              <img
+                src={user?.image || "https://i.pravatar.cc/100"}
+                alt="avatar"
+                className="w-8 h-8 rounded-full"
+              />
+              <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold">{user?.userName || "Unknown"}</h3>
+              <p className="text-xs text-white/80">Active now</p>
+            </div>
           </div>
+
           <button
             onClick={onClose}
             className="hover:bg-white/20 p-1 rounded-md transition"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2 h-64 bg-white">
+        {/* 🔹 Messages area */}
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-gray-50">
           {messages.length === 0 ? (
             <p className="text-center text-gray-400 text-sm mt-10">
-              No messages yet. Start the conversation 👋
+              No messages yet. Start chatting 👋
             </p>
           ) : (
-            messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`max-w-[80%] p-2 rounded-xl text-sm break-words ${
-                  msg.to === user.email
-                    ? "bg-[#c45627] text-white ml-auto"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {msg.message}
-              </div>
-            ))
+            messages.map((msg, idx) => {
+              const isMine = msg.to === user.email;
+              return (
+                <div
+                  key={idx}
+                  className={`flex ${isMine ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`px-3 py-2 max-w-[75%] rounded-2xl text-sm shadow-sm ${isMine
+                        ? "bg-[#c45627] text-white rounded-br-none"
+                        : "bg-white border border-gray-200 text-gray-800 rounded-bl-none"
+                      }`}
+                  >
+                    {msg.message}
+                  </div>
+                </div>
+              );
+            })
           )}
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
+        {/* 🔹 Typing input */}
         <div className="flex items-center gap-2 px-3 py-2  bg-white">
           <input
             type="text"
-            placeholder="Type a message..."
+            placeholder="Aa"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 p-2 border border-[#c4562759] rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-[#c45627]"
+            className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#c45627]"
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
             onClick={sendMessage}
-            className="p-2 bg-[#c45627] hover:bg-blue-600 text-white rounded-xl transition"
+            className="p-2 bg-[#c45627] hover:bg-[#a3431c] text-white rounded-full transition"
           >
-            <Send size={18} />
+            <Send size={16} />
           </button>
         </div>
       </motion.div>
     </AnimatePresence>
   );
 }
+

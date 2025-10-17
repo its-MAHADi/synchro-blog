@@ -1,5 +1,3 @@
-import Footer from "@/app/(main)/components/footer/Footer";
-import Navbar from "@/app/(main)/components/Navbar/Navbar";
 import SignupFrom from "./componants/SignUpForm";
 
 
@@ -11,9 +9,9 @@ export const metadata = {
 export default function SignUpPage() {
   return (
     <div>
-      <Navbar />
+     
       <SignupFrom />
-      <Footer />
+      
     </div>
   );
 }

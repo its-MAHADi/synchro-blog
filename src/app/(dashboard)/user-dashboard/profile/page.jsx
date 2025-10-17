@@ -75,8 +75,8 @@ export default function Profile() {
         const defaultDetails = {};
 
         // Set Bio
-        setBio(bioData?.user?.bio || "No bio added yet.");
-        setTempBio(bioData?.user?.bio || "No bio added yet.");
+        // setBio(bioData?.user?.bio || "No bio added yet.");
+        // setTempBio(bioData?.user?.bio || "No bio added yet.");
 
         // Set Posts
         setPosts(postsData?.posts || []);

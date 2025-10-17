@@ -289,14 +289,14 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  href="/login"
+                  href="/sign-in"
                   className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
                   onClick={() => setOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
-                  href="/register"
+                  href="/sign-up"
                   className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
                   onClick={() => setOpen(false)}
                 >

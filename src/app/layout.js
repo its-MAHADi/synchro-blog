@@ -3,6 +3,7 @@ import "./globals.css";
 import NextProvider from "@/Provider/NextProvider";
 import "react-toastify/dist/ReactToastify.css";
 import { MessageProvider } from "./contexts/MessageContext";
+import { ChatPopupProvider } from "./contexts/ChatsContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
       >
         <NextProvider>
           <MessageProvider>
-          {children}
+            <ChatPopupProvider>
+              {children}
+            </ChatPopupProvider>
           </MessageProvider>
         </NextProvider>
 

@@ -11,10 +11,13 @@ import { useState } from "react";
 import { Bot, X } from "lucide-react";
 import MessageWithUser from "./components/MessageBar/MessageWithUser";
 import { useSession } from "next-auth/react";
+import { ChatPopupProvider, useChatPopup } from "../contexts/ChatsContext";
+import ChatPopup from "./components/ChatPopup/ChatPopup";
 
 
 function MainContent({ children }) {
   const { showNotificationBar, showMessageBar } = useMessage();
+
   const { data: session } = useSession();
   const currentUser = session?.user?.email
   // এখন শুধু notification sidebar থাকবে (AI chat popup হবে)
@@ -41,7 +44,7 @@ function MainContent({ children }) {
       <AnimatePresence mode="wait">
         {/* message */}
         {activeSidebar === "message" && (<motion.aside key="messagebar" initial={{ x: 400, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 400, opacity: 0 }} transition={{ duration: 0.4, ease: "easeInOut" }} className="w-[35%] sticky top-[90px] h-fit bg-white shadow-md rounded-xl overflow-y-auto" >
-          <MessageWithUser currentUser={currentUser}/>
+          <MessageWithUser currentUser={currentUser} />
         </motion.aside>)}
 
         {/* notification */}
@@ -66,7 +69,7 @@ function MainContent({ children }) {
 /* ✅ Floating Chat Button + Popup Chat */
 function FloatingChatPopup() {
   const [openChat, setOpenChat] = useState(false);
-
+  const { openPopupUser, closePopup } = useChatPopup();
   return (
     <>
       {/* Chat Floating Button */}
@@ -103,8 +106,11 @@ function FloatingChatPopup() {
 
             {/* Chat Body */}
             <div className="flex-1 overflow-hidden">
+
               <MessageBar />
             </div>
+           
+
           </motion.div>
         )}
       </AnimatePresence>
@@ -117,25 +123,29 @@ export default function MainLayout({ children }) {
   return (
     <NextProvider>
       <MessageProvider>
-        <div className="relative min-h-screen">
-          {/* Navbar */}
-          <header className="sticky top-0 z-50 bg-white shadow-sm">
-            <Navbar />
-          </header>
+        <ChatPopupProvider>
+          <div className="relative min-h-screen">
+            {/* Navbar */}
+            <header className="sticky top-0 z-50 bg-white shadow-sm">
+              <Navbar />
+            </header>
 
-          {/* Main Content */}
-          <div className="max-w-11/12 mx-auto min-h-[calc(100vh-4.33px)]">
-            <MainContent>{children}</MainContent>
+            {/* Main Content */}
+            <div className="max-w-11/12 mx-auto min-h-[calc(100vh-4.33px)]">
+              <MainContent>{children}</MainContent>
+            </div>
+
+            {/* Footer */}
+            <footer className="bg-white border-t border-gray-200 mt-10">
+              <Footer />
+            </footer>
+
+            {/* 💬 Floating Chat Button + Popup */}
+               
+            <FloatingChatPopup />
+           
           </div>
-
-          {/* Footer */}
-          <footer className="bg-white border-t border-gray-200 mt-10">
-            <Footer />
-          </footer>
-
-          {/* 💬 Floating Chat Button + Popup */}
-          <FloatingChatPopup />
-        </div>
+        </ChatPopupProvider>
       </MessageProvider>
     </NextProvider>
   );

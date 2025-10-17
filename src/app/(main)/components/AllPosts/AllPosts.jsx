@@ -47,8 +47,8 @@ const AllPosts = async () => {
   const session = await getServerSession(authOptions);
   const email = session?.user?.email;
 
-  const usersData = await getUserByEmail();
-
+  const usersData = await getUserByEmail(email);
+// console.log(usersData)
   const postsData = await getAllPosts();
   const sortedPosts = postsData.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)

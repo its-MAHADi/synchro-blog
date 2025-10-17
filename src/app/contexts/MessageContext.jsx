@@ -10,10 +10,10 @@ export const MessageProvider = ({ children }) => {
   const toggleMessageBar = () => setShowMessageBar((prev) => !prev);
   const toggleNotificationBar = () => setShowNotificationBar((prev) => !prev);
   const closeMessageBar = () => setShowMessageBar(false);
-  const closesNotificationBar = () => setShowNotificationBar(false);
+  const closesNotificationBar = () => setShowNotificationBar(false); 
 
   return (
-    <MessageContext.Provider value={{ showMessageBar,showNotificationBar, toggleMessageBar, toggleNotificationBar, closeMessageBar, closesNotificationBar}}>
+    <MessageContext.Provider value={{ showMessageBar ,showNotificationBar, toggleMessageBar, toggleNotificationBar, closeMessageBar, closesNotificationBar}}>
       {children}
     </MessageContext.Provider>
   );

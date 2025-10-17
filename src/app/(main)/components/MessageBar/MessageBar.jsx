@@ -1,122 +1,162 @@
 "use client";
+import { useSession } from "next-auth/react";
+import React, { useState, useRef, useEffect } from "react";
+import { IoIosSend } from "react-icons/io";
 
-import { useState } from "react";
-import { Search, Circle, MessageSquare, MoreVertical } from "lucide-react";
+const MessageBar = () => {
+  const { data: session } = useSession();
+  const user_image = session?.user?.image || "/defult_profile.jpg";
 
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+    {
+      role: "assistant",
+      content:
+        "Hello! I'm your AI assistant. Ask me about blog post ideas, the AI blog website, or future plans.",
+    },
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const chatRef = useRef(null);
+  const primaryColor = "#c45627";
 
-const dummyChats = [
-  {
-    id: 1,
-    name: "Mahadi Hasan",
-    img: "https://i.pravatar.cc/150?img=1",
-    message: "Hey! How’s your project going?",
-    time: "2m",
-    active: true,
-  },
-  {
-    id: 2,
-    name: "Ariyan Chowdhury",
-    img: "https://i.pravatar.cc/150?img=5",
-    message: "Let’s play eFootball tonight ⚽",
-    time: "10m",
-    active: true,
-  },
-  {
-    id: 3,
-    name: "Sadia Noor",
-    img: "https://i.pravatar.cc/150?img=6",
-    message: "I’ll send the files soon!",
-    time: "1h",
-    active: false,
-  },
-  {
-    id: 4,
-    name: "Farhan Rafi",
-    img: "https://i.pravatar.cc/150?img=3",
-    message: "Check your inbox please.",
-    time: "3h",
-    active: false,
-  },
-  {
-    id: 5,
-    name: "Tuhin Rahman",
-    img: "https://i.pravatar.cc/150?img=9",
-    message: "Bro, nice UI design 🔥",
-    time: "5h",
-    active: false,
-  },
-];
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [messages, isLoading]);
 
-export default function MessageBar() {
-  const [search, setSearch] = useState("");
+  // Send message to API
+  const sendMessage = async () => {
+    if (!input.trim() || isLoading) return;
 
-  const filteredChats = dummyChats.filter((chat) =>
-    chat.name.toLowerCase().includes(search.toLowerCase())
-  );
- 
-  return (
-    <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <MessageSquare className="text-[#c45627]" size={20} />
-          Chats
-        </h2>
-        <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
-      </div>
+    const userMessage = { role: "user", content: input.trim() };
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
+    setIsLoading(true);
 
-      {/* Search */}
-      <div className="relative mb-4">
-        <Search
-          size={16}
-          className="absolute top-3 left-3 text-gray-400"
-        />
-        <input
-          type="text"
-          placeholder="Search chats..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:outline-none focus:border-[#c45627]"
-        />
-      </div>
+    try {
+      const res = await fetch("/api/ai-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage.content }),
+      });
 
-      {/* Chat List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-2">
-        {filteredChats.map((chat) => (
-          <div
-            key={chat.id}
-            className="flex items-center justify-between hover:bg-gray-100 transition-all cursor-pointer p-2 rounded-xl"
-          >
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <img
-                  src={chat.img}
-                  alt={chat.name}
-                 
-                  className="rounded-full border w-10 h-10 border-gray-200"
-                />
-                {chat.active && (
-                  <span className="absolute bottom-1 right-1 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
-                )}
-              </div>
+      const data = await res.json();
+      const aiMessage = {
+        role: "assistant",
+        content: data.reply || "Sorry, no reply from AI.",
+      };
+      setMessages((prev) => [...prev, aiMessage]);
+    } catch (error) {
+      console.error(error);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Error: Could not get AI response." },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-              <div className="flex flex-col">
-                <h3 className="text-sm font-medium text-gray-800">{chat.name}</h3>
-                <p className="text-xs text-gray-500 truncate w-[160px]">
-                  {chat.message}
-                </p>
-              </div>
-            </div>
-            <span className="text-[10px] text-gray-400">{chat.time}</span>
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") sendMessage();
+  };
+
+  // Single message bubble
+  const Message = ({ msg }) => {
+    const isUser = msg.role === "user";
+    return (
+      <div className={`flex mb-5 ${isUser ? "justify-end" : "justify-start"}`}>
+        {/* Assistant avatar */}
+        {!isUser && (
+          <div className="flex w-8">
+            <img className="w-full h-8 rounded-full mr-2 flex-shrink-0 self-start" src="/main_logo.png" alt="ai" />
+            <h2 className="text-xs mt-1 font-bold">SYNCHRO</h2>
           </div>
-        ))}
 
-        {filteredChats.length === 0 && (
-          <p className="text-center text-sm text-gray-400 mt-8">
-            No chats found 😢
-          </p>
         )}
+
+        {/* Message bubble */}
+        <div
+          className={`mx-2 px-4 py-2 mt-8 border border-gray-300 rounded-2xl max-w-xs md:max-w-md ${isUser
+            ? "text-white rounded-br-none"
+            : "text-gray-800 rounded-bl-none"
+            }`}
+          style={{ backgroundColor: isUser ? primaryColor : "#f0f0f0" }}
+        >
+          {msg.content}
+        </div>
+
+        {/* User avatar */}
+        {isUser && (
+          <img
+            src={user_image}
+            alt="User"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        )}
+      </div>
+    );
+  };
+
+  // Typing indicator
+  const Typing = () => (
+    <div className="flex items-end mb-3">
+      <img className="w-8 h-8 rounded-full mr-2 flex-shrink-0 self-start" src="/main_logo.png" alt="ai" />
+      <div className="px-4 py-2 rounded-2xl bg-gray-100 rounded-bl-none flex gap-1">
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></span>
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce delay-150"></span>
+        <span className="h-2 w-2 bg-gray-400 rounded-full animate-bounce delay-300"></span>
       </div>
     </div>
   );
-}
+
+  return (
+    <div className="flex flex-col max-w-2xl mx-auto h-[50vh] rounded-2xl shadow-lg bg-gray-50">
+      {/* Header */}
+      <div className="p-4 border-b border-gray-300 flex items-center">
+        <img src="/main_logo.png" className="w-10 h-10 rounded-full" alt="ai-assistant" />
+        <div className="ml-3">
+          <h2 className="font-bold text-md text-gray-800">SYNCHRO</h2>
+          <p className="text-sm text-green-500 flex items-center">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>{" "}
+            Online
+          </p>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div ref={chatRef} className="flex-1 p-4 overflow-y-auto bg-orange-50">
+        {messages.map((m, i) => (
+          <Message key={i} msg={m} />
+        ))}
+        {isLoading && <Typing />}
+      </div>
+
+      {/* Input */}
+      <div className="p-4 border-t border-gray-200 flex gap-3 bg-gray-50">
+        <input
+          type="text"
+          placeholder="Type your message..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={isLoading}
+          className="flex-1 border rounded-full px-4 py-2 focus:outline-none "
+          style={{ borderColor: primaryColor }}
+        />
+        <button
+          onClick={sendMessage}
+          disabled={isLoading || !input.trim()}
+          className="text-white w-12 h-12 rounded-full flex items-center justify-center hover:opacity-90 disabled:opacity-50"
+          style={{ backgroundColor: primaryColor }}
+        >
+          <IoIosSend size={22} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default MessageBar;

@@ -21,7 +21,7 @@ const Navbar = () => {
   // Navbar component এর state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-
+  // console.log(session?.user.role)
   // Example dummy user data, তোমার API দিয়ে fetch করতে পারবে
   const users = [
     { id: 1, name: "Sudipto Mahadi" },
@@ -144,7 +144,7 @@ const Navbar = () => {
               </Link>
             </li> */}
             <li>
-              <Link href="/user-dashboard" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
+              <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
                 ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
@@ -174,6 +174,7 @@ const Navbar = () => {
                   </Link>
                 </div>
                 :
+                // massage bar and notification bar
                 <div className="flex items-center gap-2">
                   <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
                     <RiMessengerLine

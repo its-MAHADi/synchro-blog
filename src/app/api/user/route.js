@@ -2,7 +2,7 @@ import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
 
 export async function GET(req) {
   try {
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = new URL(req.url); 
     const email = searchParams.get("email");
 
     const usersCollection = await dbConnect(collectionNameObj.usersCollection);

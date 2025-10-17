@@ -55,7 +55,7 @@ export default function Profile() {
     read_time: "",
   });
 
-    const hasChanges = JSON.stringify(details) !== JSON.stringify(tempDetails);
+  const hasChanges = JSON.stringify(details) !== JSON.stringify(tempDetails);
 
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -331,8 +331,8 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <p className="text-center mt-10 text-xl text-[#c45627]">
-        Loading Profile... 🚀
+      <p className="text-center mt-10 text-xl text-[#c45627] min-h-screen flex justify-center items-center">
+        <span className="loading loading-spinner loading-xl"></span>
       </p>
     );
   }
@@ -450,20 +450,33 @@ export default function Profile() {
               <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>add location</span></div>
             }
           </div>
-          {details?.skills && (
-            <div className="mt-5 border-t pt-4">
-              <h4 className="font-semibold text-gray-900 mb-2 text-sm">Skills</h4>
-              <div className="flex flex-wrap gap-2">
-                {/* Ensure internal access is safe, too, though the outer check helps */}
-                {typeof details.skills === 'string' &&
-                  details.skills.split(',').map((skill, i) => (
-                    skill.trim() && <span key={i} className="px-3 py-1 text-xs bg-orange-50 text-[#c45627] rounded-full border border-orange-200">
-                      {skill.trim()}
+          {details?.skills && (() => {
+            // Convert skills to a clean array safely
+            const skillsArray = Array.isArray(details.skills)
+              ? details.skills.map(s => s.trim()).filter(Boolean)
+              : typeof details.skills === "string"
+                ? details.skills.split(",").map(s => s.trim()).filter(Boolean)
+                : [];
+
+            // Only render if there’s at least one valid skill
+            return skillsArray.length > 0 ? (
+              <div className="mt-5 border-t pt-4">
+                <h4 className="font-semibold text-gray-900 mb-2 text-sm">Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {skillsArray.map((skill, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 text-xs bg-orange-50 text-[#c45627] rounded-full border border-orange-200"
+                    >
+                      {skill}
                     </span>
                   ))}
+                </div>
               </div>
-            </div>
-          )}
+            ) : null;
+          })()}
+
+
           <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">
             {details?.contact_email ? <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div> :
               <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>add email</span></div>
@@ -488,9 +501,9 @@ export default function Profile() {
           >
             Edit Details
           </button>
-        {/* </div> */}
+          {/* </div> */}
         </div>
-        
+
 
         {/* RIGHT: POSTS */}
         <div className="lg:col-span-8 space-y-6">
@@ -673,7 +686,7 @@ export default function Profile() {
                     type="text"
                     value={tempDetails.skills || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
-                    placeholder="React, Node.js, Next.js"
+                    placeholder="Write your skills"
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
                   />
                 </div>

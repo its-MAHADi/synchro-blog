@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { FaHeart } from "react-icons/fa";
 import {
-  Camera, Settings, Briefcase, GraduationCap, MapPin,
-  MessageCircle, Share2, Heart, UserPlus, Languages, Globe, Mail, X,
+  Briefcase,
+  Camera, Globe, GraduationCap, Languages, Mail, MapPin, X,
 } from "lucide-react";
 import { BsPostcard } from "react-icons/bs";
 import { SlUserFollowing } from "react-icons/sl";
@@ -31,10 +31,9 @@ const formatFacebookDate = (dateString) => {
 };
 
 export default function Profile() {
-  // const { data: session } = useSession();
-  const { data: session, update } = useSession();
-  // --- States ---
-  // All state declarations are moved to the top for clarity and to prevent scope issues.
+
+  const { data: session } = useSession();
+
   const [posts, setPosts] = useState([]);
   const [bio, setBio] = useState("");
   const [tempBio, setTempBio] = useState("");
@@ -46,20 +45,171 @@ export default function Profile() {
   const [tempDetails, setTempDetails] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // --- Derived State ---
-  // Check if any changes were made in the modal
-  const hasChanges = JSON.stringify(details) !== JSON.stringify(tempDetails);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [editFormData, setEditFormData] = useState({
+    blog_title: "",
+    description: "",
+    featured_image: "",
+    tags: "",
+    read_time: "",
+  });
 
-  // ============= FETCH BIO, POSTS, AND DETAILS =============
+    const hasChanges = JSON.stringify(details) !== JSON.stringify(tempDetails);
+
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("default");
+
+  // ===== EDIT POST HANDLERS =====
+  const handleEditPost = (post) => {
+    setSelectedPost(post);
+    setEditFormData({
+      blog_id: post._id,
+      blog_title: post.blog_title || "",
+      description: post.description || "",
+      featured_image: post.featured_image || "",
+      tags: post.tags || "",
+      read_time: post.read_time || "",
+    });
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveEditedPost = async () => {
+    if (!selectedPost?._id) return;
+    const confirm = await Swal.fire({
+      title: "Update this post?",
+      text: "Your changes will be saved permanently.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update it!",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#c45627",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await fetch(`/api/edit-single-post`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          blog_id: selectedPost._id,
+          blog_title: editFormData.blog_title,
+          description: editFormData.description,
+          featured_image: editFormData.featured_image,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Post Updated!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+        setPosts((prev) =>
+          prev.map((p) =>
+            p._id === selectedPost._id ? { ...p, ...editFormData } : p
+          )
+        );
+
+        setIsEditModalOpen(false);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to update",
+          text: data.message || "Something went wrong.",
+        });
+      }
+    } catch (err) {
+      console.error("Error updating post:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Network Error",
+        text: "Unable to update post right now.",
+      });
+    }
+  };
+
+  // ===== DELETE POST =====
+  const handleDeletePost = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "This post will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#c45627",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await fetch(`/api/delete-single-post?id=${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Your post has been removed.",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+
+        setPosts((prev) => prev.filter((p) => p._id !== id));
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to delete",
+          text: data.message || "Something went wrong.",
+        });
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "Network Error",
+        text: "Unable to delete post right now.",
+      });
+    }
+  };
+
+  // ===== SEARCH & SORT =====
+  const filteredPosts = posts
+    .filter(
+      (post) =>
+        post.blog_title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        post.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortOption === "newest") return new Date(b.created_at) - new Date(a.created_at);
+      if (sortOption === "oldest") return new Date(a.created_at) - new Date(b.created_at);
+      if (sortOption === "title-asc") return a.blog_title.localeCompare(b.blog_title);
+      if (sortOption === "title-desc") return b.blog_title.localeCompare(a.blog_title);
+      return 0;
+    });
+
+  // ===== FETCH USER DATA =====
   useEffect(() => {
     if (!session?.user?.email) return;
-
     const fetchData = async () => {
       setLoading(true);
       try {
         const email = session.user.email;
-
-        // ✅ FIXED: Corrected API endpoints
         const [bioRes, postsRes, detailsRes] = await Promise.all([
           fetch(`/api/edit-bio?email=${email}`),
           fetch(`/api/get-user-posts?email=${email}`),
@@ -70,43 +220,21 @@ export default function Profile() {
         const postsData = await postsRes.json();
         const detailsData = await detailsRes.json();
 
-        // Define a safe default object for details
-        const defaultDetails = {};
-
-        // Set Bio
         setBio(bioData?.user?.bio || "No bio added yet.");
         setTempBio(bioData?.user?.bio || "No bio added yet.");
-
-        // Set Posts
         setPosts(postsData?.posts || []);
-
-        // Set Details
-        // 🚀 FIX: Use detailsData.user if available, otherwise fall back to a safe empty object.
-        if (detailsData.success && detailsData.user) {
-          setDetails(detailsData.user);
-          setTempDetails(detailsData.user);
-        } else {
-          // This is the critical change: ensure setDetails is called with a default object
-          // when data is missing, instead of leaving it undefined or null.
-          setDetails(defaultDetails);
-          setTempDetails(defaultDetails);
-          console.warn("User details not found:", detailsData.message);
-        }
+        setDetails(detailsData?.user || {});
+        setTempDetails(detailsData?.user || {});
       } catch (err) {
         console.error("Failed to fetch profile data:", err);
-        // Ensure details state is set to a safe object on fetch error as well
-        setDetails({});
-        setTempDetails({});
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [session?.user?.email]);
 
-
-  // ============= SAVE BIO =============
+  // ===== EDIT BIO =====
   const handleSaveBio = async () => {
     try {
       const res = await fetch("/api/edit-bio", {
@@ -118,9 +246,7 @@ export default function Profile() {
         }),
       });
       const data = await res.json();
-      if (data.success) {
-        setBio(tempBio.trim());
-      }
+      if (data.success) setBio(tempBio.trim());
     } catch (err) {
       console.error(err);
     } finally {
@@ -203,8 +329,6 @@ export default function Profile() {
   };
 
 
-  // --- RENDER LOGIC ---
-
   if (loading) {
     return (
       <p className="text-center mt-10 text-xl text-[#c45627]">
@@ -213,9 +337,10 @@ export default function Profile() {
     );
   }
 
+  // ===== MAIN RENDER =====
   return (
     <div className="min-h-screen md:mt-16 bg-gradient-to-br from-orange-50 via-amber-50 to-red-50">
-      {/* ========== Header ========== */}
+      {/* HEADER */}
       <div className="relative w-full shadow-md">
         <div className="h-40 sm:h-60 relative bg-gray-200">
           {coverImage ? (
@@ -270,18 +395,18 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Post Field */}
+      {/* POST FIELD */}
       <div className="max-w-6xl mx-auto px-4 mt-4">
         <PostField />
       </div>
 
-      {/* ========== Main Layout ========== */}
+      {/* MAIN CONTENT */}
       <main className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left: About */}
-        <div className="lg:col-span-4 bg-white rounded-2xl shadow-lg p-5 border border-orange-100 self-start lg:sticky top-18 ">
+        {/* LEFT: ABOUT */}
+        <div className="lg:col-span-4 bg-white rounded-2xl shadow-lg p-5 border border-orange-100 self-start lg:sticky top-18">
           <h3 className="text-lg font-bold text-gray-900 mb-3">About</h3>
 
-          {/* Bio */}
+          {/* BIO */}
           {!isEditing ? (
             <>
               <p className="text-gray-600 text-sm whitespace-pre-line">{bio}</p>
@@ -300,33 +425,31 @@ export default function Profile() {
                 onChange={(e) => setTempBio(e.target.value)}
               />
               <div className="flex gap-2 mt-3">
-                <button onClick={handleCancelBio} className="w-1/2 border rounded-lg py-2 text-gray-600 hover:bg-gray-100">
-                  Cancel
-                </button>
+                <button onClick={handleCancelBio} className="w-1/2 border rounded-lg py-2 text-gray-600 hover:bg-gray-100">Cancel</button>
                 <button
                   onClick={handleSaveBio}
                   disabled={tempBio.trim() === bio.trim()}
-                  className={`w-1/2 rounded-lg py-2 text-white transition ${tempBio.trim() === bio.trim()
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#c45627] hover:bg-[#a9471c]"
-                    }`}
+                  className={`w-1/2 rounded-lg py-2 text-white transition ${tempBio.trim() === bio.trim() ? "bg-gray-300 cursor-not-allowed" : "bg-[#c45627] hover:bg-[#a9471c]"}`}
                 >
                   Save
                 </button>
               </div>
             </>
           )}
-
-          {/* Details */}
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {/* FIX: Use details?.work instead of details.work */}
-            {details?.work && <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div>}
-            {details?.education && <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>}
-            {details?.location && <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>}
+            {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div> :
+              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>add work</span></div>
+            }
+            {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>
+              :
+              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>add education</span></div>
+            }
+            {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>
+              :
+              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>add location</span></div>
+            }
           </div>
-
-          {/* Skills - Correctly handling string splitting */}
-          {/* FIX: Use details?.skills in the outer check */}
           {details?.skills && (
             <div className="mt-5 border-t pt-4">
               <h4 className="font-semibold text-gray-900 mb-2 text-sm">Skills</h4>
@@ -341,13 +464,22 @@ export default function Profile() {
               </div>
             </div>
           )}
-
-          {/* --- Contact Info --- */}
           <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">
-            {details?.contact_email && <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div>}
-            {details?.contact_number && <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>{details.contact_number}</span></div>}
-            {details?.website && <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>}
-            {details?.languages && <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>{details.languages}</span></div>}
+            {details?.contact_email ? <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div> :
+              <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>add email</span></div>
+            }
+            {details?.contact_number ? <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>{details.contact_number}</span></div>
+              :
+              <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>add number</span></div>
+            }
+            {details?.website ? <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>
+              :
+              <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a className="text-blue-600 hover:underline">https://example.com</a></div>
+            }
+            {details?.languages ? <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>{details?.languages}</span></div>
+              :
+              <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>add language</span></div>
+            }
           </div>
 
           <button
@@ -356,14 +488,41 @@ export default function Profile() {
           >
             Edit Details
           </button>
+        {/* </div> */}
         </div>
+        
 
-        {/* Right: Posts */}
+        {/* RIGHT: POSTS */}
         <div className="lg:col-span-8 space-y-6">
-          {posts.length === 0 ? (
-            <div className="text-center text-gray-500 bg-white p-10 rounded-xl shadow-sm">No posts to display.</div>
+          {/* SEARCH & SORT */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
+            <input
+              type="text"
+              placeholder="Search posts..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full sm:w-1/2 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#c45627] outline-none"
+            />
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="w-full sm:w-1/4 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#c45627] outline-none bg-white"
+            >
+              <option value="default">🔁 Default</option>
+              <option value="newest">🕒 Newest</option>
+              <option value="oldest">📅 Oldest</option>
+              <option value="title-asc">🔤 Title (A–Z)</option>
+              <option value="title-desc">🔡 Title (Z–A)</option>
+            </select>
+          </div>
+
+          {/* POSTS LIST */}
+          {filteredPosts.length === 0 ? (
+            <div className="text-center text-gray-500 bg-white p-10 rounded-xl shadow-sm">
+              No posts found.
+            </div>
           ) : (
-            posts.map((post) => (
+            filteredPosts.map((post) => (
               <article
                 key={post._id}
                 className="rounded-xl p-4 border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all"
@@ -399,137 +558,190 @@ export default function Profile() {
                     {post.comment || 0} Comments · {post.shares || 0} Shares
                   </div>
                 </div>
+
+                <div className="flex justify-between mt-5">
+                  <button
+                    onClick={() => handleEditPost(post)}
+                    className="px-4 py-2 bg-[#c45627] text-white font-semibold rounded-xl hover:bg-[#a9471c]"
+                  >
+                    Edit Post
+                  </button>
+                  <button
+                    onClick={() => handleDeletePost(post._id)}
+                    className="px-4 py-2 border border-[#c45627] text-[#c45627] font-semibold rounded-xl hover:bg-[#c45627] hover:text-white"
+                  >
+                    Delete Post
+                  </button>
+                </div>
               </article>
             ))
           )}
         </div>
       </main>
 
-      {/* Modal for Editing Details */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white w-full sm:max-w-lg rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto animate-slide-up">
+      {/* ===== EDIT POST MODAL ===== */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg p-6 relative">
             <button
-              onClick={handleModalCancel}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
+              onClick={() => setIsEditModalOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-900"
             >
-              <X size={22} />
+              <X size={20} />
             </button>
 
-            <h3 className="text-xl font-semibold text-gray-800 mb-5 text-center border-b pb-3">
-              Edit Details
-            </h3>
-
-            <div className="space-y-4 text-sm">
-              {[
-                { label: "Work / Profession", field: "work" },
-                { label: "Education", field: "education" },
-                { label: "Location", field: "location" },
-              ].map(({ label, field }) => (
-                // Added the required "key" prop here
-                <div key={field}>
-                  <label className="block text-gray-600 font-medium mb-1">{label}</label>
-                  <input
-                    type="text"
-                    value={tempDetails[field] || ""}
-                    onChange={(e) => setTempDetails({ ...tempDetails, [field]: e.target.value })}
-                    placeholder={label}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                  />
-                </div>
-              ))}
-
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Skills (comma separated)</label>
-                <input
-                  type="text"
-                  value={tempDetails.skills || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
-                  placeholder="React, Node.js, Next.js"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Contact Email</label>
-                <input
-                  type="email"
-                  value={tempDetails.contact_email || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, contact_email: e.target.value })}
-                  placeholder="example@email.com"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Phone Number</label>
-                <input
-                  type="text"
-                  value={tempDetails.contact_number || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, contact_number: e.target.value })}
-                  placeholder="+8801XXXXXXXXX"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Website</label>
-                <input
-                  type="text"
-                  value={tempDetails.website || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, website: e.target.value })}
-                  placeholder="https://yourportfolio.com"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-600 font-medium mb-1">Languages (comma separated)</label>
-                <input
-                  type="text"
-                  value={tempDetails.languages || ""}
-                  onChange={(e) => setTempDetails({ ...tempDetails, languages: e.target.value })}
-                  placeholder="Bangla, English"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
-                />
-              </div>
-            </div>
-
-            {/* Buttons */}
-            <div className="flex gap-3 mt-6 border-t pt-4">
+            <h2 className="text-lg font-bold mb-4">Edit Post</h2>
+            <input
+              type="text"
+              name="blog_title"
+              value={editFormData.blog_title}
+              onChange={handleEditInputChange}
+              placeholder="Post Title"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+            />
+            <textarea
+              name="description"
+              value={editFormData.description}
+              onChange={handleEditInputChange}
+              placeholder="Description"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+            />
+            <input
+              type="text"
+              name="featured_image"
+              value={editFormData.featured_image}
+              onChange={handleEditInputChange}
+              placeholder="Featured Image URL"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+            />
+            <div className="flex justify-end gap-2">
               <button
-                onClick={handleModalCancel}
-                className="w-1/2 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                onClick={() => setIsEditModalOpen(false)}
+                className="px-4 py-2 border rounded-lg hover:bg-gray-100"
               >
                 Cancel
               </button>
               <button
-                onClick={handleModalSave}
-                disabled={!hasChanges}
-                className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#c45627] hover:bg-[#a9471c]"
-                  }`}
+                onClick={handleSaveEditedPost}
+                className="px-4 py-2 bg-[#c45627] text-white rounded-lg hover:bg-[#a9471c]"
               >
-                Save Details
+                Save
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modal Animation */}
-      <style jsx>{`
-        @keyframes slide-up {
-          0% {
-            transform: translateY(40px);
-            opacity: 0;
-          }
-          100% {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
+      {/* Modal for Editing Details */}
+      {
+        isModalOpen && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white w-full sm:max-w-lg rounded-xl shadow-2xl p-6 relative max-h-[90vh] overflow-y-auto animate-slide-up">
+              <button
+                onClick={handleModalCancel}
+                className="absolute top-3 right-3 text-gray-500 hover:text-black transition"
+              >
+                <X size={22} />
+              </button>
+
+              <h3 className="text-xl font-semibold text-gray-800 mb-5 text-center border-b pb-3">
+                Edit Details
+              </h3>
+
+              <div className="space-y-4 text-sm">
+                {[
+                  { label: "Work / Profession", field: "work" },
+                  { label: "Education", field: "education" },
+                  { label: "Location", field: "location" },
+                ].map(({ label, field }) => (
+                  // Added the required "key" prop here
+                  <div key={field}>
+                    <label className="block text-gray-600 font-medium mb-1">{label}</label>
+                    <input
+                      type="text"
+                      value={tempDetails[field] || ""}
+                      onChange={(e) => setTempDetails({ ...tempDetails, [field]: e.target.value })}
+                      placeholder={label}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    />
+                  </div>
+                ))}
+
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Skills (comma separated)</label>
+                  <input
+                    type="text"
+                    value={tempDetails.skills || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
+                    placeholder="React, Node.js, Next.js"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Contact Email</label>
+                  <input
+                    type="email"
+                    value={tempDetails.contact_email || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, contact_email: e.target.value })}
+                    placeholder="example@email.com"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Phone Number</label>
+                  <input
+                    type="text"
+                    value={tempDetails.contact_number || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, contact_number: e.target.value })}
+                    placeholder="+8801XXXXXXXXX"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Website</label>
+                  <input
+                    type="text"
+                    value={tempDetails.website || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, website: e.target.value })}
+                    placeholder="https://yourportfolio.com"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-600 font-medium mb-1">Languages (comma separated)</label>
+                  <input
+                    type="text"
+                    value={tempDetails.languages || ""}
+                    onChange={(e) => setTempDetails({ ...tempDetails, languages: e.target.value })}
+                    placeholder="Bangla, English"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-3 mt-6 border-t pt-4">
+                <button
+                  onClick={handleModalCancel}
+                  className="w-1/2 py-2 border rounded-lg text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleModalSave}
+                  disabled={!hasChanges}
+                  className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#c45627] hover:bg-[#a9471c]"
+                    }`}
+                >
+                  Save Details
+                </button>
+              </div>
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 }

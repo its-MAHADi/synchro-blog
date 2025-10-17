@@ -1,75 +1,99 @@
-"use client";
+"use client"
+import React from 'react';
+
+import Image from "next/image";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Swal from "sweetalert2";
+import SignInFrom from './SignInFrom';
 
-export default function SignInForm() {
-  const router = useRouter();
 
-  //Sign in handle
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
 
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
 
-    if (res?.error) {
-      if (res.error === "warning-2-left") {
-        Swal.fire({
-          icon: "warning",
-          title: "Warning",
-          text: "3 failed attempts. You have 2 attempts left!",
-        });   
-      } else if (res.error.startsWith("Your account is locked")) {
-        Swal.fire({
-          icon: "error",
-          title: "Account Locked",
-          text: res.error,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Login Failed",
-          text: res.error,
-        });
-      }
-    } else {
-      Swal.fire({
-        icon: "success",
-        title: "Login Successful",
-        timer: 1500,
-        showConfirmButton: false,
-      });
-      router.push("/");
-    }
+const SignInUser = () => {
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
+    // redirect to /dashboard after login (you can change)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        className="w-full px-4 py-3 border rounded-lg"
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        className="w-full px-4 py-3 border rounded-lg"
-      />
-      <button
-        type="submit"
-        className="w-full bg-[#c45627] text-white py-3 rounded-lg cursor-pointer"
-      >
-        Sign In
-      </button>
-    </form>
+    <div>
+      <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4">
+        <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden mt-20">
+          {/* Left: Illustration */}
+          <div className="hidden md:flex items-center justify-center">
+            <Image
+              src="/images/authentication.png"
+              alt="Authentication"
+              width={400}
+              height={400}
+              className="object-contain"
+              priority
+            />
+          </div>
+
+          {/* Right: Form */}
+          <div className="p-8 md:p-12 flex flex-col justify-center">
+            <h1 className="text-3xl font-bold text-[#213943] mb-2 text-center md:text-left">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600 mb-6 text-center md:text-left">
+              Sign in to your account
+            </p>
+
+            <SignInFrom/>
+
+            {/* Divider */}
+            <div className="flex items-center my-6">
+              <hr className="flex-1 border-gray-300" />
+              <span className="px-3 text-gray-500">OR</span>
+              <hr className="flex-1 border-gray-300" />
+            </div>
+
+            {/* Google Sign In */}
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition cursor-pointer"
+            >
+              <Image
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google"
+                width={24}
+                height={24}
+              />
+              <span className="text-[#213943] font-medium">
+                Continue with Google
+              </span>
+            </button>
+
+            {/* Github */}
+            <button
+              onClick={() => signIn("github", { callbackUrl: "/" })}
+              className="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-100 transition mt-3 cursor-pointer"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                alt="GitHub"
+                width={24}
+                height={24}
+              />
+              <span className="text-[#213943] font-medium">
+                Continue with GitHub
+              </span>
+            </button>
+
+
+            {/* Sign Up Link */}
+            <p className="text-sm text-center text-gray-500 mt-6">
+              Don&apos;t have an account?{" "}
+              <a href="/sign-up" className="text-[#c45627] font-medium">
+                Sign up
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
+
+export default SignInUser;

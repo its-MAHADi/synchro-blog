@@ -43,7 +43,7 @@ const handleGithubLogin = () => {
 
       if (res.ok) {
         if (data.alreadyExists) {
-          // 🔥 Show alert if account already exists
+          //  Show alert if account already exists
           Swal.fire({
             icon: "warning",
             title: "Account Already Exists",

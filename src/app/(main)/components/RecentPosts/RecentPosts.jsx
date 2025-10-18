@@ -138,7 +138,7 @@ const RecentPosts = () => {
                         Discover the latest insights and tutorials on web development,
                         programming, and modern technologies.
                     </p>
-                    <div className="w-24 h-1 bg-gradient-to-r from-[#c45627] to-amber-500 mx-auto mt-6 rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-[#0000FF] to-amber-500 mx-auto mt-6 rounded-full"></div>
                 </motion.div>
 
                 {/* Featured Post */}
@@ -156,7 +156,7 @@ const RecentPosts = () => {
                         <div className="absolute inset-0  bg-black/10"></div>
 
                         <div className="relative p-8 md:p-10">
-                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#c45627] via-[#c45627dc] to-[#ec6d36]"></div>
+                            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-[#0000FF] via-[#0000FFdc] to-[#ec6d36]"></div>
 
                             <div className="flex items-center gap-3 mb-4">
                                 <span
@@ -175,7 +175,7 @@ const RecentPosts = () => {
                                 </span>
                             </div>
 
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 hover:text-[#c45627] transition-colors duration-300">
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 hover:text-[#0000FF] transition-colors duration-300">
                                 {recentPosts[0].title}
                             </h3>
                             <p className="text-gray-200 text-lg mb-6 leading-relaxed">
@@ -191,7 +191,7 @@ const RecentPosts = () => {
                                         ⏱️ {recentPosts[0].read_time}
                                     </span>
                                 </div>
-                                <button className="cursor-pointer mt-5 lg:mt-0 group px-6 py-3 bg-[#e76a34] hover:bg-[#c45627] text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                                <button className="cursor-pointer mt-5 lg:mt-0 group px-6 py-3 bg-[#e76a34] hover:bg-[#0000FF] text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
                                     Read Article
                                     <span className="inline-block ml-2 transition-transform duration-300 group-hover:translate-x-1">
                                         →
@@ -260,7 +260,7 @@ const RecentPosts = () => {
                                     <div>
                                         <Link
                                             href={`/all-posts/${post.id}`}
-                                            className="flex items-center gap-1 font-medium text-[#c45627] text-lg hover:underline"
+                                            className="flex items-center gap-1 font-medium text-[#0000FF] text-lg hover:underline"
                                         >
                                             View Post <ArrowUpRight size={14} />
                                         </Link>
@@ -278,7 +278,7 @@ const RecentPosts = () => {
                     transition={{ duration: 0.5 }}
                     className="text-center mt-12"
                 >
-                    <button className="group px-8 py-4 bg-[#c45627] text-white border-2 border-[#c45627] hover:bg-white hover:border-[#853716] hover:text-[#853716] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg cursor-pointer">
+                    <button className="group px-8 py-4 bg-[#0000FF] text-white border-2 border-[#0000FF] hover:bg-white hover:border-[#853716] hover:text-[#853716] font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg cursor-pointer">
                         <span className="flex items-center gap-2">
                             Load More Posts
                             <span className="transition-transform duration-300 group-hover:rotate-180">

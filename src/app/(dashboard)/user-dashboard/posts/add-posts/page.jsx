@@ -160,7 +160,7 @@ Requirements:
             {/* Basic Info */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4">
-                <div className="p-2 bg-yellow-100 rounded-lg"><FileText className="w-5 h-5 text-[#c45627]" /></div>
+                <div className="p-2 bg-yellow-100 rounded-lg"><FileText className="w-5 h-5 text-[#0000FF]" /></div>
                 <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
               </div>
 
@@ -168,21 +168,21 @@ Requirements:
                 <div className="flex-3 mt-2">
                   <label className="flex items-center mb-2 text-sm font-semibold text-gray-700"><FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog Title</label>
                   <input name="blog_title" type="text" value={formData.blog_title} onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50" : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"}`} placeholder="Enter an engaging blog title..." />
+                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50" : "border-gray-200 bg-gray-50 focus:border-[#0000FF] focus:bg-white hover:border-gray-300"}`} placeholder="Enter an engaging blog title..." />
                   {errors.blog_title && <p className="flex items-center text-sm text-red-600 mt-1"><AlertTriangle className="w-4 h-4 mr-1" />{errors.blog_title}</p>}
                 </div>
 
                 <div className="flex-2 mt-2">
                   <label className="flex items-center text-sm mb-2 font-semibold text-gray-700"><TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" /> Category</label>
                   <input name="tags" type="text" required value={formData.tags} onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:outline-none focus:border-[#c45627] focus:bg-white hover:border-gray-300 transition-all duration-200" placeholder="Any kind of category..." />
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:outline-none focus:border-[#0000FF] focus:bg-white hover:border-gray-300 transition-all duration-200" placeholder="Any kind of category..." />
                 </div>
               </div>
 
               {/* Word Count & AI */}
               <div className="mt-4 flex items-center gap-3">
                 <label className="text-sm font-semibold text-gray-700">Word Count for Description</label>
-                <input type="number" min={50} max={1000} value={wordCount} onChange={handleWordCountChange} className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-[#c45627]" />
+                <input type="number" min={50} max={1000} value={wordCount} onChange={handleWordCountChange} className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:outline-none focus:border-[#0000FF]" />
                 <button onClick={generateContent} type="button" disabled={isGenerating} className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? 'opacity-50 cursor-not-allowed' : ''}`}>
                   {isGenerating ? "Generating..." : "Generate Content"}
                 </button>
@@ -190,14 +190,14 @@ Requirements:
 
               <div className="space-y-2">
                 <label className="flex items-center text-sm font-semibold text-gray-700"><FileText className="w-4 h-4 mr-2 text-gray-500" /> Description</label>
-                <textarea name="description" rows={10} value={isGenerating ? "Generating content..." : formData.description} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none resize-none ${errors.description ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50" : "border-gray-200 bg-gray-50 focus:border-[#c45627] focus:bg-white hover:border-gray-300"}`} disabled={isGenerating} placeholder="Write a compelling description for your blog post..." />
+                <textarea name="description" rows={10} value={isGenerating ? "Generating content..." : formData.description} onChange={handleInputChange} className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none resize-none ${errors.description ? "border-red-300 bg-red-50 focus:border-red-500 focus:bg-red-50" : "border-gray-200 bg-gray-50 focus:border-[#0000FF] focus:bg-white hover:border-gray-300"}`} disabled={isGenerating} placeholder="Write a compelling description for your blog post..." />
                 {errors.description && <p className="flex items-center text-sm text-red-600 mt-1"><AlertTriangle className="w-4 h-4 mr-1" />{errors.description}</p>}
               </div>
             </div>
 
             {/* Featured Image */}
             <div className="space-y-4">
-              <div className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver ? "border-[#c45627] bg-orange-50 scale-102" : featuredPreview ? "border-transparent" : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627] hover:bg-orange-50"}`} onClick={() => featuredInputRef.current?.click()} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+              <div className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver ? "border-[#0000FF] bg-orange-50 scale-102" : featuredPreview ? "border-transparent" : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF] hover:bg-orange-50"}`} onClick={() => featuredInputRef.current?.click()} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
                 {featuredPreview ? (
                   <div className="relative w-full h-full group">
                     <img src={featuredPreview} alt="Featured preview" className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105" />
@@ -210,7 +210,7 @@ Requirements:
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center p-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#c45627] to-yellow-600 rounded-full flex items-center justify-center mb-4 shadow-lg"><Upload className="w-8 h-8 text-white" /></div>
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-yellow-600 rounded-full flex items-center justify-center mb-4 shadow-lg"><Upload className="w-8 h-8 text-white" /></div>
                     <div className="text-lg font-semibold text-gray-800 mb-2">{isDragOver ? "Drop your image here!" : "Drag & drop or click to upload"}</div>
                     <div className="text-sm text-gray-500">Recommended size: 800×600 • JPG, PNG, WEBP • Max 3MB</div>
                   </div>

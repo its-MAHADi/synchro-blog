@@ -18,12 +18,12 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { name: "Dashboard", href: "/dashboard/admin-dashboard", icon: LayoutDashboardIcon, gradient: "from-[#c45627] to-[#a8431f]" },
-  { name: "Manage Users", href: "/dashboard/admin-dashboard/users", icon: Users, gradient: "from-[#c45627] to-[#a8431f]" },
-  // { name: "Reports", href: "/dashboard/admin-dashboard/reports", icon: Flag, gradient: "from-[#c45627] to-[#a8431f]" },
-  { name: "Announcements", href: "/dashboard/admin-dashboard/announcements", icon: Megaphone, gradient: "from-[#c45627] to-[#a8431f]" },
-   { name: "Home", href: "/", icon: HomeIcon, gradient: "from-[#c45627] to-[#a8431f]" },
-  // { name: "Settings", href: "/dashboard/admin-dashboard/settings", icon: Settings, gradient: "from-[#c45627] to-[#a8431f]" },
+  { name: "Dashboard", href: "/dashboard/admin-dashboard", icon: LayoutDashboardIcon, gradient: "from-[#0000FF] to-[#a8431f]" },
+  { name: "Manage Users", href: "/dashboard/admin-dashboard/users", icon: Users, gradient: "from-[#0000FF] to-[#a8431f]" },
+  // { name: "Reports", href: "/dashboard/admin-dashboard/reports", icon: Flag, gradient: "from-[#0000FF] to-[#a8431f]" },
+  { name: "Announcements", href: "/dashboard/admin-dashboard/announcements", icon: Megaphone, gradient: "from-[#0000FF] to-[#a8431f]" },
+   { name: "Home", href: "/", icon: HomeIcon, gradient: "from-[#0000FF] to-[#a8431f]" },
+  // { name: "Settings", href: "/dashboard/admin-dashboard/settings", icon: Settings, gradient: "from-[#0000FF] to-[#a8431f]" },
 ];
 
 export default function AdminSidebar() {
@@ -45,7 +45,7 @@ export default function AdminSidebar() {
       )}
 
       {/* Mobile Header */}
-      <div className="md:hidden sticky top-0 z-30 flex items-center justify-between p-4 bg-[#c45627] shadow-2xl">
+      <div className="md:hidden sticky top-0 z-30 flex items-center justify-between p-4 bg-[#0000FF] shadow-2xl">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 transition-all duration-300 transform hover:scale-110 hover:rotate-6 shadow-lg"
@@ -85,16 +85,16 @@ export default function AdminSidebar() {
         {/* Header */}
         <div className="p-6 border-b border-gray-200 relative flex items-center gap-4">
           <div
-            className="w-14 h-14 rounded-2xl border-2 border-[#c45627] flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
+            className="w-14 h-14 rounded-2xl border-2 border-[#0000FF] flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
             style={{
               boxShadow: "0 10px 25px rgba(196,86,39,0.4), inset 0 1px 0 rgba(255,255,255,0.3)",
             }}
           >
-            <ShieldCheck size={28} className="text-[#c45627]" />
+            <ShieldCheck size={28} className="text-[#0000FF]" />
             <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-500 rounded-full animate-pulse shadow-lg" />
           </div>
           <div>
-            <h2 className="text-xl font-bold bg-gradient-to-r from-[#c45627] to-[#a8431f] bg-clip-text text-transparent drop-shadow-sm">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-[#0000FF] to-[#a8431f] bg-clip-text text-transparent drop-shadow-sm">
               Admin Panel
             </h2>
             <p className="text-sm text-gray-500 font-medium">Manage the entire system</p>
@@ -114,7 +114,7 @@ export default function AdminSidebar() {
                 className={`group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 ${
                   isActive
                     ? `bg-gradient-to-r ${item.gradient} text-white shadow-2xl scale-105`
-                    : "text-gray-700 hover:bg-[#c45627]/10 hover:text-gray-800 hover:shadow-xl"
+                    : "text-gray-700 hover:bg-[#0000FF]/10 hover:text-gray-800 hover:shadow-xl"
                 }`}
                 style={{
                   animationDelay: `${index * 100}ms`,
@@ -141,7 +141,7 @@ export default function AdminSidebar() {
                   <Icon
                     size={20}
                     className={`transition-all duration-300 ${
-                      isActive ? "text-white drop-shadow-lg" : "text-gray-600 group-hover:text-[#c45627]"
+                      isActive ? "text-white drop-shadow-lg" : "text-gray-600 group-hover:text-[#0000FF]"
                     }`}
                   />
                 </div>
@@ -151,7 +151,7 @@ export default function AdminSidebar() {
                   className={`font-semibold flex-1 transition-all duration-300 ${
                     isActive
                       ? "text-white drop-shadow-sm"
-                      : "group-hover:text-[#c45627]"
+                      : "group-hover:text-[#0000FF]"
                   }`}
                 >
                   {item.name}
@@ -165,7 +165,7 @@ export default function AdminSidebar() {
                       : "translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-70"
                   }`}
                 >
-                  <ChevronRight size={18} className={isActive ? "text-white/90" : "text-[#c45627]/70"} />
+                  <ChevronRight size={18} className={isActive ? "text-white/90" : "text-[#0000FF]/70"} />
                 </div>
               </Link>
             );
@@ -180,7 +180,7 @@ export default function AdminSidebar() {
               boxShadow: "inset 0 2px 4px rgba(0,0,0,0.1), 0 1px 0 rgba(255,255,255,0.2)",
             }}
           >
-            <p className="text-sm font-semibold bg-gradient-to-r from-[#c45627] to-[#a8431f] bg-clip-text text-transparent">
+            <p className="text-sm font-semibold bg-gradient-to-r from-[#0000FF] to-[#a8431f] bg-clip-text text-transparent">
               Admin Dashboard
             </p>
             <p className="text-xs text-gray-500 font-medium mt-1">v2.0.0 • Secure Edition</p>

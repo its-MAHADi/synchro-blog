@@ -65,7 +65,7 @@ const SignInFrom = () => {
             />
             <button
                 type="submit"
-                className="w-full bg-[#c45627] text-white py-3 rounded-lg cursor-pointer"
+                className="w-full bg-[#0000FF] text-white py-3 rounded-lg cursor-pointer"
             >
                 Sign In
             </button>

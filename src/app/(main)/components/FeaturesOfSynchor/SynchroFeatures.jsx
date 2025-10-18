@@ -76,9 +76,9 @@ const FeatureCard = ({ feature }) => {
 
             <h3 className="text-lg font-semibold text-[#693d2a] mb-2">{feature.title}</h3>
             <p className="text-gray-600 text-sm mb-4">{feature.desc}</p>
-            <a className="text-[#c45627] cursor-pointer font-medium hover:border-b pb-1 transition-all duration-300 ease-in-out">
+            {/* <a className="text-[#0000FF] cursor-pointer font-medium hover:border-b pb-1 transition-all duration-300 ease-in-out">
                 Learn More →
-            </a>
+            </a> */}
         </motion.div>
     );
 };

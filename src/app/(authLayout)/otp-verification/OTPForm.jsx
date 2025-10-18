@@ -35,7 +35,7 @@ const OTPForm = () => {
 
         if (loginResult?.ok) {
           Swal.fire({ icon: "success", title: "Verified & Logged In", text: "Redirecting...", timer: 1500, showConfirmButton: false });
-          router.push("/signupCoverProfile");
+          router.push("/SignupCoverProfile");
         } else {
           Swal.fire({ icon: "error", title: "Login Failed", text: "Please try signing in manually." });
         }
@@ -64,13 +64,13 @@ const OTPForm = () => {
           onChange={(e) => setOtp(e.target.value.replace(/\D/, ""))}
           maxLength={6}
           placeholder="Enter OTP"
-          className="border p-3 rounded-lg w-full text-center text-xl tracking-widest mb-4 focus:outline-none focus:ring-2 focus:ring-[#c45627]"
+          className="border p-3 rounded-lg w-full text-center text-xl tracking-widest mb-4 focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
         />
 
         <button
           onClick={handleVerify}
           disabled={loading || otp.length !== 6}
-          className="w-full bg-[#c45627] text-white py-3 rounded-lg hover:bg-[#a03e1c] transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-[#0000FF] text-white py-3 rounded-lg hover:bg-[#a03e1c] transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? "Verifying..." : "Verify OTP"}
         </button>

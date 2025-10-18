@@ -5,7 +5,7 @@ import { FaRobot, FaGlobe, FaSearch } from "react-icons/fa";
 
 const Banner = () => {
   return (
-    <div className="relative rounded-xl bg-[#c45627] text-white mt-15 overflow-hidden">
+    <div className="relative rounded-xl bg-[#0000FF] text-white mt-15 overflow-hidden">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
@@ -25,14 +25,14 @@ const Banner = () => {
           </p>
 
           {/* Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-            <button className="btn bg-white text-[#c45627] hover:bg-[#ce5622] hover:border-[#ce5622] border-white hover:text-white rounded-lg px-6">
+          {/* <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+            <button className="btn bg-white text-[#0000FF] hover:bg-[#ce5622] hover:border-[#ce5622] border-white hover:text-white rounded-lg px-6">
               Get Started
             </button>
             <button className="btn btn-outline border-white text-white hover:bg-[#ce5622] hover:border-[#ce5622]hover:border-white hover:text-white rounded-lg px-6">
               Learn More
             </button>
-          </div>
+          </div> */}
 
           {/* Features */}
           <div className="flex flex-col lg:flex-row justify-center items-center  gap-8 mt-8 lg:justify-start">

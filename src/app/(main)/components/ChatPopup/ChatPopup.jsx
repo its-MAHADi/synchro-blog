@@ -82,7 +82,7 @@ export default function ChatPopup({ user, onClose }) {
         className="fixed bottom-20 right-20 w-80 h-[40vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col z-50"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-3 py-2 bg-[#c45627] text-white">
+        <div className="flex items-center justify-between px-3 py-2 bg-[#0000FF] text-white">
           <div className="flex items-center gap-2">
             <div className="relative">
               <img
@@ -125,7 +125,7 @@ export default function ChatPopup({ user, onClose }) {
                   <div
                     className={`px-3 py-2 max-w-[75%] rounded-2xl text-sm shadow-sm ${
                       isMine
-                        ? "bg-[#c45627] text-white rounded-br-none"
+                        ? "bg-[#0000FF] text-white rounded-br-none"
                         : "bg-white border border-gray-200 text-gray-800 rounded-bl-none"
                     }`}
                   >
@@ -160,12 +160,12 @@ export default function ChatPopup({ user, onClose }) {
             placeholder="Aa"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#c45627]"
+            className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#0000FF]"
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
           <button
             onClick={sendMessage}
-            className="p-2 bg-[#c45627] hover:bg-[#a3431c] text-white rounded-full transition"
+            className="p-2 bg-[#0000FF] hover:bg-[#a3431c] text-white rounded-full transition"
           >
             <Send size={16} />
           </button>

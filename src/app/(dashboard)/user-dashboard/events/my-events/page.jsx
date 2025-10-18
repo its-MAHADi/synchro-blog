@@ -28,7 +28,7 @@ export default function MyEvents() {
       {events.some((e) => e.featured) && (
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-[#213943] mb-6 flex items-center">
-            <Star className="w-6 h-6 mr-2 text-[#c45627]" />
+            <Star className="w-6 h-6 mr-2 text-[#0000FF]" />
             Featured Events
           </h2>
           <div className="grid gap-6">
@@ -37,7 +37,7 @@ export default function MyEvents() {
               .map((event) => (
                 <div
                   key={event.id}
-                  className="bg-gradient-to-r from-[#c45627] to-[#e67045] rounded-3xl p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
+                  className="bg-gradient-to-r from-[#0000FF] to-[#e67045] rounded-3xl p-8 text-white shadow-2xl hover:scale-[1.02] transition-all duration-300"
                 >
                   <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                     <div className="flex-1">
@@ -81,7 +81,7 @@ export default function MyEvents() {
                     <div className="flex-shrink-0">
                       <a
                         href="#"
-                        className="inline-flex items-center px-8 py-3 bg-white text-[#c45627] rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+                        className="inline-flex items-center px-8 py-3 bg-white text-[#0000FF] rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
                       >
                         View Details
                       </a>
@@ -108,7 +108,7 @@ export default function MyEvents() {
               >
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="bg-[#c45627]/10 text-[#c45627] px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-[#0000FF]/10 text-[#0000FF] px-3 py-1 rounded-full text-sm font-medium">
                       {event.category}
                     </span>
                     <span
@@ -154,7 +154,7 @@ export default function MyEvents() {
 
                   <a
                     href="#"
-                    className="w-full bg-gradient-to-r from-[#c45627] to-[#e67045] text-white py-3 rounded-xl font-semibold hover:from-[#b5501f] hover:to-[#c45627] transition-all duration-300 text-center block"
+                    className="w-full bg-gradient-to-r from-[#0000FF] to-[#e67045] text-white py-3 rounded-xl font-semibold hover:from-[#b5501f] hover:to-[#0000FF] transition-all duration-300 text-center block"
                   >
                     Learn More
                   </a>

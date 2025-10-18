@@ -58,7 +58,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#c45627] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
+      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#0000FF] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
         ? "backdrop-blur-md bg-base-100/70 shadow-sm"
         : "bg-base-100"
         }`}
@@ -69,7 +69,7 @@ const Navbar = () => {
           <div className="flex justify-center items-center gap-5">
             <div className="flex items-center">
               <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
-              <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#c45627]">CHRO</span> </Link>
+              <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#0000FF]">CHRO</span> </Link>
             </div>
             {/* Search Bar */}
             {/* <div className="relative hidden md:flex flex-1 max-w-md">
@@ -78,7 +78,7 @@ const Navbar = () => {
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-3 py-1 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#c45627]"
+                className="w-full px-3 py-1 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
               />
               {searchResults.length > 0 && (
                 <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg z-50 max-h-60 overflow-y-auto">
@@ -104,56 +104,56 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <ul className="hidden lg:flex items-center gap-10 text-[16px] font-semibold">
             <li>
-              <Link href="/" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === '/'
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === '/'
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <GoHome /> Home
               </Link>
             </li>
             <li>
-              <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/all-posts"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/all-posts" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/all-posts"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
             {/* <li>
-              <Link href="/popular" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/popular"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/popular" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/popular"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaRegStar /> Popular Post
               </Link>
             </li> */}
             <li>
-              <Link href="/events" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/events"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <MdOutlineEmojiEvents /> Events
               </Link>
             </li>
             {/* <li>
-              <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/add-post"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/add-post"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaPlusCircle /> Add Post
               </Link>
             </li> */}
             <li>
-              <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/user-dashboard"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <FaTachometerAlt /> Dashboard
               </Link>
             </li>
             <li>
-              <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#c45627] transition ${pathname === "/aboutUs"
-                ? "text-[#c45627] border-b-2 border-[#c45627]" // ✅ Active route style
+              <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/aboutUs"
+                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
                 : "text-gray-700 hover:text-[#213943]"
                 }`}>
                 <AiOutlineInfoCircle /> About Us
@@ -166,27 +166,27 @@ const Navbar = () => {
             {
               !session?.user ?
                 <div className="hidden lg:flex items-center gap-3">
-                  <Link href="/sign-in" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                  <Link href="/sign-in" className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
                     Login
                   </Link>
-                  <Link href="/sign-up" className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                  <Link href="/sign-up" className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
                     Register
                   </Link>
                 </div>
                 :
                 // massage bar and notification bar
                 <div className="flex items-center gap-2">
-                  <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
+                  <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
                     <RiMessengerLine
-                      color={showMessageBar ? 'white' : "#c45627"}
+                      color={showMessageBar ? 'white' : "#0000FF"}
                       size={19}
                       className="cursor-pointer"
                       onClick={toggleMessageBar}
                     />
                   </div>
-                  <div className={` shadow-lg rounded-full p-3 ${showNotificationBar ? 'bg-[#c45627]' : 'bg-white'} border border-[#c456275d]`}>
+                  <div className={` shadow-lg rounded-full p-3 ${showNotificationBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
                     <IoNotificationsOutline
-                      color={showNotificationBar ? 'white' : "#c45627"}
+                      color={showNotificationBar ? 'white' : "#0000FF"}
                       size={19}
                       className="cursor-pointer"
                       onClick={toggleNotificationBar}
@@ -207,7 +207,7 @@ const Navbar = () => {
 
                   }
 
-                  <Link href="/" onClick={() => signOut()} className="btn border-[#c45627] text-[#c45627] font-bold hover:bg-[#c45627] hover:text-white rounded-sm">
+                  <Link href="/" onClick={() => signOut()} className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
                     Logout
                   </Link>
                 </div>
@@ -220,7 +220,7 @@ const Navbar = () => {
             className="lg:hidden flex items-center"
             onClick={() => setOpen(true)}
           >
-            <LucideSquareMenu size={28} className="text-[#c45627] cursor-pointer" />
+            <LucideSquareMenu size={28} className="text-[#0000FF] cursor-pointer" />
           </button>
         </div>
       </div>
@@ -231,9 +231,9 @@ const Navbar = () => {
           }`}
       >
         <div className="flex justify-between items-center p-4 border-b bg-white">
-          <h2 className="text-lg font-bold text-[#c45627]">Menu</h2>
+          <h2 className="text-lg font-bold text-[#0000FF]">Menu</h2>
           <button onClick={() => setOpen(false)}>
-            <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#c45627]" />
+            <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#0000FF]" />
           </button>
         </div>
         <ul className="p-4 space-y-3 font-medium bg-white min-h-screen">
@@ -241,7 +241,7 @@ const Navbar = () => {
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 hover:text-[#c45627]"
+              className="flex items-center gap-2 hover:text-[#0000FF]"
             >
               <GoHome /> Home
             </Link>
@@ -250,7 +250,7 @@ const Navbar = () => {
             <Link
               href="/all-posts"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 hover:text-[#c45627]"
+              className="flex items-center gap-2 hover:text-[#0000FF]"
             >
               <FaRegFileAlt /> All Blog Posts
             </Link>
@@ -259,7 +259,7 @@ const Navbar = () => {
             <Link
               href="/events"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 hover:text-[#c45627]"
+              className="flex items-center gap-2 hover:text-[#0000FF]"
             >
               <MdOutlineEmojiEvents /> Events
             </Link>
@@ -268,7 +268,7 @@ const Navbar = () => {
             <Link
               href="/user-dashboard"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 hover:text-[#c45627]"
+              className="flex items-center gap-2 hover:text-[#0000FF]"
             >
               <FaTachometerAlt /> Dashboard
             </Link>
@@ -282,7 +282,7 @@ const Navbar = () => {
                   signOut();
                   setOpen(false);
                 }}
-                className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+                className="btn btn-sm bg-[#0000FF] text-white hover:opacity-90"
               >
                 Sign Out
               </button>
@@ -290,14 +290,14 @@ const Navbar = () => {
               <>
                 <Link
                   href="/sign-in"
-                  className="btn btn-sm btn-outline border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white"
+                  className="btn btn-sm btn-outline border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF] hover:text-white"
                   onClick={() => setOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="btn btn-sm bg-[#c45627] text-white hover:opacity-90"
+                  className="btn btn-sm bg-[#0000FF] text-white hover:opacity-90"
                   onClick={() => setOpen(false)}
                 >
                   Register

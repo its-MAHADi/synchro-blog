@@ -69,7 +69,7 @@ const BlogPostDetailsPage = () => {
 
             {/* --- Blog Header --- */}
             <header className="mb-8">
-              <span className="text-[#c45627] uppercase font-semibold tracking-widest text-sm">
+              <span className="text-[#0000FF] uppercase font-semibold tracking-widest text-sm">
                 {postData?.category?.join(", ") || "Uncategorized"}
               </span>
 
@@ -83,7 +83,7 @@ const BlogPostDetailsPage = () => {
                   alt={authorName}
                   width={56}
                   height={56}
-                  className="rounded-full object-cover border-2 border-[#c45627]"
+                  className="rounded-full object-cover border-2 border-[#0000FF]"
                 />
                 <div className="ml-4">
                   <p className="text-black font-semibold text-lg">
@@ -114,7 +114,7 @@ const BlogPostDetailsPage = () => {
 
             {/* --- Comments Section --- */}
             <section>
-              <h2 className="text-2xl font-bold text-black mb-8 border-l-4 border-[#c45627] pl-4">
+              <h2 className="text-2xl font-bold text-black mb-8 border-l-4 border-[#0000FF] pl-4">
                 Join the Discussion
               </h2>
 
@@ -126,7 +126,7 @@ const BlogPostDetailsPage = () => {
                     alt="John Smith"
                     width={48}
                     height={48}
-                    className="rounded-full border-2 border-[#c45627]"
+                    className="rounded-full border-2 border-[#0000FF]"
                   />
                   <div className="ml-4 flex-1">
                     <p className="font-semibold text-black text-lg">

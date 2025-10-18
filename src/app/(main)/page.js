@@ -42,6 +42,8 @@ export default function Home() {
       {/* contact page */}
       <Contact/>
 
+      <SignupCoverProfile/>
+
       {/* <BlogPost/> */}
       {/* <PostField/>
      <AllPosts/> */}

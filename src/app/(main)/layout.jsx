@@ -75,7 +75,7 @@ function FloatingChatPopup() {
       {/* Chat Floating Button */}
       <button
         onClick={() => setOpenChat(true)}
-        className={`fixed ${openChat && 'ml-40 mb-10'} bottom-6 cursor-pointer right-6 bg-[#c45627] hover:bg-[#d35c29] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform hover:scale-105 z-50`}
+        className={`fixed ${openChat && 'ml-40 mb-10'} bottom-6 cursor-pointer right-6 bg-[#0000FF] hover:bg-[#d35c29] text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform hover:scale-105 z-50`}
       >
         <Bot size={20} />
         Chat with AI
@@ -94,7 +94,7 @@ function FloatingChatPopup() {
             className="fixed bottom-0 right-0 w-[420px] max-w-[95vw] my-10 h-[60vh] bg-white shadow-2xl rounded-2xl border border-gray-300 z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex justify-between items-center  p-3 border-b bg-[#c45627] text-white">
+            <div className="flex justify-between items-center  p-3 border-b bg-[#0000FF] text-white">
               <h2 className="font-semibold text-md text-center  w-full">Your Personal Assistant From Synchro</h2>
               <button
                 onClick={() => setOpenChat(false)}

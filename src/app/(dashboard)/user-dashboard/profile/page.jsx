@@ -89,7 +89,7 @@ export default function Profile() {
       showCancelButton: true,
       confirmButtonText: "Yes, update it!",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "#c45627",
+      confirmButtonColor: "#0000FF",
     });
 
     if (!confirm.isConfirmed) return;
@@ -149,7 +149,7 @@ export default function Profile() {
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
       cancelButtonText: "Cancel",
-      confirmButtonColor: "#c45627",
+      confirmButtonColor: "#0000FF",
     });
 
     if (!confirm.isConfirmed) return;
@@ -331,7 +331,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <p className="text-center mt-10 text-xl text-[#c45627] min-h-screen flex justify-center items-center">
+      <p className="text-center mt-10 text-xl text-[#0000FF] min-h-screen flex justify-center items-center">
         <span className="loading loading-spinner loading-xl"></span>
       </p>
     );
@@ -346,7 +346,7 @@ export default function Profile() {
           {coverImage ? (
             <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-[#c45627]"></div> // Placeholder
+            <div className="w-full h-full bg-[#0000FF]"></div> // Placeholder
           )}
           <label className="absolute top-3 right-3 bg-white/80 text-gray-900 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center gap-1 hover:bg-white transition">
             <Camera size={16} />
@@ -376,17 +376,17 @@ export default function Profile() {
           <div className="w-full mt-3 flex justify-between ">
             <div className="px-4 grid grid-cols-2 gap-3 sm:gap-10 text-center">
               <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
-                <BsPostcard className="text-[#c45627]" />
-                <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">{posts.length} Posts</span>
+                <BsPostcard className="text-[#0000FF]" />
+                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">{posts.length} Posts</span>
               </div>
               <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
-                <SlUserFollowing className="text-[#c45627]" />
-                <span className="font-bold text-[#c45627] text-sm sm:text-base mt-1">12.5K Followers</span>
+                <SlUserFollowing className="text-[#0000FF]" />
+                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">12.5K Followers</span>
               </div>
             </div>
 
             <div className="flex justify-center">
-              <button className="px-4 cursor-pointer text-[#c45627] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
+              <button className="px-4 cursor-pointer text-[#0000FF] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
                 <FiEdit size={30} />
               </button>
             </div>
@@ -412,7 +412,7 @@ export default function Profile() {
               <p className="text-gray-600 text-sm whitespace-pre-line">{bio}</p>
               <button
                 onClick={() => setIsEditing(true)}
-                className="w-full border border-[#c45627] text-[#c45627] rounded-lg mt-3 py-2 hover:bg-orange-50 transition"
+                className="w-full border border-[#0000FF] text-[#0000FF] rounded-lg mt-3 py-2 hover:bg-orange-50 transition"
               >
                 Edit Bio
               </button>
@@ -420,7 +420,7 @@ export default function Profile() {
           ) : (
             <>
               <textarea
-                className="w-full h-32 border border-orange-200 rounded-lg p-3 text-sm text-gray-700 focus:ring-2 focus:ring-[#c45627]"
+                className="w-full h-32 border border-orange-200 rounded-lg p-3 text-sm text-gray-700 focus:ring-2 focus:ring-[#0000FF]"
                 value={tempBio}
                 onChange={(e) => setTempBio(e.target.value)}
               />
@@ -429,7 +429,7 @@ export default function Profile() {
                 <button
                   onClick={handleSaveBio}
                   disabled={tempBio.trim() === bio.trim()}
-                  className={`w-1/2 rounded-lg py-2 text-white transition ${tempBio.trim() === bio.trim() ? "bg-gray-300 cursor-not-allowed" : "bg-[#c45627] hover:bg-[#a9471c]"}`}
+                  className={`w-1/2 rounded-lg py-2 text-white transition ${tempBio.trim() === bio.trim() ? "bg-gray-300 cursor-not-allowed" : "bg-[#0000FF] hover:bg-[#a9471c]"}`}
                 >
                   Save
                 </button>
@@ -438,16 +438,16 @@ export default function Profile() {
           )}
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {/* FIX: Use details?.work instead of details.work */}
-            {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>{details.work}</span></div> :
-              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#c45627]" /><span>add work</span></div>
+            {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>{details.work}</span></div> :
+              <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>add work</span></div>
             }
-            {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>{details.education}</span></div>
+            {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#0000FF]" /><span>{details.education}</span></div>
               :
-              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#c45627]" /><span>add education</span></div>
+              <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#0000FF]" /><span>add education</span></div>
             }
-            {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>{details.location}</span></div>
+            {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#0000FF]" /><span>{details.location}</span></div>
               :
-              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#c45627]" /><span>add location</span></div>
+              <div className="flex items-center gap-3"><MapPin size={14} className="text-[#0000FF]" /><span>add location</span></div>
             }
           </div>
           {details?.skills && (() => {
@@ -466,7 +466,7 @@ export default function Profile() {
                   {skillsArray.map((skill, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 text-xs bg-orange-50 text-[#c45627] rounded-full border border-orange-200"
+                      className="px-3 py-1 text-xs bg-orange-50 text-[#0000FF] rounded-full border border-orange-200"
                     >
                       {skill}
                     </span>
@@ -478,26 +478,26 @@ export default function Profile() {
 
 
           <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">
-            {details?.contact_email ? <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>{details.contact_email}</span></div> :
-              <div className="flex items-center gap-3"><Mail size={14} className="text-[#c45627]" /><span>add email</span></div>
+            {details?.contact_email ? <div className="flex items-center gap-3"><Mail size={14} className="text-[#0000FF]" /><span>{details.contact_email}</span></div> :
+              <div className="flex items-center gap-3"><Mail size={14} className="text-[#0000FF]" /><span>add email</span></div>
             }
-            {details?.contact_number ? <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>{details.contact_number}</span></div>
+            {details?.contact_number ? <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#0000FF]" /><span>{details.contact_number}</span></div>
               :
-              <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#c45627]" /><span>add number</span></div>
+              <div className="flex items-center gap-3"><FiPhone size={14} className="text-[#0000FF]" /><span>add number</span></div>
             }
-            {details?.website ? <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>
+            {details?.website ? <div className="flex items-center gap-3"><Globe size={14} className="text-[#0000FF]" /><a href={details.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{details.website}</a></div>
               :
-              <div className="flex items-center gap-3"><Globe size={14} className="text-[#c45627]" /><a className="text-blue-600 hover:underline">https://example.com</a></div>
+              <div className="flex items-center gap-3"><Globe size={14} className="text-[#0000FF]" /><a className="text-blue-600 hover:underline">https://example.com</a></div>
             }
-            {details?.languages ? <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>{details?.languages}</span></div>
+            {details?.languages ? <div className="flex items-center gap-3"><Languages size={14} className="text-[#0000FF]" /><span>{details?.languages}</span></div>
               :
-              <div className="flex items-center gap-3"><Languages size={14} className="text-[#c45627]" /><span>add language</span></div>
+              <div className="flex items-center gap-3"><Languages size={14} className="text-[#0000FF]" /><span>add language</span></div>
             }
           </div>
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-full mt-4 border bg-[#c45627] text-white rounded-lg py-2 hover:bg-[#a9471c] transition"
+            className="w-full mt-4 border bg-[#0000FF] text-white rounded-lg py-2 hover:bg-[#a9471c] transition"
           >
             Edit Details
           </button>
@@ -514,12 +514,12 @@ export default function Profile() {
               placeholder="Search posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-1/2 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#c45627] outline-none"
+              className="w-full sm:w-1/2 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none"
             />
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="w-full sm:w-1/4 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#c45627] outline-none bg-white"
+              className="w-full sm:w-1/4 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none bg-white"
             >
               <option value="default">🔁 Default</option>
               <option value="newest">🕒 Newest</option>
@@ -575,13 +575,13 @@ export default function Profile() {
                 <div className="flex justify-between mt-5">
                   <button
                     onClick={() => handleEditPost(post)}
-                    className="px-4 py-2 bg-[#c45627] text-white font-semibold rounded-xl hover:bg-[#a9471c]"
+                    className="px-4 py-2 bg-[#0000FF] text-white font-semibold rounded-xl hover:bg-[#a9471c]"
                   >
                     Edit Post
                   </button>
                   <button
                     onClick={() => handleDeletePost(post._id)}
-                    className="px-4 py-2 border border-[#c45627] text-[#c45627] font-semibold rounded-xl hover:bg-[#c45627] hover:text-white"
+                    className="px-4 py-2 border border-[#0000FF] text-[#0000FF] font-semibold rounded-xl hover:bg-[#0000FF] hover:text-white"
                   >
                     Delete Post
                   </button>
@@ -610,14 +610,14 @@ export default function Profile() {
               value={editFormData.blog_title}
               onChange={handleEditInputChange}
               placeholder="Post Title"
-              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF]"
             />
             <textarea
               name="description"
               value={editFormData.description}
               onChange={handleEditInputChange}
               placeholder="Description"
-              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF]"
             />
             <input
               type="text"
@@ -625,7 +625,7 @@ export default function Profile() {
               value={editFormData.featured_image}
               onChange={handleEditInputChange}
               placeholder="Featured Image URL"
-              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627]"
+              className="w-full mb-3 border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF]"
             />
             <div className="flex justify-end gap-2">
               <button
@@ -636,7 +636,7 @@ export default function Profile() {
               </button>
               <button
                 onClick={handleSaveEditedPost}
-                className="px-4 py-2 bg-[#c45627] text-white rounded-lg hover:bg-[#a9471c]"
+                className="px-4 py-2 bg-[#0000FF] text-white rounded-lg hover:bg-[#a9471c]"
               >
                 Save
               </button>
@@ -675,7 +675,7 @@ export default function Profile() {
                       value={tempDetails[field] || ""}
                       onChange={(e) => setTempDetails({ ...tempDetails, [field]: e.target.value })}
                       placeholder={label}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                     />
                   </div>
                 ))}
@@ -687,7 +687,7 @@ export default function Profile() {
                     value={tempDetails.skills || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, skills: e.target.value })}
                     placeholder="Write your skills"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                   />
                 </div>
                 <div>
@@ -697,7 +697,7 @@ export default function Profile() {
                     value={tempDetails.contact_email || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, contact_email: e.target.value })}
                     placeholder="example@email.com"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                   />
                 </div>
                 <div>
@@ -707,7 +707,7 @@ export default function Profile() {
                     value={tempDetails.contact_number || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, contact_number: e.target.value })}
                     placeholder="+8801XXXXXXXXX"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                   />
                 </div>
                 <div>
@@ -717,7 +717,7 @@ export default function Profile() {
                     value={tempDetails.website || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, website: e.target.value })}
                     placeholder="https://yourportfolio.com"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                   />
                 </div>
                 <div>
@@ -727,7 +727,7 @@ export default function Profile() {
                     value={tempDetails.languages || ""}
                     onChange={(e) => setTempDetails({ ...tempDetails, languages: e.target.value })}
                     placeholder="Bangla, English"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#c45627] outline-none"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#0000FF] outline-none"
                   />
                 </div>
               </div>
@@ -745,7 +745,7 @@ export default function Profile() {
                   disabled={!hasChanges}
                   className={`w-1/2 py-2 rounded-lg text-white transition ${!hasChanges
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#c45627] hover:bg-[#a9471c]"
+                    : "bg-[#0000FF] hover:bg-[#a9471c]"
                     }`}
                 >
                   Save Details

@@ -71,7 +71,7 @@ export default function NotFound() {
         <div className="mb-8 relative">
           <div className="w-24 h-24 mx-auto mb-6 relative">
             <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-yellow-500 rounded-full animate-pulse"></div>
-            <div className="absolute inset-2 bg-[#c45627] rounded-full flex items-center justify-center">
+            <div className="absolute inset-2 bg-[#0000FF] rounded-full flex items-center justify-center">
               <Brain className="w-8 h-8 text-yellow-300 animate-bounce" />
             </div>
           </div>

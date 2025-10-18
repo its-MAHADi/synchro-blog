@@ -5,15 +5,15 @@ import { Users, FileText, BarChart2, Settings } from "lucide-react";
 
 /**
  * Admin Dashboard (polished + animated)
- * Primary color: #c45627
+ * Primary color: #0000FF
  */
 export default function AdminDashboard() {
   // demo numbers
   const stats = [
-    { id: 1, label: "Total Users", value: "1,245", icon: Users, color: "#c45627", pct: 72 },
-    { id: 2, label: "Total Posts", value: "320", icon: FileText, color: "#c45627", pct: 54 },
-    { id: 3, label: "Engagement", value: "98%", icon: BarChart2, color: "#c45627", pct: 98 },
-    { id: 4, label: "Pending Tasks", value: "12", icon: Settings, color: "#c45627", pct: 30 },
+    { id: 1, label: "Total Users", value: "1,245", icon: Users, color: "#0000FF", pct: 72 },
+    { id: 2, label: "Total Posts", value: "320", icon: FileText, color: "#0000FF", pct: 54 },
+    { id: 3, label: "Engagement", value: "98%", icon: BarChart2, color: "#0000FF", pct: 98 },
+    { id: 4, label: "Pending Tasks", value: "12", icon: Settings, color: "#0000FF", pct: 30 },
   ];
 
   const recent = [
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
 
         <div className="flex items-center gap-3">
           <button
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#c45627] text-white font-semibold shadow-lg hover:scale-105 transform transition"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0000FF] text-white font-semibold shadow-lg hover:scale-105 transform transition"
             aria-label="Create report"
           >
             Create Report
@@ -71,7 +71,7 @@ export default function AdminDashboard() {
                       boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)",
                     }}
                   >
-                    <Icon size={20} className="text-[#c45627] animate-pulse" />
+                    <Icon size={20} className="text-[#0000FF] animate-pulse" />
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">{s.label}</p>
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* small badge */}
-                <div className="text-sm px-2 py-1 rounded-full bg-[#c45627]/10 text-[#c45627] font-semibold">
+                <div className="text-sm px-2 py-1 rounded-full bg-[#0000FF]/10 text-[#0000FF] font-semibold">
                   {s.pct}%
                 </div>
               </div>
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
             {[30, 40, 55, 70, 60, 80, 95, 75, 85, 100, 90].map((val, idx) => (
               <div
                 key={idx}
-                className="flex-1 bg-[#c45627]/20 rounded-t-md transition-all transform hover:scale-y-105 origin-bottom"
+                className="flex-1 bg-[#0000FF]/20 rounded-t-md transition-all transform hover:scale-y-105 origin-bottom"
                 style={{
                   height: `${(val / 100) * 100}%`,
                   boxShadow: "inset 0 -2px 8px rgba(0,0,0,0.05)",
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">Recent activity</h3>
-            <button className="text-sm text-[#c45627] font-semibold hover:underline">See all</button>
+            <button className="text-sm text-[#0000FF] font-semibold hover:underline">See all</button>
           </div>
 
           <ul className="space-y-3 flex-1 overflow-auto pr-2">
@@ -149,7 +149,7 @@ export default function AdminDashboard() {
                 key={i}
                 className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition"
               >
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#c45627]/10 text-[#c45627] font-bold">
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#0000FF]/10 text-[#0000FF] font-bold">
                   {i + 1}
                 </div>
                 <div className="flex-1">
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
           </ul>
 
           <div className="mt-4">
-            <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-[#c45627] text-[#c45627] hover:bg-[#c45627] hover:text-white transition">
+            <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF] hover:text-white transition">
               Create Announcement
             </button>
           </div>

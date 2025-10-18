@@ -36,7 +36,7 @@ const AboutUsSection = () => {
     return (
         <div className="bg-white max-w-11/12 mx-auto  overflow-hidden">
             {/* Hero Section */}
-            <div className="relative rounded-xl bg-gradient-to-br from-[#213943] via-[#2a4a56] to-[#c45627] text-white overflow-hidden">
+            <div className="relative rounded-xl bg-gradient-to-br from-[#213943] via-[#2a4a56] to-[#0000FF] text-white overflow-hidden">
                 {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute inset-0" style={{
@@ -88,7 +88,7 @@ const AboutUsSection = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div className="order-2 lg:order-1">
                             <div className="relative">
-                                <div className="absolute -inset-4 bg-gradient-to-r from-[#c45627]/20 to-[#213943]/20 rounded-3xl blur-xl"></div>
+                                <div className="absolute -inset-4 bg-gradient-to-r from-[#0000FF]/20 to-[#213943]/20 rounded-3xl blur-xl"></div>
                                 <img
                                     src="https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80"
                                     alt="Blogging Community"
@@ -98,7 +98,7 @@ const AboutUsSection = () => {
                         </div>
 
                         <div className="order-1 lg:order-2">
-                            <div className="inline-flex items-center bg-[#c45627]/10 text-[#c45627] rounded-full px-4 py-2 mb-6">
+                            <div className="inline-flex items-center bg-[#0000FF]/10 text-[#0000FF] rounded-full px-4 py-2 mb-6">
                                 <Quote className="w-4 h-4 mr-2" />
                                 <span className="font-semibold">Our Story</span>
                             </div>
@@ -140,10 +140,10 @@ const AboutUsSection = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                         {/* Mission */}
                         <div className="relative">
-                            <div className="absolute -inset-6 bg-gradient-to-r from-[#c45627]/10 to-transparent rounded-3xl"></div>
-                            <div className="relative bg-white border-2 border-[#c45627]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 h-[320px]">
+                            <div className="absolute -inset-6 bg-gradient-to-r from-[#0000FF]/10 to-transparent rounded-3xl"></div>
+                            <div className="relative bg-white border-2 border-[#0000FF]/20 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 h-[320px]">
                                 <div className="flex items-center mb-6">
-                                    <div className="bg-[#c45627] p-3 rounded-2xl mr-4">
+                                    <div className="bg-[#0000FF] p-3 rounded-2xl mr-4">
                                         <Target className="w-8 h-8 text-white" />
                                     </div>
                                     <h3 className="text-3xl font-bold text-[#213943]">Our Mission</h3>
@@ -193,9 +193,9 @@ const AboutUsSection = () => {
                         {values.map((value, index) => (
                             <div
                                 key={index}
-                                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#c45627]/20 hover:-translate-y-2"
+                                className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-[#0000FF]/20 hover:-translate-y-2"
                             >
-                                <div className="bg-gradient-to-br from-[#c45627] to-[#e67045] p-4 rounded-2xl w-16 h-16 mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                <div className="bg-gradient-to-br from-[#0000FF] to-[#e67045] p-4 rounded-2xl w-16 h-16 mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                                     <value.icon className="w-8 h-8 text-white" />
                                 </div>
                                 <h3 className="text-xl font-bold text-[#213943] mb-4">{value.title}</h3>
@@ -212,7 +212,7 @@ const AboutUsSection = () => {
 
 
             {/* CTA Section */}
-            {/* <div className="relative py-20 rounded-xl px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#213943] to-[#c45627] text-white overflow-hidden">
+            {/* <div className="relative py-20 rounded-xl px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#213943] to-[#0000FF] text-white overflow-hidden">
                 Background Elements
                 <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
@@ -237,7 +237,7 @@ const AboutUsSection = () => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <a
                             href="/subscribe"
-                            className="group inline-flex items-center bg-white text-[#c45627] px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/25"
+                            className="group inline-flex items-center bg-white text-[#0000FF] px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-2xl hover:shadow-white/25"
                         >
                             Subscribe Now
                             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -245,7 +245,7 @@ const AboutUsSection = () => {
 
                         <a
                             href="/events"
-                            className="group inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#c45627] transition-all duration-300"
+                            className="group inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#0000FF] transition-all duration-300"
                         >
                             Join Events
                             <Users className="w-5 h-5 ml-2" />

@@ -267,7 +267,7 @@ Requirements:
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4">
                 <div className="p-2 bg-yellow-100 rounded-lg">
-                  <FileText className="w-5 h-5 text-[#c45627]" />
+                  <FileText className="w-5 h-5 text-[#0000FF]" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
               </div>
@@ -284,7 +284,7 @@ Requirements:
                     onChange={handleInputChange}
                     className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
                       ? "border-red-300 bg-red-50 focus:border-red-500"
-                      : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
+                      : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                       }`}
                     placeholder="Enter an engaging blog title..."
                   />
@@ -306,7 +306,7 @@ Requirements:
                     required
                     value={formData.category}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-[#c45627]"
+                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                     placeholder="Any kind of category..."
                   />
                 </div>
@@ -321,7 +321,7 @@ Requirements:
                   max={1000}
                   value={wordCount}
                   onChange={handleWordCountChange}
-                  className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:border-[#c45627]"
+                  className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:border-[#0000FF]"
                 />
                 <button
                   onClick={generateContent}
@@ -346,7 +346,7 @@ Requirements:
                   onChange={handleInputChange}
                   className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
                     ? "border-red-300 bg-red-50 focus:border-red-500"
-                    : "border-gray-200 bg-gray-50 focus:border-[#c45627]"
+                    : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                     }`}
                   disabled={isGenerating}
                   placeholder="Write a compelling description..."
@@ -364,10 +364,10 @@ Requirements:
             <div className="space-y-4">
               <div
                 className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
-                  ? "border-[#c45627] bg-orange-50 scale-102"
+                  ? "border-[#0000FF] bg-orange-50 scale-102"
                   : featuredPreview
                     ? "border-transparent"
-                    : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#c45627]"
+                    : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF]"
                   }`}
                 onClick={() => featuredInputRef.current?.click()}
                 onDragOver={handleDragOver}
@@ -390,7 +390,7 @@ Requirements:
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-center p-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#c45627] to-yellow-600 rounded-full flex items-center justify-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-yellow-600 rounded-full flex items-center justify-center mb-4">
                       <Upload className="w-8 h-8 text-white" />
                     </div>
                     <div className="text-lg font-semibold text-gray-800 mb-2">

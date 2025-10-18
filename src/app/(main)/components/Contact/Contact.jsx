@@ -60,7 +60,7 @@ const Contact = () => {
               onChange={handleChange}
               placeholder="Your Name"
               className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2"
-              style={{ borderColor: "#c45627" }}
+              style={{ borderColor: "#0000FF" }}
               required
             />
 
@@ -72,7 +72,7 @@ const Contact = () => {
               onChange={handleChange}
               placeholder="Your Email"
               className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2"
-              style={{ borderColor: "#c45627" }}
+              style={{ borderColor: "#0000FF" }}
               required
             />
 
@@ -83,7 +83,7 @@ const Contact = () => {
               onChange={handleChange}
               placeholder="Your Message"
               className="w-full p-3 border rounded-xl h-32 focus:outline-none focus:ring-2"
-              style={{ borderColor: "#c45627" }}
+              style={{ borderColor: "#0000FF" }}
               required
             ></textarea>
 
@@ -92,11 +92,11 @@ const Contact = () => {
               type="submit"
               className="w-full py-3 rounded-xl font-semibold transition-all duration-200"
               style={{
-                backgroundColor: "#c45627",
+                backgroundColor: "#0000FF",
                 color: "white",
               }}
               onMouseOver={(e) => (e.target.style.backgroundColor = "#a9441e")}
-              onMouseOut={(e) => (e.target.style.backgroundColor = "#c45627")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#0000FF")}
             >
               Send Message
             </button>
@@ -111,7 +111,7 @@ const Contact = () => {
         </div>
         <div className="flex items-center pl-0 md:pl-8">
         <div>
-          <h2 className="text-5xl font-bold text-text-[#213943]">Syn<span className="text-[#c45627]">chro</span></h2>
+          <h2 className="text-5xl font-bold text-text-[#213943]">Syn<span className="text-[#0000FF]">chro</span></h2>
           <p className="text-gray-600 mt-4">Have questions, feedback, or collaboration ideas? We’d love to hear from you!
             At SYNCHRO, we believe in building connections and growing together.
             Reach out to us anytime—we’re here to listen, support, and create meaningful conversations.</p>

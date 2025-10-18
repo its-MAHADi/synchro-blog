@@ -18,14 +18,14 @@ const AuthNavbar = () => {
           />
           <span className="text-2xl font-bold">
             <span className="text-[#213943]">SYN</span>
-            <span className="text-[#c45627]">CHRO</span>
+            <span className="text-[#0000FF]">CHRO</span>
           </span>
         </Link>
 
         {/* Back to Home Button */}
         <Link
           href="/"
-          className="px-4 py-2 border border-[#c45627] text-[#c45627] rounded-lg hover:bg-[#c45627] hover:text-white transition"
+          className="px-4 py-2 border border-[#0000FF] text-[#0000FF] rounded-lg hover:bg-[#0000FF] hover:text-white transition"
         >
           Back to Home
         </Link>

@@ -83,7 +83,7 @@ const EventComponent = () => {
     return (
         <div className="max-w-11/12 mx-auto bg-gradient-to-br from-gray-50 via-white to-orange-50">
             {/* Hero Section */}
-            <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#213943] via-[#2a4a56] to-[#c45627] py-10 md:py-20 px-4 sm:px-6 lg:px-8">
+            <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-[#213943] via-[#2a4a56] to-[#0000FF] py-10 md:py-20 px-4 sm:px-6 lg:px-8">
                 <div className="absolute inset-0 bg-black opacity-10"></div>
                 <div className="relative max-w-7xl mx-auto">
                     <div className="text-center">
@@ -135,17 +135,17 @@ const EventComponent = () => {
                             <div className="md:max-w-7xl mx-auto px-4 md:px-8">
                                 <div className="grid grid-cols-3 gap-8 text-center">
                                     <div className="md:p-6">
-                                        <div className="text-xl md:text-3xl font-bold text-[#c45627] mb-2">{events.length}+</div>
+                                        <div className="text-xl md:text-3xl font-bold text-[#0000FF] mb-2">{events.length}+</div>
                                         <div className="text-xs md:text-sm font-medium">Total Events</div>
                                     </div>
                                     <div className="md:p-6">
-                                        <div className="text-xl md:text-3xl font-bold text-[#c45627] mb-2">
+                                        <div className="text-xl md:text-3xl font-bold text-[#0000FF] mb-2">
                                             {events.reduce((sum, event) => sum + event.attendees, 0)}+
                                         </div>
                                         <div className="text-xs  md:text-sm font-medium">Community Members</div>
                                     </div>
                                     <div className="md:p-6">
-                                        <div className="text-xl md:text-3xl font-bold text-[#c45627] mb-2">
+                                        <div className="text-xl md:text-3xl font-bold text-[#0000FF] mb-2">
                                             {events.filter(event => new Date(event.date) >= new Date()).length}
                                         </div>
                                         <div className="text-xs md:text-sm  font-medium">Upcoming Events</div>
@@ -168,14 +168,14 @@ const EventComponent = () => {
                             {filteredEvents.some(event => event.featured) && (
                                 <div className="mb-12">
                                     <h2 className="text-2xl font-bold text-[#213943] mb-6 flex items-center">
-                                        <Star className="w-6 h-6 mr-2 text-[#c45627]" />
+                                        <Star className="w-6 h-6 mr-2 text-[#0000FF]" />
                                         Featured Events
                                     </h2>
                                     <div className="grid gap-6">
                                         {filteredEvents.filter(event => event.featured).map((event) => (
                                             <div
                                                 key={event.id}
-                                                className="bg-gradient-to-r from-[#c45627] to-[#e67045] rounded-3xl p-8 text-white shadow-2xl transform hover:scale-[1.02] transition-all duration-300"
+                                                className="bg-gradient-to-r from-[#0000FF] to-[#e67045] rounded-3xl p-8 text-white shadow-2xl transform hover:scale-[1.02] transition-all duration-300"
                                             >
                                                 <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
                                                     <div className="flex-1">
@@ -217,7 +217,7 @@ const EventComponent = () => {
                                                     <div className="flex-shrink-0">
                                                         <a
                                                             href={event.link}
-                                                            className="inline-flex items-center px-8 py-3 bg-white text-[#c45627] rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+                                                            className="inline-flex items-center px-8 py-3 bg-white text-[#0000FF] rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg"
                                                         >
                                                             Register Now
                                                         </a>
@@ -242,7 +242,7 @@ const EventComponent = () => {
                                         >
                                             <div className="p-6">
                                                 <div className="flex items-center justify-between mb-4">
-                                                    <span className="bg-[#c45627]/10 text-[#c45627] px-3 py-1 rounded-full text-sm font-medium">
+                                                    <span className="bg-[#0000FF]/10 text-[#0000FF] px-3 py-1 rounded-full text-sm font-medium">
                                                         {event.category}
                                                     </span>
                                                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatus(event.date) === "Upcoming"
@@ -277,7 +277,7 @@ const EventComponent = () => {
 
                                                 <a
                                                     href={event.link}
-                                                    className="w-full bg-gradient-to-r from-[#c45627] to-[#e67045] text-white py-3 rounded-xl font-semibold hover:from-[#b5501f] hover:to-[#c45627] transition-all duration-300 text-center block"
+                                                    className="w-full bg-gradient-to-r from-[#0000FF] to-[#e67045] text-white py-3 rounded-xl font-semibold hover:from-[#b5501f] hover:to-[#0000FF] transition-all duration-300 text-center block"
                                                 >
                                                     Learn More
                                                 </a>
@@ -299,7 +299,7 @@ const EventComponent = () => {
                                     setSearch("");
                                     setFilter("all");
                                 }}
-                                className="bg-[#c45627] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#b5501f] transition-colors"
+                                className="bg-[#0000FF] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#b5501f] transition-colors"
                             >
                                 Clear Filters
                             </button>

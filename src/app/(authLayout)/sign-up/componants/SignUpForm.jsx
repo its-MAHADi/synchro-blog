@@ -108,23 +108,23 @@ const handleGithubLogin = () => {
               type="text"
               name="name"
               placeholder="Full Name"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#0000FF]"
             />
             <input
               type="email"
               name="email"
               placeholder="Email"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#0000FF]"
             />
             <input
               type="password"
               name="password"
               placeholder="Password"
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#c45627]"
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-[#0000FF]"
             />
             <button
               type="submit"
-              className="w-full bg-[#c45627] text-white py-3 rounded-lg hover:bg-[#a9441f] transition cursor-pointer"
+              className="w-full bg-[#0000FF] text-white py-3 rounded-lg hover:bg-[#a9441f] transition cursor-pointer"
             >
               Sign Up
             </button>
@@ -175,7 +175,7 @@ const handleGithubLogin = () => {
               {/* Sign Up Link */}
               <p className="text-sm text-center text-gray-500 mt-6">
                 Don&apos;t have an account?{" "}
-                <Link href="/sign-in" className="text-[#c45627] font-medium">
+                <Link href="/sign-in" className="text-[#0000FF] font-medium">
                   Sign in
                 </Link>
               </p>

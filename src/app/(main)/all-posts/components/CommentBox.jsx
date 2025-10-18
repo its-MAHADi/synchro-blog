@@ -14,12 +14,12 @@ const CommentBox = () => {
             id="comment"
             rows="5"
             placeholder="Write your comment here..."
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#c45627] focus:outline-none transition duration-200 placeholder-gray-500"
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0000FF] focus:outline-none transition duration-200 placeholder-gray-500"
           ></textarea>
         </div>
         <button
           type="submit"
-          className="w-full md:w-auto bg-[#c45627] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#a8431f] transition duration-300 cursor-pointer"
+          className="w-full md:w-auto bg-[#0000FF] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#a8431f] transition duration-300 cursor-pointer"
         >
           Post Comment
         </button>

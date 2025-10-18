@@ -2,7 +2,7 @@
 import { BadgeQuestionMark } from 'lucide-react';
 import { Plus, Minus } from 'lucide-react';
 import React, { useState } from 'react';
-// #c45627 #213943 #f6f5ea  
+// #0000FF #213943 #f6f5ea  
 const FAQ = () => {
     const [openIndex, setOpenIndex] = useState(null); // Keep track of the open/close state of each FAQ
 
@@ -45,7 +45,7 @@ const FAQ = () => {
 
     return (
         <div id="faq" className='mt-25 flex justify-center items-center flex-col'>
-            <div className="inline-flex flex-row-reverse items-center gap-2 bg-[#c45627] px-4 py-2 rounded-full mb-4">
+            <div className="inline-flex flex-row-reverse items-center gap-2 bg-[#0000FF] px-4 py-2 rounded-full mb-4">
                 <BadgeQuestionMark className="lg:w-8 lg:h-8 text-[#f6f5ea]" />
                 <span className="text-sm lg:text-2xl font-medium text-[#f6f5ea]">Got questions? We’re here to help</span>
             </div>

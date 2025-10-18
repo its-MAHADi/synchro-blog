@@ -67,7 +67,7 @@ export default function NotificationBar() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <Bell className="text-[#c45627]" size={20} />
+          <Bell className="text-[#0000FF]" size={20} />
           Notifications
         </h2>
         <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
@@ -84,7 +84,7 @@ export default function NotificationBar() {
             className={`flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all duration-300 border ${
               noti.read
                 ? "bg-gray-50 border-gray-100"
-                : "bg-[#fff5f0] border-[#c4562725]"
+                : "bg-[#fff5f0] border-[#0000FF25]"
             } hover:shadow-md hover:scale-[1.01]`}
             onClick={() => markAsRead(noti.id)}
           >
@@ -118,7 +118,7 @@ export default function NotificationBar() {
                   ? "bg-green-100 text-green-600"
                   : noti.type === "warning"
                   ? "bg-red-100 text-red-600"
-                  : "bg-[#c4562720] text-[#c45627]"
+                  : "bg-[#0000FF20] text-[#0000FF]"
               }`}
             >
               {noti.type === "success" ? (

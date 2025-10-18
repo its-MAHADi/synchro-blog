@@ -11,7 +11,7 @@ const AllPostHeader = () => {
       <h1 className="text-2xl md:text-3xl font-bold">All Blog Posts</h1>
 
       {/* Search bar */}
-      <div className="flex items-center gap-2 border px-3 py-1 border-[#c45627a8] rounded-full">
+      <div className="flex items-center gap-2 border px-3 py-1 border-[#0000FFa8] rounded-full">
         {/* <input
           type="text"
           placeholder="Search..."
@@ -25,7 +25,7 @@ const AllPostHeader = () => {
         <Button
           label={<FaSearch className="text-white" />}
           type="button"
-          clsName="btn bg-[#c45627] rounded-full p-3 flex items-center justify-center"
+          clsName="btn bg-[#0000FF] rounded-full p-3 flex items-center justify-center"
         />
       </div>
     </div>

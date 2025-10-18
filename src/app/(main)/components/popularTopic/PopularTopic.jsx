@@ -73,7 +73,7 @@ export default function PopularTopic() {
             bgGradient: "from-emerald-50 to-green-50"
         }
     ];
-//[#c45627]
+//[#0000FF]
     return (
         <section id="trendingTopics" className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12 rounded-lg relative">
             {/* Animated background elements - responsive sizes */}
@@ -111,7 +111,7 @@ export default function PopularTopic() {
                         >
                             {/* Rank Badge */}
                             <div className="absolute top-3 sm:top-4 left-3 sm:left-4 z-20">
-                                <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${topic.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform duration-300`}>
+                                <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-[#0000FF] rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 group-hover:rotate-0 transition-transform duration-300`}>
                                     <span className="text-white font-black text-sm sm:text-lg">#{(index % 5) + 1}</span>
                                 </div>
                             </div>

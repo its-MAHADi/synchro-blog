@@ -61,7 +61,7 @@ const BackUpMsngr = () => {
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                        <MessageSquare className="text-[#c45627]" size={20} />
+                        <MessageSquare className="text-[#0000FF]" size={20} />
                         Chats
                     </h2>
                     <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
@@ -78,7 +78,7 @@ const BackUpMsngr = () => {
                         placeholder="Search chats..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:outline-none focus:border-[#c45627]"
+                        className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-8 pr-3 py-2 text-sm focus:outline-none focus:border-[#0000FF]"
                     />
                 </div>
 

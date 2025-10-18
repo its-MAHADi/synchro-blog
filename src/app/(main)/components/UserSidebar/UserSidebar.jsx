@@ -8,13 +8,13 @@ import { useSession } from "next-auth/react";
 import { FaUserCircle } from "react-icons/fa";
 
 const navItems = [
-    { name: "Dashboard", href: "/user-dashboard", icon: LayoutDashboard, gradient: "from-amber-500 to-[#c45627]" },
-    { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-amber-500 to-[#c45627]" },
-    // { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-amber-500 to-[#c45627]" },
-    // { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
-    { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-amber-500 to-[#c45627]" },
-    { name: "Home", href: "/", icon: HomeIcon, gradient: "from-amber-500 to-[#c45627]" },
-    { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-amber-500 to-[#c45627]" },
+    { name: "Dashboard", href: "/user-dashboard", icon: LayoutDashboard, gradient: "from-amber-500 to-[#0000FF]" },
+    { name: "My Profile", href: "/user-dashboard/profile", icon: User, gradient: "from-amber-500 to-[#0000FF]" },
+    // { name: "My Posts", href: "/user-dashboard/posts/my-posts", icon: List, gradient: "from-amber-500 to-[#0000FF]" },
+    // { name: "Add Post", href: "/user-dashboard/posts/add-posts", icon: FilePlus, gradient: "from-amber-500 to-[#0000FF]" },
+    { name: "Add Event", href: "/user-dashboard/events/add-events", icon: FilePlus, gradient: "from-amber-500 to-[#0000FF]" },
+    { name: "Home", href: "/", icon: HomeIcon, gradient: "from-amber-500 to-[#0000FF]" },
+    { name: "Membership", href: "/user-dashboard/membership", icon: CreditCard, gradient: "from-amber-500 to-[#0000FF]" },
 ];
 
 
@@ -98,7 +98,7 @@ export default function UserSidebar() {
                 <div className="hidden md:block p-6 border-b border-gray-200 relative">
                     <div className="flex items-center gap-4">
                         <div
-                            className="w-14 h-14 rounded-2xl border-2 border-[#c45627] flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
+                            className="w-14 h-14 rounded-2xl border-2 border-[#0000FF] flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-300 relative"
                             style={{
                                 boxShadow: '0 10px 25px rgba(124,58,237,0.4), inset 0 1px 0 rgba(255,255,255,0.3)'
                             }}

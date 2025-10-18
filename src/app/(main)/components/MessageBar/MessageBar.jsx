@@ -17,7 +17,7 @@ const MessageBar = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const chatRef = useRef(null);
-  const primaryColor = "#c45627";
+  const primaryColor = "#0000FF";
 
   // Auto-scroll to bottom
   useEffect(() => {

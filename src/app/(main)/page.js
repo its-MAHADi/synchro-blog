@@ -24,6 +24,8 @@ export default function Home() {
        {/* banner */}
       <Banner/>
 
+    
+
       {/* Recent Post */}
       <RecentPosts/>
 

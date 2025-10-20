@@ -1,3 +1,4 @@
+
 import SignupFrom from "./componants/SignUpForm";
 
 
@@ -11,6 +12,7 @@ export default function SignUpPage() {
     <div>
      
       <SignupFrom />
+      
       
     </div>
   );

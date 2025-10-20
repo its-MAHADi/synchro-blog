@@ -5,11 +5,12 @@ import Contact from "./components/Contact/Contact";
 import FAQ from "./components/FAQ/FAQ";
 import PopularTopic from "./components/popularTopic/PopularTopic";
 import RecentPosts from "./components/RecentPosts/RecentPosts";
-import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfile";
+// import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfile";
 import BlogPost from "./components/BlogPost/BlogPost";
 import PostField from "./components/PostField/PostField";
 import AllPosts from "./components/AllPosts/AllPosts";
 import MessageBar from "./components/MessageBar/MessageBar";
+import SignupCoverProfile from "./SignupCoverProfile/page";
 
 export const metadata = {
   title: "Home | Synchro",
@@ -24,7 +25,6 @@ export default function Home() {
        {/* banner */}
       <Banner/>
 
-    
 
       {/* Recent Post */}
       <RecentPosts/>

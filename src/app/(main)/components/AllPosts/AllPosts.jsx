@@ -48,13 +48,13 @@ const AllPosts = async () => {
   const email = session?.user?.email;
 
   const usersData = await getUserByEmail(email);
-// console.log(usersData)
+  // console.log(usersData)
   const postsData = await getAllPosts();
   const sortedPosts = postsData.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
 
-  return <AllPostsClient initialPosts={sortedPosts} userEmail={email} usersData={usersData}/>;
+  return <AllPostsClient initialPosts={sortedPosts} userEmail={email} usersData={usersData} />;
 };
 
 export default AllPosts;

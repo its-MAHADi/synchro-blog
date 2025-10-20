@@ -4,6 +4,7 @@ import { Heart, MessageCircle, Share2, TrashIcon, Edit } from "lucide-react"; //
 import { FaHeart } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const formatFacebookDate = (dateString) => {
     const date = new Date(dateString);
@@ -34,7 +35,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [loadingComments, setLoadingComments] = useState(false);
-    console.log(usersData.following)
+    // console.log(usersData.following)
     const [newComment, setNewComment] = useState("");
     // ⭐ EDIT STATE: The ID of the comment being edited and its text
     const [editingCommentId, setEditingCommentId] = useState(null);
@@ -42,6 +43,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     // ⭐
 
     const { data: session } = useSession();
+    console.log(session?.user);
 
     const [likes, setLikes] = useState(postData?.likes || 0);
     const [liked, setLiked] = useState(false);
@@ -365,10 +367,14 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         // ... Card Content (unchanged)
         <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">
             <div className="flex items-center gap-3">
-                <img className="w-10 h-10 rounded-full" src={authorAvatar} alt="Author_photo" />
+                <Link href={session?.user ? `/view-profile/${postData.author_email}` : "/sign-in"}>
+                    <img className="w-10 h-10 rounded-full" src={authorAvatar} alt="Author_photo" />
+                </Link>
                 <div className="-space-y-1">
                     <div className="flex items-center gap-2">
-                        <p className="text-gray-900 font-medium">{authorName}</p>
+                        <Link href={session?.user ? `/view-profile/${postData.author_email}` : "/sign-in"}>
+                            <p className="text-gray-900 font-medium">{authorName}</p>
+                        </Link>
 
                         {session?.user?.email !== postData.author_email && (
                             isFollowing ? (

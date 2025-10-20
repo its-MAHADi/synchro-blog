@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -44,24 +44,31 @@ export default function ChatPopup({ user, onClose }) {
       to: user.email,
       from: session.user.email,
       message: newMessage,
-      time: new Date().toISOString(), // ✅ timestamp for ordering
+      time: new Date().toISOString(), // timestamp for ordering
     };
 
+    // Optimistically add message
     setMessages((prev) => [...prev, { ...msgObj, deleted: false }]);
     setNewMessage("");
 
     try {
-      await fetch("/api/messages", {
+      const res = await fetch("/api/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(msgObj),
       });
+      const savedMessage = await res.json();
+
+      // Replace temp message with saved message (with _id)
+      setMessages((prev) =>
+        prev.map((m) => (m.time === msgObj.time ? savedMessage : m))
+      );
     } catch (err) {
       console.error("Send message failed:", err);
     }
   };
 
-  // 🔹 Delete last message in group
+  // 🔹 Delete message
   const deleteMessage = async (id) => {
     try {
       await fetch("/api/messages", {
@@ -83,18 +90,21 @@ export default function ChatPopup({ user, onClose }) {
   }, [messages]);
 
   // 🔹 Group consecutive messages by same sender
-  const groupedMessages = [];
-  let currentGroup = null;
+  const groupedMessages = useMemo(() => {
+    const groups = [];
+    let currentGroup = null;
 
-  messages.forEach((msg) => {
-    if (!currentGroup || currentGroup.from !== msg.from) {
-      if (currentGroup) groupedMessages.push(currentGroup);
-      currentGroup = { from: msg.from, msgs: [msg] };
-    } else {
-      currentGroup.msgs.push(msg);
-    }
-  });
-  if (currentGroup) groupedMessages.push(currentGroup);
+    messages.forEach((msg) => {
+      if (!currentGroup || currentGroup.from !== msg.from) {
+        if (currentGroup) groups.push(currentGroup);
+        currentGroup = { from: msg.from, msgs: [msg] };
+      } else {
+        currentGroup.msgs.push(msg);
+      }
+    });
+    if (currentGroup) groups.push(currentGroup);
+    return groups;
+  }, [messages]);
 
   return (
     <AnimatePresence>
@@ -144,20 +154,22 @@ export default function ChatPopup({ user, onClose }) {
             return (
               <div
                 key={i}
-                className={`flex flex-col ${isMine ? "items-end" : "items-start"} space-y-1 mb-1`}
+                className={`flex flex-col ${isMine ? "items-end" : "items-start"
+                  } space-y-1 mb-1`}
               >
                 {group.msgs.map((msg, idx) => (
                   <div
                     key={msg._id || msg.time || idx}
-                    className={`px-3 py-2 max-w-[75%] text-sm shadow-sm ${
-                      isMine
-                        ? `bg-[#0000FF] text-white rounded-tr-xl rounded-tl-xl ${
-                            idx === group.msgs.length - 1 ? "rounded-br-xl" : "rounded-br-none"
-                          }`
-                        : `bg-white border border-gray-200 text-gray-800 rounded-tl-xl rounded-tr-xl ${
-                            idx === group.msgs.length - 1 ? "rounded-bl-xl" : "rounded-bl-none"
-                          }`
-                    }`}
+                    className={`px-3 py-2 max-w-[75%] text-sm shadow-sm ${isMine
+                        ? `bg-[#0000FF] text-white rounded-tr-xl rounded-tl-xl ${idx === group.msgs.length - 1
+                          ? "rounded-br-xl"
+                          : "rounded-br-none"
+                        }`
+                        : `bg-white border border-gray-200 text-gray-800 rounded-tl-xl rounded-tr-xl ${idx === group.msgs.length - 1
+                          ? "rounded-bl-xl"
+                          : "rounded-bl-none"
+                        }`
+                      }`}
                   >
                     {msg.deleted ? (
                       <em className="text-gray-400 italic text-sm">
@@ -172,7 +184,9 @@ export default function ChatPopup({ user, onClose }) {
                 {/* Delete button for last message in group */}
                 {isMine && group.msgs[group.msgs.length - 1]?._id && (
                   <button
-                    onClick={() => deleteMessage(group.msgs[group.msgs.length - 1]._id)}
+                    onClick={() =>
+                      deleteMessage(group.msgs[group.msgs.length - 1]._id)
+                    }
                     className="text-red-500 text-xs hover:text-red-700 mt-0.5"
                   >
                     Delete
@@ -197,7 +211,7 @@ export default function ChatPopup({ user, onClose }) {
           />
           <button
             onClick={sendMessage}
-            className="p-2 bg-[#0000FF] hover:bg-[#a3431c] text-white rounded-full transition"
+            className="p-2 bg-[#0000FF] hover:bg-blue-700 text-white rounded-full transition"
           >
             <Send size={16} />
           </button>

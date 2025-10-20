@@ -8,8 +8,9 @@ export const metadata = {
 
 const EventsPage = () => {
     return (
-        <div className='pt-14'>
-            <EventComponent/>
+        <div className='py-72'>
+           <h2 className='text-7xl text-center'>Coming Soon.....</h2>
+           {/* <EventComponent/> */}
         </div>
     );
 };

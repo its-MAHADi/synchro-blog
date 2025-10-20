@@ -43,7 +43,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     // ⭐
 
     const { data: session } = useSession();
-    console.log(session?.user);
+    // console.log(session?.user);
 
     const [likes, setLikes] = useState(postData?.likes || 0);
     const [liked, setLiked] = useState(false);

@@ -5,7 +5,7 @@ export async function GET(request, { params }) {
   const { email } = params;
 
   try {
-    const blogCollection = dbConnect(collectionNameObj.blogCollection);
+    const blogCollection = await dbConnect(collectionNameObj.blogCollection); // <-- fix
     const posts = await blogCollection
       .find({ author_email: email })
       .sort({ createdAt: -1 })

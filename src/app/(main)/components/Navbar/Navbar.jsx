@@ -12,12 +12,17 @@ import { RiMessengerLine } from "react-icons/ri";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useMessage } from "@/app/contexts/MessageContext";
 
+
+
+
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const { toggleMessageBar, toggleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
+  // const [userImage, setUserImage] = useState(null);
   // Navbar component এর state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -31,6 +36,33 @@ const Navbar = () => {
     { id: 3, name: "Raisa Akter" },
     { id: 4, name: "Tanvir Islam" },
   ];
+
+  // profile pic in profile btn
+
+const [userImage, setUserImage] = useState(null);
+
+useEffect(() => {
+  async function fetchUserImage() {
+    if (session?.user?.email) {
+      try {
+        const res = await fetch(`/api/get-user?email=${encodeURIComponent(session.user.email)}`);
+        const data = await res.json();
+
+        if (data?.user?.image) {
+          setUserImage(data.user.image); // ✅ from MongoDB
+        } else {
+          setUserImage(session?.user?.image || null); // fallback to NextAuth image
+        }
+      } catch (error) {
+        console.error("Failed to load user image:", error);
+      }
+    }
+  }
+
+  fetchUserImage();
+}, [session]);
+
+
 
   // Search logic
   useEffect(() => {
@@ -193,19 +225,24 @@ const Navbar = () => {
                     />
 
                   </div>
-                  {
-                    session?.user?.image ?
-                      <div>
-                        <Link href={"/user-dashboard/profile"}>
-                          <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
-                        </Link>
-                      </div>
-                      :
-                      <Link href={"/user-dashboard/profile"}>
-                        <FaUserCircle size={30} />
-                      </Link>
+                  
 
-                  }
+{userImage ? (
+  <Link href="/user-dashboard/profile">
+    <img
+      src={userImage}
+      alt="Profile"
+      className="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </Link>
+) : (
+  <Link href="/user-dashboard/profile">
+    <FaUserCircle size={30} />
+  </Link>
+)}
+
+
+
 
                   <Link href="/" onClick={() => signOut()} className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
                     Logout

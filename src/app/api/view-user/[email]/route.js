@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import dbConnect, { collectionNameObj } from "@/lib/dbConnect"; // adjust import path if different
+import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
 
 export async function GET(request, context) {
   try {
-    // ✅ Await params first
-    const { email } = await context.params;
+    const { email } = context.params; // ✅ no await
 
     if (!email) {
       return NextResponse.json(
@@ -13,9 +12,8 @@ export async function GET(request, context) {
       );
     }
 
-    const usersCollection = dbConnect(collectionNameObj.usersCollection);
+    const usersCollection = await dbConnect(collectionNameObj.usersCollection); // ✅ await
 
-    // Find user by email
     const user = await usersCollection.findOne({ email });
 
     if (!user) {

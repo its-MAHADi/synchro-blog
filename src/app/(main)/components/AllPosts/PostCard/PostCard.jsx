@@ -34,7 +34,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [comments, setComments] = useState([]);
     const [loadingComments, setLoadingComments] = useState(false);
-    console.log(usersData.following)
+    // console.log(usersData.following)
     const [newComment, setNewComment] = useState("");
     // ⭐ EDIT STATE: The ID of the comment being edited and its text
     const [editingCommentId, setEditingCommentId] = useState(null);

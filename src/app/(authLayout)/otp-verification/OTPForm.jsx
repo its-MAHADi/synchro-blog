@@ -35,7 +35,8 @@ const OTPForm = () => {
 
         if (loginResult?.ok) {
           Swal.fire({ icon: "success", title: "Verified & Logged In", text: "Redirecting...", timer: 1500, showConfirmButton: false });
-          router.push("/SignupCoverProfile");
+          // router.push("/SignupCoverProfile");
+          router.push(`/SignupCoverProfile?email=${encodeURIComponent(email)}`);
         } else {
           Swal.fire({ icon: "error", title: "Login Failed", text: "Please try signing in manually." });
         }

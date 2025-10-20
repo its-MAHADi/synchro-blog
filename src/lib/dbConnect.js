@@ -1,27 +1,30 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
+// src/lib/dbConnect.js
+import { MongoClient, ServerApiVersion } from "mongodb";
 
 export const collectionNameObj = {
-  usersCollection: 'users',
-  eventCollection: 'events',
-  blogCollection: 'blogs',
-  followerCollection: 'followers',
-  featuresCollection: 'features',
-  commentCollection: 'comments',
-  messageCollection: 'message',
-  notificationCollection: 'notification',
-}
+  usersCollection: "users",
+  blogCollection: "blogs",
+  eventCollection: "events",
+  followerCollection: "followers",
+  featuresCollection: "features",
+  commentCollection: "comments",
+  messageCollection: "message",
+  notificationCollection: "notification",
+};
 
-export default function dbConnect(collectionName) {
+// Global variable to reuse client in dev
+let cachedClient = global._mongoClient;
 
+export default async function dbConnect(collectionName) {
+  if (cachedClient) return cachedClient.db(process.env.DB_NAME).collection(collectionName);
 
-  const uri = process.env.MONGODB_URI;
-  // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-  const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
+  const client = new MongoClient(process.env.MONGODB_URI, {
+    serverApi: { version: ServerApiVersion.v1 },
   });
+
+  await client.connect();
+  cachedClient = client;
+  global._mongoClient = client;
+
   return client.db(process.env.DB_NAME).collection(collectionName);
 }

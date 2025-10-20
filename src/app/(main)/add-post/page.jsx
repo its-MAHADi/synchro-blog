@@ -7,10 +7,54 @@ import { useSession } from "next-auth/react";
 import { AI_URL } from "@/Ai/constant";
 import Swal from "sweetalert2";
 
-export default function BlogForm() {
-  const { data } = useSession();
-  console.log(data);
+// Profession-wise input fields
+const professionFields = {
+  Developer: [
+    { name: "techStack", label: "Tech Stack", type: "text" },
+    { name: "githubRepo", label: "GitHub Repo Link", type: "url" },
+    { name: "liveDemo", label: "Live Demo Link", type: "url" },
+    { name: "projectDescription", label: "Project Description", type: "textarea" },
+  ],
+  Writer: [
+    { name: "genre", label: "Genre", type: "text" },
+    { name: "inspiration", label: "Inspiration Source", type: "text" },
+  ],
+  Blogger: [
+    { name: "topic", label: "Topic", type: "text" },
+    { name: "keywords", label: "Keywords", type: "text" },
+  ],
+  Photographer: [
+    { name: "location", label: "Location", type: "text" },
+    { name: "cameraModel", label: "Camera Model", type: "text" },
+    { name: "photoStory", label: "Story Behind Photo", type: "textarea" },
+  ],
+  Designer: [
+    { name: "designCategory", label: "Design Category", type: "text" },
+    { name: "toolsUsed", label: "Tools Used", type: "text" },
+  ],
+};
 
+// ----------------- Fetch user -----------------
+async function getUserByEmail(email) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/user?email=${email}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to fetch user");
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}
+
+export default function BlogForm() {
+  const { data: session } = useSession();
+  const [userData, setUserData] = useState(null);
+
+  // ----------------- Form States -----------------
   const [formData, setFormData] = useState({
     blog_title: "",
     description: "",
@@ -24,30 +68,54 @@ export default function BlogForm() {
     modified_at: null,
   });
 
-  useEffect(() => {
-    if (data?.user) {
-      setFormData((prev) => ({
-        ...prev,
-        author_name: data.user.name || "",
-        author_email: data.user.email || "",
-      }));
-    }
-  }, [data]);
-
+  const [extraFields, setExtraFields] = useState({});
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [featuredPreview, setFeaturedPreview] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const featuredInputRef = useRef(null);
   const [wordCount, setWordCount] = useState(50);
   const [isGenerating, setIsGenerating] = useState(false);
+  const featuredInputRef = useRef(null);
 
-  // ---------------- Handlers ----------------
+  // ----------------- Fetch user data -----------------
+  useEffect(() => {
+    if (session?.user?.email) {
+      const fetchUser = async () => {
+        const data = await getUserByEmail(session.user.email);
+        console.log(data)
+        if (data) {
+          setUserData(data);
+          setFormData((prev) => ({
+            ...prev,
+            author_name: data.name || "",
+            author_email: data.email || "",
+          }));
+
+          const prof = data.profession;
+          if (prof && professionFields[prof]) {
+            const initialExtra = {};
+            professionFields[prof].forEach((f) => (initialExtra[f.name] = ""));
+            setExtraFields(initialExtra);
+          }
+        }
+      };
+      fetchUser();
+    }
+  }, [session?.user?.email]);
+
+
+  
+  // ----------------- Handlers -----------------
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleExtraFieldChange = (e) => {
+    const { name, value } = e.target;
+    setExtraFields((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleDragOver = (e) => {
@@ -74,6 +142,7 @@ export default function BlogForm() {
 
   const handleWordCountChange = (e) => setWordCount(e.target.value);
 
+  // ----------------- AI Content Generation -----------------
   const generateContent = async (e) => {
     e.preventDefault();
     if (!formData.blog_title.trim() || !formData.category.trim()) {
@@ -96,7 +165,8 @@ Title: ${formData.blog_title}
 Category: ${formData.category}
 Requirements:
 - One continuous paragraph (~${wordCount} words)
-- Do NOT suggest any featured image URL`,
+- Do NOT suggest any featured image URL
+- Extra info: ${JSON.stringify(extraFields)}`,
               },
             ],
           },
@@ -111,10 +181,7 @@ Requirements:
       response = await response.json();
 
       const aiText = response?.candidates?.[0]?.content?.parts?.[0]?.text || "";
-      setFormData((prev) => ({
-        ...prev,
-        description: aiText.trim(),
-      }));
+      setFormData((prev) => ({ ...prev, description: aiText.trim() }));
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -126,6 +193,7 @@ Requirements:
     }
   };
 
+  // ----------------- Validation -----------------
   const validateForm = () => {
     const newErrors = {};
     if (!formData.blog_title.trim())
@@ -142,12 +210,12 @@ Requirements:
     return Object.keys(newErrors).length === 0;
   };
 
-  // submit handle for Post
+  // ----------------- Submit Handler -----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    if (!data?.user) {
+    if (!userData) {
       Swal.fire({
         icon: "error",
         title: "Unauthorized",
@@ -172,15 +240,13 @@ Requirements:
       }
 
       const payload = {
-        blog_title: formData.blog_title,
-        description: formData.description,
+        ...formData,
         category: formData.category
           .split(",")
           .map((t) => t.trim())
           .filter(Boolean),
         featured_image: imageUrl,
-        author_name: data.user.name,
-        author_email: data.user.email,
+        extraFields, // Add profession fields
       };
 
       const res = await fetch("/api/add-post", {
@@ -199,15 +265,18 @@ Requirements:
         setFormData({
           blog_title: "",
           description: "",
-          author_name: data.user.name,
-          author_email: data.user.email,
+          author_name: userData.name || "",
+          author_email: userData.email || "",
           featured_image: "",
-          category: "", // ✅ FIX: Corrected typo from "catagory" to "category"
+          category: "",
           likes: 0,
           comment: 0,
           created_at: new Date().toISOString(),
           modified_at: null,
         });
+        setExtraFields(
+          Object.keys(extraFields).reduce((acc, key) => ({ ...acc, [key]: "" }), {})
+        );
         setFeaturedPreview(null);
       } else {
         Swal.fire({
@@ -227,7 +296,7 @@ Requirements:
     }
   };
 
-  // ---------------- UI ----------------
+  // ----------------- UI -----------------
   return (
     <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-6 py-8">
@@ -242,16 +311,12 @@ Requirements:
             Blog Post Management
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Create and manage your blog content with our intuitive form
-            interface
+            Create and manage your blog content with our intuitive form interface
           </p>
         </div>
 
         {/* Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-3xl shadow-2xl overflow-hidden"
-        >
+        <form onSubmit={handleSubmit} className="rounded-3xl shadow-2xl overflow-hidden">
           <div className="p-8 lg:p-10 space-y-8">
             {/* Basic Info */}
             <div className="space-y-6">
@@ -259,16 +324,14 @@ Requirements:
                 <div className="p-2 bg-yellow-100 rounded-lg">
                   <FileText className="w-5 h-5 text-[#0000FF]" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Basic Information
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
               </div>
 
+              {/* Title & Category */}
               <div className="md:flex items-center gap-3">
                 <div className="flex-3 mt-2">
                   <label className="flex items-center mb-2 text-sm font-semibold text-gray-700">
-                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog
-                    Title
+                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog Title
                   </label>
                   <input
                     name="blog_title"
@@ -276,8 +339,8 @@ Requirements:
                     value={formData.blog_title}
                     onChange={handleInputChange}
                     className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
-                        ? "border-red-300 bg-red-50 focus:border-red-500"
-                        : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
+                      ? "border-red-300 bg-red-50 focus:border-red-500"
+                      : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                       }`}
                     placeholder="Enter an engaging blog title..."
                   />
@@ -291,8 +354,7 @@ Requirements:
 
                 <div className="flex-2 mt-2">
                   <label className="flex items-center text-sm mb-2 font-semibold text-gray-700">
-                    <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" />{" "}
-                    Category
+                    <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" /> Category
                   </label>
                   <input
                     name="category"
@@ -308,9 +370,7 @@ Requirements:
 
               {/* Word Count & AI */}
               <div className="mt-4 flex items-center gap-3">
-                <label className="text-sm font-semibold text-gray-700">
-                  Word Count
-                </label>
+                <label className="text-sm font-semibold text-gray-700">Word Count</label>
                 <input
                   type="number"
                   min={50}
@@ -338,13 +398,11 @@ Requirements:
                 <textarea
                   name="description"
                   rows={10}
-                  value={
-                    isGenerating ? "Generating content..." : formData.description
-                  }
+                  value={isGenerating ? "Generating content..." : formData.description}
                   onChange={handleInputChange}
                   className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
-                      ? "border-red-300 bg-red-50 focus:border-red-500"
-                      : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
+                    ? "border-red-300 bg-red-50 focus:border-red-500"
+                    : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                     }`}
                   disabled={isGenerating}
                   placeholder="Write a compelling description..."
@@ -358,14 +416,43 @@ Requirements:
               </div>
             </div>
 
+            {/* Extra Profession Fields */}
+            {userData?.profession && professionFields[userData.profession]?.length > 0 && (
+              <div className="mt-8 space-y-4 p-6 bg-gray-50 rounded-xl shadow">
+                <h2 className="text-xl font-semibold mb-4">{userData.profession} Info</h2>
+                {professionFields[userData.profession].map((field) => (
+                  <div key={field.name}>
+                    <label className="block text-sm font-semibold text-gray-700 mb-1">{field.label}</label>
+                    {field.type === "textarea" ? (
+                      <textarea
+                        name={field.name}
+                        value={extraFields[field.name]}
+                        onChange={handleExtraFieldChange}
+                        rows={4}
+                        className="w-full border rounded-xl p-3 focus:border-[#0000FF]"
+                      />
+                    ) : (
+                      <input
+                        type={field.type}
+                        name={field.name}
+                        value={extraFields[field.name]}
+                        onChange={handleExtraFieldChange}
+                        className="w-full border rounded-xl p-3 focus:border-[#0000FF]"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Featured Image */}
-            <div className="space-y-4">
+            <div className="space-y-4 mt-6">
               <div
                 className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
-                    ? "border-[#0000FF] bg-orange-50 scale-102"
-                    : featuredPreview
-                      ? "border-transparent"
-                      : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF]"
+                  ? "border-[#0000FF] bg-orange-50 scale-102"
+                  : featuredPreview
+                    ? "border-transparent"
+                    : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF]"
                   }`}
                 onClick={() => featuredInputRef.current?.click()}
                 onDragOver={handleDragOver}
@@ -391,95 +478,31 @@ Requirements:
                     <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-yellow-600 rounded-full flex items-center justify-center mb-4">
                       <Upload className="w-8 h-8 text-white" />
                     </div>
-                    <div className="text-lg font-semibold text-gray-800 mb-2">
-                      {isDragOver
-                        ? "Drop your image here!"
-                        : "Drag & drop or click to upload"}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      Recommended size: 800×600 • JPG, PNG, WEBP • Max 3MB
-                    </div>
+                    <p className="text-gray-500 font-medium">Drag & Drop or Click to Upload Featured Image</p>
                   </div>
                 )}
                 <input
-                  ref={featuredInputRef}
                   type="file"
                   accept="image/*"
+                  ref={featuredInputRef}
                   onChange={handleFileSelect}
                   className="hidden"
                 />
               </div>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="px-8 py-6 bg-gray-50 flex flex-col sm:flex-row gap-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-600 to-amber-600 text-white rounded-2xl hover:from-amber-700 disabled:opacity-50"
-            >
-              <MdOutlinePublishedWithChanges className="w-5 h-5 mr-2" />
-              {isSubmitting ? "Publishing your Post..." : "Publish"}
-            </button>
-
-            <button
-              onClick={() => setShowPreview(true)}
-              type="button"
-              className="flex items-center justify-center px-8 py-4 bg-white text-gray-700 font-semibold rounded-2xl border-2 hover:bg-gray-50"
-            >
-              <Eye className="w-5 h-5 mr-2" />
-              Preview Post
-            </button>
-          </div>
-        </form>
-
-        {/* Preview Modal */}
-        {showPreview && (
-          <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
+            {/* Submit Button */}
+            <div className="pt-4 text-center">
               <button
-                onClick={() => setShowPreview(false)}
-                className="absolute top-3 right-3 text-gray-600 hover:text-black"
+                type="submit"
+                disabled={isSubmitting}
+                className="px-8 py-3 bg-[#0000FF] hover:bg-[#0000DD] text-white font-semibold rounded-xl shadow-lg transition-all duration-200"
               >
-                ✖
+                {isSubmitting ? "Publishing..." : "Publish Post"}
               </button>
-              <h1 className="text-3xl font-bold mb-3">
-                {formData.blog_title || "Untitled Blog Post"}
-              </h1>
-              <p className="text-gray-500 text-sm mb-6">
-                By {formData.author_name || "Unknown Author"} (
-                {formData.author_email || "No Email"}) •{" "}
-                {new Date(formData.created_at).toLocaleString()}
-              </p>
-              {featuredPreview && (
-                <img
-                  src={featuredPreview}
-                  alt="Featured"
-                  className="w-full rounded-xl mb-6"
-                />
-              )}
-              <div className="prose lg:prose-lg max-w-none mb-6">
-                <p>{formData.description || "No description provided."}</p>
-              </div>
-              {formData.category && (
-                <div className="flex gap-2 flex-wrap">
-                  {formData.category.split(",").map((tag, i) => {
-                    const t = tag.trim();
-                    return t ? (
-                      <span
-                        key={i}
-                        className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm"
-                      >
-                        #{t}
-                      </span>
-                    ) : null;
-                  })}
-                </div>
-              )}
             </div>
           </div>
-        )}
+        </form>
       </div>
     </div>
   );

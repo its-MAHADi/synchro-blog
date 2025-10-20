@@ -4,7 +4,8 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { loginUser } from "@/app/actions/auth/loginUser";
-import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
+import  dbConnect, {collectionNameObj } from "@/lib/dbConnect";
+
 
 export const authOptions = {
   providers: [

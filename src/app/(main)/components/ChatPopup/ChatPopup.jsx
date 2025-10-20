@@ -9,7 +9,9 @@ export default function ChatPopup({ user, onClose }) {
   const { data: session } = useSession();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [typingStatus, setTypingStatus] = useState(false);
   const messagesEndRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
 
   // 🔹 Fetch messages every 5s
   useEffect(() => {
@@ -44,11 +46,12 @@ export default function ChatPopup({ user, onClose }) {
       to: user.email,
       from: session.user.email,
       message: newMessage,
-      time: new Date().toISOString(), // timestamp for ordering
+      time: new Date().toISOString(),
+      deleted: false,
     };
 
-    // Optimistically add message
-    setMessages((prev) => [...prev, { ...msgObj, deleted: false }]);
+    // Optimistic update
+    setMessages((prev) => [...prev, msgObj]);
     setNewMessage("");
 
     try {
@@ -58,10 +61,8 @@ export default function ChatPopup({ user, onClose }) {
         body: JSON.stringify(msgObj),
       });
       const savedMessage = await res.json();
-
-      // Replace temp message with saved message (with _id)
       setMessages((prev) =>
-        prev.map((m) => (m.time === msgObj.time ? savedMessage : m))
+        prev.map((m) => (m.time === msgObj.time ? { ...m, _id: savedMessage._id } : m))
       );
     } catch (err) {
       console.error("Send message failed:", err);
@@ -84,10 +85,42 @@ export default function ChatPopup({ user, onClose }) {
     }
   };
 
+  // 🔹 Typing status
+  const handleTyping = async (e) => {
+    setNewMessage(e.target.value);
+
+    // Notify typing
+    try {
+      await fetch("/api/typing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ from: session.user.email, to: user.email }),
+      });
+    } catch (err) {
+      console.error("Typing notification failed:", err);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(
+          `/api/typing?from=${user.email}&to=${session.user.email}`
+        );
+        const data = await res.json();
+        setTypingStatus(data.typing || false);
+      } catch (err) {
+        console.error("Fetch typing status failed:", err);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [user, session]);
+
   // 🔹 Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, typingStatus]);
 
   // 🔹 Group consecutive messages by same sender
   const groupedMessages = useMemo(() => {
@@ -127,16 +160,11 @@ export default function ChatPopup({ user, onClose }) {
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
             <div>
-              <h3 className="text-sm font-semibold">
-                {user?.userName || "Unknown"}
-              </h3>
-              <p className="text-xs text-white/80">Active now</p>
+              <h3 className="text-sm font-semibold">{user?.userName || "Unknown"}</h3>
+              <p className="text-xs text-white/80">{typingStatus ? "Typing..." : "Active now"}</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="hover:bg-white/20 p-1 rounded-md transition"
-          >
+          <button onClick={onClose} className="hover:bg-white/20 p-1 rounded-md transition">
             <X size={16} />
           </button>
         </div>
@@ -144,9 +172,7 @@ export default function ChatPopup({ user, onClose }) {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-gray-50">
           {groupedMessages.length === 0 && (
-            <p className="text-center text-gray-400 text-sm mt-10">
-              No messages yet. Start chatting 👋
-            </p>
+            <p className="text-center text-gray-400 text-sm mt-10">No messages yet. Start chatting 👋</p>
           )}
 
           {groupedMessages.map((group, i) => {
@@ -154,39 +180,23 @@ export default function ChatPopup({ user, onClose }) {
             return (
               <div
                 key={i}
-                className={`flex flex-col ${isMine ? "items-end" : "items-start"
-                  } space-y-1 mb-1`}
+                className={`flex flex-col ${isMine ? "items-end" : "items-start"} space-y-1 mb-1`}
               >
                 {group.msgs.map((msg, idx) => (
                   <div
                     key={msg._id || msg.time || idx}
-                    className={`px-3 py-2 max-w-[75%] text-sm shadow-sm ${isMine
-                        ? `bg-[#0000FF] text-white rounded-tr-xl rounded-tl-xl ${idx === group.msgs.length - 1
-                          ? "rounded-br-xl"
-                          : "rounded-br-none"
-                        }`
-                        : `bg-white border border-gray-200 text-gray-800 rounded-tl-xl rounded-tr-xl ${idx === group.msgs.length - 1
-                          ? "rounded-bl-xl"
-                          : "rounded-bl-none"
-                        }`
-                      }`}
+                    className={`px-3 py-2 max-w-[75%] text-sm shadow-sm ${
+                      isMine
+                        ? `bg-[#0000FF] text-white rounded-tr-xl rounded-tl-xl ${idx === group.msgs.length - 1 ? "rounded-br-xl" : "rounded-br-none"}`
+                        : `bg-white border border-gray-200 text-gray-800 rounded-tl-xl rounded-tr-xl ${idx === group.msgs.length - 1 ? "rounded-bl-xl" : "rounded-bl-none"}`
+                    }`}
                   >
-                    {msg.deleted ? (
-                      <em className="text-gray-400 italic text-sm">
-                        This message was deleted
-                      </em>
-                    ) : (
-                      msg.message
-                    )}
+                    {msg.deleted ? <em className="text-gray-400 italic text-sm">This message was deleted</em> : msg.message}
                   </div>
                 ))}
-
-                {/* Delete button for last message in group */}
                 {isMine && group.msgs[group.msgs.length - 1]?._id && (
                   <button
-                    onClick={() =>
-                      deleteMessage(group.msgs[group.msgs.length - 1]._id)
-                    }
+                    onClick={() => deleteMessage(group.msgs[group.msgs.length - 1]._id)}
                     className="text-red-500 text-xs hover:text-red-700 mt-0.5"
                   >
                     Delete
@@ -195,7 +205,6 @@ export default function ChatPopup({ user, onClose }) {
               </div>
             );
           })}
-
           <div ref={messagesEndRef} />
         </div>
 
@@ -205,7 +214,7 @@ export default function ChatPopup({ user, onClose }) {
             type="text"
             placeholder="Aa"
             value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            onChange={handleTyping}
             className="flex-1 p-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#0000FF]"
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />

@@ -11,43 +11,70 @@ export default function ChatPopup({ user, onClose }) {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
-  // 🔹 Fetch messages
+  // 🔹 Fetch messages every 5s
   useEffect(() => {
+    if (!user?.email || !session?.user?.email) return;
+
     async function fetchMessages() {
       try {
         const res = await fetch(
-          `/api/messages?email=${user.email}&currentUser=${session?.user?.email}`
+          `/api/messages?email=${user.email}&currentUser=${session.user.email}`
         );
         const data = await res.json();
-        setMessages(data);
+        const sorted = Array.isArray(data)
+          ? [...data].sort((a, b) => new Date(a.time) - new Date(b.time))
+          : [];
+        setMessages(sorted);
       } catch (err) {
         console.error("Fetch messages error:", err);
+        setMessages([]);
       }
     }
 
-    if (session?.user?.email && user?.email) fetchMessages();
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 5000);
+    return () => clearInterval(interval);
   }, [user, session]);
 
   // 🔹 Send message
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
 
-    const messageObj = {
+    const msgObj = {
       to: user.email,
-      from: session?.user?.email,
+      from: session.user.email,
       message: newMessage,
-      time: new Date().toISOString(),
-      deleted: false,
+      time: new Date().toISOString(), // ✅ timestamp for ordering
     };
 
-    setMessages((prev) => [...prev, messageObj]);
+    setMessages((prev) => [...prev, { ...msgObj, deleted: false }]);
     setNewMessage("");
 
-    await fetch("/api/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(messageObj),
-    });
+    try {
+      await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(msgObj),
+      });
+    } catch (err) {
+      console.error("Send message failed:", err);
+    }
+  };
+
+  // 🔹 Delete last message in group
+  const deleteMessage = async (id) => {
+    try {
+      await fetch("/api/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      setMessages((prev) =>
+        prev.map((m) => (m._id === id ? { ...m, deleted: true } : m))
+      );
+    } catch (err) {
+      console.error("Delete message failed:", err);
+    }
   };
 
   // 🔹 Scroll to bottom
@@ -55,22 +82,19 @@ export default function ChatPopup({ user, onClose }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // 🔹 Delete for everyone
-  const deleteMessage = async (msgId) => {
-    try {
-      await fetch("/api/messagesDelete", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: msgId }),
-      });
+  // 🔹 Group consecutive messages by same sender
+  const groupedMessages = [];
+  let currentGroup = null;
 
-      setMessages((prev) =>
-        prev.map((m) => (m._id === msgId ? { ...m, deleted: true } : m))
-      );
-    } catch (err) {
-      console.error("Delete message failed:", err);
+  messages.forEach((msg) => {
+    if (!currentGroup || currentGroup.from !== msg.from) {
+      if (currentGroup) groupedMessages.push(currentGroup);
+      currentGroup = { from: msg.from, msgs: [msg] };
+    } else {
+      currentGroup.msgs.push(msg);
     }
-  };
+  });
+  if (currentGroup) groupedMessages.push(currentGroup);
 
   return (
     <AnimatePresence>
@@ -99,7 +123,6 @@ export default function ChatPopup({ user, onClose }) {
               <p className="text-xs text-white/80">Active now</p>
             </div>
           </div>
-
           <button
             onClick={onClose}
             className="hover:bg-white/20 p-1 rounded-md transition"
@@ -110,23 +133,30 @@ export default function ChatPopup({ user, onClose }) {
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-3 py-3 space-y-2 bg-gray-50">
-          {messages.length === 0 ? (
+          {groupedMessages.length === 0 && (
             <p className="text-center text-gray-400 text-sm mt-10">
               No messages yet. Start chatting 👋
             </p>
-          ) : (
-            messages.map((msg, idx) => {
-              const isMine = msg.from === session?.user?.email;
-              return (
-                <div
-                  key={idx}
-                  className={`flex ${isMine ? "justify-end" : "justify-start"} items-center`}
-                >
+          )}
+
+          {groupedMessages.map((group, i) => {
+            const isMine = group.from === session.user.email;
+            return (
+              <div
+                key={i}
+                className={`flex flex-col ${isMine ? "items-end" : "items-start"} space-y-1 mb-1`}
+              >
+                {group.msgs.map((msg, idx) => (
                   <div
-                    className={`px-3 py-2 max-w-[75%] rounded-2xl text-sm shadow-sm ${
+                    key={msg._id || msg.time || idx}
+                    className={`px-3 py-2 max-w-[75%] text-sm shadow-sm ${
                       isMine
-                        ? "bg-[#0000FF] text-white rounded-br-none"
-                        : "bg-white border border-gray-200 text-gray-800 rounded-bl-none"
+                        ? `bg-[#0000FF] text-white rounded-tr-xl rounded-tl-xl ${
+                            idx === group.msgs.length - 1 ? "rounded-br-xl" : "rounded-br-none"
+                          }`
+                        : `bg-white border border-gray-200 text-gray-800 rounded-tl-xl rounded-tr-xl ${
+                            idx === group.msgs.length - 1 ? "rounded-bl-xl" : "rounded-bl-none"
+                          }`
                     }`}
                   >
                     {msg.deleted ? (
@@ -137,19 +167,21 @@ export default function ChatPopup({ user, onClose }) {
                       msg.message
                     )}
                   </div>
+                ))}
 
-                  {isMine && !msg.deleted && (
-                    <button
-                      onClick={() => deleteMessage(msg._id)}
-                      className="ml-1 text-red-500 hover:text-red-700"
-                    >
-                      X
-                    </button>
-                  )}
-                </div>
-              );
-            })
-          )}
+                {/* Delete button for last message in group */}
+                {isMine && group.msgs[group.msgs.length - 1]?._id && (
+                  <button
+                    onClick={() => deleteMessage(group.msgs[group.msgs.length - 1]._id)}
+                    className="text-red-500 text-xs hover:text-red-700 mt-0.5"
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            );
+          })}
+
           <div ref={messagesEndRef} />
         </div>
 

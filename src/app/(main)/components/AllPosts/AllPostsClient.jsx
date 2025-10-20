@@ -5,7 +5,7 @@ import PostCard from "./PostCard/PostCard";
 
 const AllPostsClient = ({ initialPosts, userEmail, usersData }) => {
   const [posts, setPosts] = useState(initialPosts || []);
-
+// console.log(initialPosts)
   const handleFollowUpdate = (authorEmail, following) => {
     setPosts(prevPosts =>
       prevPosts.map(post =>

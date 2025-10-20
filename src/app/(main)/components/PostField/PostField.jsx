@@ -60,7 +60,7 @@ const PostField = () => {
               <BlogForm onClose={() => setShowModal(false)} />
             </div>
 
-          </div>
+          </div> 
         </div>
       )}
     </>

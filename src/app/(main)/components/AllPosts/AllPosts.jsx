@@ -1,22 +1,15 @@
-// AllPosts.jsx
+// src/app/(main)/components/AllPosts.jsx
+import AllPostsClient from "./AllPostsClient";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import AllPostsClient from "./AllPostsClient";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
+// Fetch all blog posts
 async function getAllPosts() {
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-    const res = await fetch(`${baseUrl}/api/all-blog-posts`, {
-      cache: "no-store",
-      next: { revalidate: 0 },
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch blog posts");
-
+    const res = await fetch(`${BASE_URL}/api/all-blog-posts`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to fetch blog posts: ${res.status}`);
     return res.json();
   } catch (error) {
     console.error("Error fetching blog posts:", error);
@@ -24,18 +17,13 @@ async function getAllPosts() {
   }
 }
 
+// Fetch user by email
 async function getUserByEmail(email) {
+  if (!email) return null;
+
   try {
-    const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-
-    const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch user");
-
+    const res = await fetch(`${BASE_URL}/api/user?email=${email}`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to fetch user: ${res.status}`);
     return res.json();
   } catch (error) {
     console.error("Error fetching user:", error);
@@ -45,16 +33,18 @@ async function getUserByEmail(email) {
 
 const AllPosts = async () => {
   const session = await getServerSession(authOptions);
-  const email = session?.user?.email;
+  const email = session?.user?.email || null;
 
   const usersData = await getUserByEmail(email);
-// console.log(usersData)
   const postsData = await getAllPosts();
-  const sortedPosts = postsData.sort(
-    (a, b) => new Date(b.created_at) - new Date(a.created_at)
-  );
 
-  return <AllPostsClient initialPosts={sortedPosts} userEmail={email} usersData={usersData}/>;
+  // Sort newest first
+  const sortedPosts = postsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  console.log("Users Data:", usersData);
+  console.log("Posts Data:", sortedPosts);
+
+  return <AllPostsClient initialPosts={sortedPosts} userEmail={email} usersData={usersData} />;
 };
 
 export default AllPosts;

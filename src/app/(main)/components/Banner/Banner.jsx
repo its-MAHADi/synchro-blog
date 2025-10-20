@@ -5,9 +5,9 @@ import { FaRobot, FaGlobe, FaSearch } from "react-icons/fa";
 
 const Banner = () => {
   return (
-    <div className="relative rounded-xl bg-[#0000FF] text-white mt-15 overflow-hidden">
+    <div className="relative rounded-xl shadow-xl bg-[#0000ff1a] border border-[#0000ff62]  mt-15 overflow-hidden">
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 "></div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-16 lg:py-24 flex flex-col-reverse lg:flex-row items-center gap-12">
         {/* Left Content */}
@@ -15,7 +15,7 @@ const Banner = () => {
           <h1 className="text-2xl lg:text-5xl font-extrabold leading-tight drop-shadow-lg">
             AI-Assisted Blogging Platform
           </h1>
-          <p className="p-2 lg:p-0 text-sm lg:text-lg text-gray-200 max-w-2xl mx-auto lg:mx-0">
+          <p className="p-2 lg:p-0 text-sm lg:text-lg  max-w-2xl mx-auto lg:mx-0">
             The main goal is to provide{" "}
             <span className="font-semibold">bloggers, writers, and organizations</span>{" "}
             with an AI-assisted platform to create, manage, and publish high-quality

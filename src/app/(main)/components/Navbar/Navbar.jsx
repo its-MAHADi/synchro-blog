@@ -12,12 +12,17 @@ import { RiMessengerLine } from "react-icons/ri";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useMessage } from "@/app/contexts/MessageContext";
 
+
+
+
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const { toggleMessageBar, toggleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
+  // const [userImage, setUserImage] = useState(null);
   // Navbar component এর state
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -31,6 +36,33 @@ const Navbar = () => {
     { id: 3, name: "Raisa Akter" },
     { id: 4, name: "Tanvir Islam" },
   ];
+
+  // profile pic in profile btn
+
+const [userImage, setUserImage] = useState(null);
+
+useEffect(() => {
+  async function fetchUserImage() {
+    if (session?.user?.email) {
+      try {
+        const res = await fetch(`/api/get-user?email=${encodeURIComponent(session.user.email)}`);
+        const data = await res.json();
+
+        if (data?.user?.image) {
+          setUserImage(data.user.image); // ✅ from MongoDB
+        } else {
+          setUserImage(session?.user?.image || null); // fallback to NextAuth image
+        }
+      } catch (error) {
+        console.error("Failed to load user image:", error);
+      }
+    }
+  }
+
+  fetchUserImage();
+}, [session]);
+
+
 
   // Search logic
   useEffect(() => {
@@ -58,7 +90,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#0000FF] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
+      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#0000ff1a] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
         ? "backdrop-blur-md bg-base-100/70 shadow-sm"
         : "bg-base-100"
         }`}
@@ -127,14 +159,17 @@ const Navbar = () => {
                 <FaRegStar /> Popular Post
               </Link>
             </li> */}
-            <li>
-              <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <MdOutlineEmojiEvents /> Events
-              </Link>
-            </li>
+            {
+              session?.user &&
+              <li>
+                <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
+                  ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
+                  : "text-gray-700 hover:text-[#213943]"
+                  }`}>
+                  <MdOutlineEmojiEvents /> Events
+                </Link>
+              </li>
+            }
             {/* <li>
               <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/add-post"
                 ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
@@ -143,14 +178,16 @@ const Navbar = () => {
                 <FaPlusCircle /> Add Post
               </Link>
             </li> */}
-            <li>
-              <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <FaTachometerAlt /> Dashboard
-              </Link>
-            </li>
+            {session?.user &&
+              <li>
+                <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
+                  ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
+                  : "text-gray-700 hover:text-[#213943]"
+                  }`}>
+                  <FaTachometerAlt /> Dashboard
+                </Link>
+              </li>
+            }
             <li>
               <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/aboutUs"
                 ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
@@ -193,19 +230,24 @@ const Navbar = () => {
                     />
 
                   </div>
-                  {
-                    session?.user?.image ?
-                      <div>
-                        <Link href={"/user-dashboard/profile"}>
-                          <img className="w-10 h-10 rounded-full" src={session?.user?.image} alt="" />
-                        </Link>
-                      </div>
-                      :
-                      <Link href={"/user-dashboard/profile"}>
-                        <FaUserCircle size={30} />
-                      </Link>
+                  
 
-                  }
+{userImage ? (
+  <Link href="/user-dashboard/profile">
+    <img
+      src={userImage}
+      alt="Profile"
+      className="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </Link>
+) : (
+  <Link href="/user-dashboard/profile">
+    <FaUserCircle size={30} />
+  </Link>
+)}
+
+
+
 
                   <Link href="/" onClick={() => signOut()} className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
                     Logout

@@ -15,8 +15,10 @@ export async function GET(req, { params }) {
       );
     }
 
-    // Connect to the comments collection
-    const commentCollection = dbConnect(collectionNameObj.commentCollection);
+    // ✅ Await dbConnect
+    const commentCollection = await dbConnect(
+      collectionNameObj.commentCollection
+    );
 
     // Build the query
     const query = { post_id: new ObjectId(post_id) };
@@ -27,7 +29,7 @@ export async function GET(req, { params }) {
     // Fetch all comments sorted by latest
     const comments = await commentCollection
       .find(query)
-      .sort({ created_at: -1 })
+      .sort({ created_at: -1 }) // make sure this field exists
       .toArray();
 
     return NextResponse.json({

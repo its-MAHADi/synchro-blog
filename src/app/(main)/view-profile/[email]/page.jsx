@@ -67,9 +67,9 @@ export default function ViewProfilePage() {
 
     if (loading || sessionStatus === "loading") {
         return (
-            <p className="text-center text-gray-500 py-20 text-lg animate-pulse">
-                Loading profile...
-            </p>
+            <div className="min-h-screen flex justify-center">
+                <span className="loading loading-spinner loading-xl"></span>
+            </div>
         );
     }
 

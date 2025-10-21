@@ -90,7 +90,7 @@ useEffect(() => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#0000FF] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
+      className={`fixed top-0 left-0 w-full bg-white z-50 border-b border-[#0000ff1a] rounded-b-xs transition-all md:px-11 duration-300 ${scrolled
         ? "backdrop-blur-md bg-base-100/70 shadow-sm"
         : "bg-base-100"
         }`}
@@ -159,14 +159,17 @@ useEffect(() => {
                 <FaRegStar /> Popular Post
               </Link>
             </li> */}
-            <li>
-              <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <MdOutlineEmojiEvents /> Events
-              </Link>
-            </li>
+            {
+              session?.user &&
+              <li>
+                <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
+                  ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
+                  : "text-gray-700 hover:text-[#213943]"
+                  }`}>
+                  <MdOutlineEmojiEvents /> Events
+                </Link>
+              </li>
+            }
             {/* <li>
               <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/add-post"
                 ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
@@ -175,14 +178,16 @@ useEffect(() => {
                 <FaPlusCircle /> Add Post
               </Link>
             </li> */}
-            <li>
-              <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <FaTachometerAlt /> Dashboard
-              </Link>
-            </li>
+            {session?.user &&
+              <li>
+                <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
+                  ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
+                  : "text-gray-700 hover:text-[#213943]"
+                  }`}>
+                  <FaTachometerAlt /> Dashboard
+                </Link>
+              </li>
+            }
             <li>
               <Link href="/aboutUs" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/aboutUs"
                 ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style

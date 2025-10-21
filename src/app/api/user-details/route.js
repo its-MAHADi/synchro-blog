@@ -8,20 +8,31 @@ export async function GET(req) {
     const email = searchParams.get("email");
 
     if (!email) {
-      return NextResponse.json({ success: false, message: "Email is required" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Email is required" },
+        { status: 400 }
+      );
     }
 
-    const usersCollection = dbConnect(collectionNameObj.usersCollection);
+    // ✅ Await the DB connection
+    const usersCollection = await dbConnect(collectionNameObj.usersCollection);
+
     const user = await usersCollection.findOne({ email });
 
     if (!user) {
-      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ success: true, user });
   } catch (error) {
     console.error("GET /api/user-details error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -42,10 +53,14 @@ export async function PATCH(req) {
     } = data;
 
     if (!email) {
-      return NextResponse.json({ success: false, message: "Email is required" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, message: "Email is required" },
+        { status: 400 }
+      );
     }
 
-    const usersCollection = dbConnect(collectionNameObj.usersCollection);
+    // ✅ Await the DB connection
+    const usersCollection = await dbConnect(collectionNameObj.usersCollection);
 
     const updateDoc = {
       $set: {
@@ -63,12 +78,21 @@ export async function PATCH(req) {
     const result = await usersCollection.updateOne({ email }, updateDoc);
 
     if (result.matchedCount === 0) {
-      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "User not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ success: true, message: "User updated successfully" });
+    return NextResponse.json({
+      success: true,
+      message: "User updated successfully",
+    });
   } catch (error) {
     console.error("PATCH /api/user-details error:", error);
-    return NextResponse.json({ success: false, message: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }

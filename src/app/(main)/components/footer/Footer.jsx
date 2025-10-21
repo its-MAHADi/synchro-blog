@@ -1,8 +1,14 @@
+"use client"
+import { usePathname } from "next/navigation";
 import React from "react";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 
 
 const Footer = () => {
+  const pathname = usePathname();
+  const hideFooter = pathname.startsWith("/view-profile/");
+
+  if (hideFooter) return null;
   return (
     <footer className="bg-[#f6f5ea] text-[#0000FF] pt-16 pb-10 px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">

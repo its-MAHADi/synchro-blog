@@ -232,19 +232,19 @@ useEffect(() => {
                   </div>
                   
 
-{userImage ? (
-  <Link href="/user-dashboard/profile">
-    <img
-      src={userImage}
-      alt="Profile"
-      className="w-10 h-10 rounded-full object-cover border border-gray-300"
-    />
-  </Link>
-) : (
-  <Link href="/user-dashboard/profile">
-    <FaUserCircle size={30} />
-  </Link>
-)}
+              {userImage ? (
+                <Link href="/user-dashboard/profile">
+                  <img
+                    src={userImage}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+                </Link>
+              ) : (
+                <Link href="/user-dashboard/profile">
+                  <FaUserCircle size={30} />
+                </Link>
+              )}
 
 
 

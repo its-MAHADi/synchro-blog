@@ -4,6 +4,15 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@plugin "daisyui/theme" {
+  name: "mytheme";
+  default: true; /* set as default */
+  color-scheme: light; /* color of browser-provided UI */
+
+  --color-primary: #0000FF;
+
+}
+
 .sawarabi-gothic-font{
   font-family: "Sawarabi Gothic", sans-serif;
   font-weight: 400;

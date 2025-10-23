@@ -1,7 +1,5 @@
-// app/api/verify-otp/route.js
-
-import { otpStore } from "@/lib/otpStore"; // Import from the centralized store
-import { registerUser } from "@/app/actions/auth/registerUser"; // Import your user registration function
+import { otpStore } from "@/lib/otpStore";
+import { registerUser } from "@/app/actions/auth/registerUser";
 
 export async function POST(req) {
   try {
@@ -10,91 +8,57 @@ export async function POST(req) {
     if (!email || !otp) {
       return new Response(
         JSON.stringify({ message: "Email and OTP are required" }),
-        {
-          status: 400,
-        }
+        { status: 400 }
       );
     }
 
     const record = otpStore[email];
+    console.log("verify-otp record:", record); // debug
 
-    // 1. Check if an OTP request even exists for this email
     if (!record) {
       return new Response(
-        JSON.stringify({ message: "Invalid request. Please sign up again." }),
-        {
-          status: 400,
-        }
+        JSON.stringify({ message: "OTP not found. Please request a new one." }),
+        { status: 400 }
       );
     }
 
-    // 2. Check if the OTP has expired
     if (Date.now() > record.expiresAt) {
-      delete otpStore[email]; // Clean up the expired record
+      delete otpStore[email];
       return new Response(
-        JSON.stringify({ message: "OTP has expired. Please try again." }),
-        {
-          status: 400,
-        }
+        JSON.stringify({ message: "OTP expired. Please try again." }),
+        { status: 400 }
       );
     }
 
-    // 3. Check if the OTP is correct
     if (record.otp !== otp) {
-      return new Response(
-        JSON.stringify({
-          message: "Invalid OTP. Please check the code and try again.",
-        }),
-        {
-          status: 400,
-        }
-      );
+      return new Response(JSON.stringify({ message: "Invalid OTP." }), {
+        status: 400,
+      });
     }
 
-    // OTP is valid! Now we create the user using your centralized function.
-    const registrationPayload = {
+    // ✅ Register user
+    const result = await registerUser({
       name: record.name,
-      email: email,
-      password: record.password, // Use the temporarily stored plain password
-    };
+      email,
+      password: record.password,
+    });
 
-    const result = await registerUser(registrationPayload);
-
-    // IMPORTANT: Clean up the OTP record from the store immediately after use
-    delete otpStore[email];
+    delete otpStore[email]; // cleanup
 
     if (!result) {
-      // This case is handled by your registerUser function (e.g., user already exists)
-      return new Response(
-        JSON.stringify({ message: "User with this email already exists." }),
-        { status: 409 } // 409 Conflict is a good status code for this
-      );
+      return new Response(JSON.stringify({ message: "User already exists." }), {
+        status: 409,
+      });
     }
 
-    // If registration is successful, send a success response.
-    // The front-end will now proceed with the auto-login.
     return new Response(
-      JSON.stringify({
-        message: "OTP verified and account created successfully!",
-      }),
+      JSON.stringify({ message: "OTP verified and user registered!" }),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error during OTP verification:", error);
-    // Attempt to clean up the record in case of an unexpected error
-    try {
-        const { email } = await req.json();
-        if (email && otpStore[email]) {
-            delete otpStore[email];
-        }
-    } catch (e) {
-        // Ignore if request body can't be parsed again
-    }
-    return new Response(
-      JSON.stringify({
-        message: "An internal server error occurred during verification.",
-      }),
-      { status: 500 }
-    );
+    console.error("verify-otp error:", error);
+    return new Response(JSON.stringify({ message: "Internal server error" }), {
+      status: 500,
+    });
   }
 }

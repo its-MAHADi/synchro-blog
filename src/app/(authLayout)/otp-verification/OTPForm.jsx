@@ -1,13 +1,12 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Swal from "sweetalert2";
 import { signIn } from "next-auth/react";
 
-const OTPForm = () => {
+export default function OTPForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const email = searchParams.get("email") || "";
   const password = searchParams.get("password") || "";
 
@@ -16,7 +15,7 @@ const OTPForm = () => {
 
   const handleVerify = async () => {
     if (!otp || otp.length !== 6) {
-      Swal.fire({ icon: "warning", title: "Invalid OTP", text: "Please enter a 6-digit OTP." });
+      Swal.fire({ icon: "warning", title: "Invalid OTP", text: "Enter a 6-digit OTP." });
       return;
     }
 
@@ -27,6 +26,7 @@ const OTPForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp: otp.trim() }),
       });
+
       const data = await res.json();
 
       if (res.ok) {
@@ -34,20 +34,19 @@ const OTPForm = () => {
         setLoading(false);
 
         if (loginResult?.ok) {
-          Swal.fire({ icon: "success", title: "Verified & Logged In", text: "Redirecting...", timer: 1500, showConfirmButton: false });
-          // router.push("/SignupCoverProfile");
-          router.push(`/SignupCoverProfile?email=${encodeURIComponent(email)}`);
+          Swal.fire({ icon: "success", title: "Verified & Logged In", timer: 1500, showConfirmButton: false });
+          router.push(`/`);
         } else {
-          Swal.fire({ icon: "error", title: "Login Failed", text: "Please try signing in manually." });
+          Swal.fire({ icon: "error", title: "Login Failed", text: "Please login manually." });
         }
       } else {
         setLoading(false);
         Swal.fire({ icon: "error", title: "Error", text: data.message });
       }
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       setLoading(false);
-      console.error("OTP verification error:", error);
-      Swal.fire({ icon: "error", title: "Error", text: "Something went wrong. Please try again." });
+      Swal.fire({ icon: "error", title: "Error", text: "Something went wrong." });
     }
   };
 
@@ -78,6 +77,4 @@ const OTPForm = () => {
       </div>
     </div>
   );
-};
-
-export default OTPForm;
+}

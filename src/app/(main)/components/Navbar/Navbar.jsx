@@ -13,9 +13,6 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useMessage } from "@/app/contexts/MessageContext";
 
 
-
-
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);

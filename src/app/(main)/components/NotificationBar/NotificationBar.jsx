@@ -1,141 +1,114 @@
 "use client";
-
-import { Bell, MoreVertical, CheckCircle, AlertCircle } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Bell, Heart, UserCheck, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState } from "react";
-// import Image from "next/image";
-
-const dummyNotifications = [
-  {
-    id: 1,
-    title: "New comment on your post",
-    message: "Mahadi Hasan commented: “Awesome project bro!”",
-    time: "2m ago",
-    type: "comment",
-    read: false,
-    avatar: "https://i.pravatar.cc/150?img=5",
-  },
-  {
-    id: 2,
-    title: "Membership Activated",
-    message: "Congrats! Your premium membership is now active 🎉",
-    time: "30m ago",
-    type: "success",
-    read: false,
-    avatar: "https://i.pravatar.cc/150?img=11",
-  },
-  {
-    id: 3,
-    title: "Post Reported",
-    message: "Your post ‘Next.js Guide’ has been reported for review.",
-    time: "1h ago",
-    type: "warning",
-    read: true,
-    avatar: "https://i.pravatar.cc/150?img=9",
-  },
-  {
-    id: 4,
-    title: "New Announcement",
-    message: "Admin published: ‘Weekly Forum Updates’",
-    time: "3h ago",
-    type: "info",
-    read: true,
-    avatar: "https://i.pravatar.cc/150?img=2",
-  },
-  {
-    id: 5,
-    title: "Badge Unlocked",
-    message: "You earned the ‘Helpful Member’ badge 🏅",
-    time: "6h ago",
-    type: "success",
-    read: true,
-    avatar: "https://i.pravatar.cc/150?img=7",
-  },
-];
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function NotificationBar() {
-  const [notifications, setNotifications] = useState(dummyNotifications);
+  const { data: session } = useSession();
+  const [notifications, setNotifications] = useState([]);
+  const router = useRouter();
 
-  const markAsRead = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
+  // 🔔 Fetch notifications
+  useEffect(() => {
+    if (!session?.user?.email) return;
+
+    const fetchNotifications = async () => {
+      try {
+        const res = await fetch(`/api/notification?email=${session.user.email}`);
+        const data = await res.json();
+        if (data.success) setNotifications(data.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchNotifications();
+  }, [session]);
+
+  // 🔔 Click: mark read + navigate
+  const handleNotificationClick = async (noti) => {
+    try {
+      if (!noti.read) {
+        await fetch(`/api/notification?notificationId=${noti._id}`, { method: "PATCH" });
+        setNotifications((prev) =>
+          prev.map((n) => (n._id === noti._id ? { ...n, read: true } : n))
+        );
+      }
+
+      if (noti.type === "follow") router.push(`/view-profile/${noti.senderEmail}`);
+      else if ((noti.type === "like" || noti.type === "comment") && noti.postId) {
+        router.push(`/post/${noti.postId}`); // 🔑 Navigate to the post
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
+  const formatTime = (time) => {
+    const diff = Date.now() - new Date(time);
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return "Just now";
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  };
+
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case "comment":
+        return { icon: <MessageSquare size={18} />, bg: "bg-blue-100", color: "text-blue-600" };
+      case "like":
+        return { icon: <Heart size={18} />, bg: "bg-pink-100", color: "text-pink-600" };
+      case "follow":
+        return { icon: <UserCheck size={18} />, bg: "bg-green-100", color: "text-green-600" };
+      default:
+        return { icon: <Bell size={18} />, bg: "bg-gray-100", color: "text-gray-600" };
+    }
+  };
+
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
   return (
-    <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
-      {/* Header */}
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex flex-col max-h-[80vh] overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <Bell className="text-[#0000FF]" size={20} />
+        <h2 className="text-lg font-semibold flex items-center gap-2">
+          <Bell size={20} />
           Notifications
+          {unreadCount > 0 && (
+            <span className="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{unreadCount}</span>
+          )}
         </h2>
-        <MoreVertical size={18} className="text-gray-500 cursor-pointer" />
       </div>
 
-      {/* Notification List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent space-y-3">
-        {notifications.map((noti) => (
-          <motion.div
-            key={noti.id}
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className={`flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all duration-300 border ${
-              noti.read
-                ? "bg-gray-50 border-gray-100"
-                : "bg-[#fff5f0] border-[#0000FF25]"
-            } hover:shadow-md hover:scale-[1.01]`}
-            onClick={() => markAsRead(noti.id)}
-          >
-            {/* Left Part: Avatar + Icon + Text */}
-            <div className="flex items-start gap-3 w-full">
-              {/* Avatar */}
-              <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <img
-                  src={noti.avatar}
-                  alt={noti.title}
-                  className="object-cover rounded-full w-10 h-10"
-                />
-              </div>
-
-              {/* Message Section */}
-              <div className="flex-1">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-gray-800">
-                    {noti.title}
-                  </h3>
-                  <span className="text-[10px] text-gray-400">{noti.time}</span>
+      <div className="space-y-3">
+        {notifications.length > 0 ? (
+          notifications.map((noti) => {
+            const { icon, bg, color } = getTypeIcon(noti.type);
+            return (
+              <motion.div
+                key={noti._id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`flex items-start justify-between p-3 rounded-xl cursor-pointer border ${noti.read ? "bg-gray-50" : "bg-[#fff5f0]"} hover:shadow-md`}
+                onClick={() => handleNotificationClick(noti)}
+              >
+                <div className="flex items-start gap-3 w-full">
+                  <img src="/defult_profile.jpg" className="w-10 h-10 rounded-full" />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold">{noti.message}</p>
+                    <small className="text-xs text-gray-500">{formatTime(noti.createdAt)}</small>
+                  </div>
                 </div>
-                <p className="text-xs text-gray-600 mt-0.5">{noti.message}</p>
-              </div>
-            </div>
-
-            {/* Type Icon */}
-            <div
-              className={`p-2 rounded-full ml-2 ${
-                noti.type === "success"
-                  ? "bg-green-100 text-green-600"
-                  : noti.type === "warning"
-                  ? "bg-red-100 text-red-600"
-                  : "bg-[#0000FF20] text-[#0000FF]"
-              }`}
-            >
-              {noti.type === "success" ? (
-                <CheckCircle size={18} />
-              ) : noti.type === "warning" ? (
-                <AlertCircle size={18} />
-              ) : (
-                <Bell size={18} />
-              )}
-            </div>
-          </motion.div>
-        ))}
-
-        {notifications.length === 0 && (
-          <p className="text-center text-sm text-gray-400 mt-8">
-            No notifications 🔕
-          </p>
+                <div className={`p-2 rounded-full ml-2 ${bg} ${color}`}>{icon}</div>
+              </motion.div>
+            );
+          })
+        ) : (
+          <p className="text-center text-sm text-gray-400 mt-8">No notifications yet 🔕</p>
         )}
       </div>
     </div>

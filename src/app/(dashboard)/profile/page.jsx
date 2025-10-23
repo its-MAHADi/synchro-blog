@@ -17,6 +17,29 @@ import { FiEdit, FiPhone } from "react-icons/fi";
 import Swal from "sweetalert2";
 import Link from "next/link";
 
+
+
+async function getUserByEmail(email) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch user");
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}
+
+
+
 // Format date similar to Facebook
 const formatFacebookDate = (dateString) => {
   const date = new Date(dateString);
@@ -44,12 +67,36 @@ export default function Profile() {
   const [details, setDetails] = useState({});
   const [tempDetails, setTempDetails] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [userData, setUserData] = useState(null);
   const hasChanges = JSON.stringify(details) !== JSON.stringify(tempDetails);
 
   // Search & Sort states
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("default");
+
+
+
+
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (session?.user?.email) {
+        const data = await getUserByEmail(session.user.email);
+        setUserData(data);
+      }
+    }
+
+    fetchUserData();
+  }, [session?.user?.email]);
+
+
+  
+  useEffect(() => {
+    if (userData) {
+      console.log("✅ User data fetched:", userData);
+    }
+  }, [userData]);
+
 
   // ===== FETCH USER DATA =====
   useEffect(() => {

@@ -18,7 +18,7 @@ export async function POST(req) {
     }
 
     // 1️⃣ Connect DB and check if user exists
-    const usersCollection = dbConnect(collectionNameObj.usersCollection);
+const usersCollection = await dbConnect(collectionNameObj.usersCollection);
     const existingUser = await usersCollection.findOne({ email });
 
     if (existingUser) {

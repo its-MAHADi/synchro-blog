@@ -15,7 +15,7 @@ function generateUserId() {
 }
 
 export const registerUser = async (payload) => {
-  const userCollection = dbConnect(collectionNameObj.usersCollection);
+const userCollection = await dbConnect(collectionNameObj.usersCollection);
 
   // Validation
   const { email, password, name } = payload;

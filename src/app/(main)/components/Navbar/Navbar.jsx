@@ -13,9 +13,6 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useMessage } from "@/app/contexts/MessageContext";
 
 
-
-
-
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -39,28 +36,28 @@ const Navbar = () => {
 
   // profile pic in profile btn
 
-const [userImage, setUserImage] = useState(null);
+  const [userImage, setUserImage] = useState(null);
 
-useEffect(() => {
-  async function fetchUserImage() {
-    if (session?.user?.email) {
-      try {
-        const res = await fetch(`/api/get-user?email=${encodeURIComponent(session.user.email)}`);
-        const data = await res.json();
+  useEffect(() => {
+    async function fetchUserImage() {
+      if (session?.user?.email) {
+        try {
+          const res = await fetch(`/api/get-user?email=${encodeURIComponent(session.user.email)}`);
+          const data = await res.json();
 
-        if (data?.user?.image) {
-          setUserImage(data.user.image); // ✅ from MongoDB
-        } else {
-          setUserImage(session?.user?.image || null); // fallback to NextAuth image
+          if (data?.user?.image) {
+            setUserImage(data.user.image); // ✅ from MongoDB
+          } else {
+            setUserImage(session?.user?.image || null); // fallback to NextAuth image
+          }
+        } catch (error) {
+          console.error("Failed to load user image:", error);
         }
-      } catch (error) {
-        console.error("Failed to load user image:", error);
       }
     }
-  }
 
-  fetchUserImage();
-}, [session]);
+    fetchUserImage();
+  }, [session]);
 
 
 
@@ -230,21 +227,21 @@ useEffect(() => {
                     />
 
                   </div>
-                  
 
-              {userImage ? (
-                <Link href="/user-dashboard/profile">
-                  <img
-                    src={userImage}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                  />
-                </Link>
-              ) : (
-                <Link href="/user-dashboard/profile">
-                  <FaUserCircle size={30} />
-                </Link>
-              )}
+
+                  {userImage ? (
+                    <Link href="/my-profile">
+                      <img
+                        src={userImage}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  ) : (
+                    <Link href="/my-profile">
+                      <img src="/defult_profile.jpg" alt="default profile pic" className="w-10 h-10 rounded-full object-cover border border-gray-300" />
+                    </Link>
+                  )}
 
 
 

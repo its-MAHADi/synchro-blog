@@ -362,6 +362,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         }
     };
 
+    // console.log(postData)
 
     const CardContent = () => (
         // ... Card Content (unchanged)

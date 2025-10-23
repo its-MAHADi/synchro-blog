@@ -8,7 +8,7 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const email = searchParams.get("email");
-    const currentUser = searchParams.get("currentUser");
+    const currentUser = searchParams.get("currentUser"); 
 
     const messageCollection = await dbConnect(collectionNameObj.messageCollection);
 

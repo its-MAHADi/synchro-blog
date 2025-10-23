@@ -246,22 +246,57 @@ export default function Profile() {
 
           {/* DETAILS */}
           <div className="mt-6 space-y-3 text-sm text-gray-700">
-            {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>{details.work}</span></div> : <span>Add work</span>}
-            {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#0000FF]" /><span>{details.education}</span></div> : <span>Add education</span>}
-            {details?.location ? <div className="flex items-center gap-3"><MapPin size={14} className="text-[#0000FF]" /><span>{details.location}</span></div> : <span>Add location</span>}
+            {/* Work */}
+            <div className="flex items-center gap-3">
+              <Briefcase size={14} className="text-[#0000FF]" />
+              <span>{details?.work || "Add work"}</span>
+            </div>
+
+            {/* Education */}
+            <div className="flex items-center gap-3">
+              <GraduationCap size={14} className="text-[#0000FF]" />
+              <span>{details?.education || "Add education"}</span>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center gap-3">
+              <MapPin size={14} className="text-[#0000FF]" />
+              <span>{details?.location || "Add location"}</span>
+            </div>
           </div>
+
 
           {/* SKILLS */}
           {details?.skills && (
             <div className="mt-5 border-t pt-4">
               <h4 className="font-semibold text-gray-900 mb-2 text-sm">Skills</h4>
               <div className="flex flex-wrap gap-2">
-                {details.skills.split(",").map((skill, i) => skill.trim() && (
-                  <span key={i} className="px-3 py-1 text-xs bg-orange-50 text-[#0000FF] rounded-full border border-orange-200">{skill}</span>
-                ))}
+                {(() => {
+                  let skillsArray = [];
+
+                  if (Array.isArray(details.skills)) {
+                    skillsArray = details.skills;
+                  } else if (typeof details.skills === "string") {
+                    skillsArray = details.skills.split(",").map((s) => s.trim()).filter(Boolean);
+                  }
+
+                  return skillsArray.length > 0 ? (
+                    skillsArray.map((skill, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 text-xs bg-orange-50 text-[#0000FF] rounded-full border border-orange-200"
+                      >
+                        {skill}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-sm text-gray-500">Unknown</span>
+                  );
+                })()}
               </div>
             </div>
           )}
+
 
           {/* CONTACT & LINKS */}
           <div className="mt-5 border-t pt-4 space-y-3 text-sm text-gray-700">

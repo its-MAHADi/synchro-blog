@@ -18,7 +18,7 @@ export async function POST(req) {
     const profileImage = formData.get("profile"); // File
     const coverImage = formData.get("cover"); // File
 
-    const userCollection = dbConnect(collectionNameObj.usersCollection);
+    const userCollection = await dbConnect(collectionNameObj.usersCollection);
 
     // For simplicity, let's store base64 image strings
     let updateData = { bio, work, education, location, website, language };

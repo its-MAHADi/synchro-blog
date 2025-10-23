@@ -24,6 +24,8 @@ export async function POST(req) {
       author_name: session.user?.name || "Anonymous",
       author_email: session.user?.email,
       author_image: body.author_image || session.user?.image || "",
+      author_profession: body.author_profession || "", // save profession
+      extraFields: body.extraFields || {}, // save extra profession-wise data
       created_at: new Date(),
       modified_at: null,
       likes: 0,

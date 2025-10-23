@@ -13,6 +13,25 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useMessage } from "@/app/contexts/MessageContext";
 
 
+async function getUserByEmail(email) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch user");
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,6 +53,9 @@ const Navbar = () => {
     { id: 4, name: "Tanvir Islam" },
   ];
 
+
+  const usersData = getUserByEmail(session?.user.email)
+console.log('hii')
   // profile pic in profile btn
 
   const [userImage, setUserImage] = useState(null);

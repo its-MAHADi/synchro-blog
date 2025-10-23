@@ -10,29 +10,171 @@ import Swal from "sweetalert2";
 // Profession-wise input fields
 const professionFields = {
   Developer: [
-    { name: "techStack", label: "Tech Stack", type: "text" },
+    { name: "projectTitle", label: "Project Title", type: "text" },
+    { name: "techStack", label: "Tech Stack (React, Node, MongoDB, etc.)", type: "text" },
     { name: "githubRepo", label: "GitHub Repo Link", type: "url" },
     { name: "liveDemo", label: "Live Demo Link", type: "url" },
-    { name: "projectDescription", label: "Project Description", type: "textarea" },
+    { name: "projectDuration", label: "Project Duration (e.g., 2 months)", type: "text" },
+    { name: "toolsUsed", label: "Tools Used (VS Code, Figma, etc.)", type: "text" },
+    { name: "keyFeatures", label: "Key Features", type: "textarea" },
+    { name: "challenges", label: "Challenges Faced", type: "textarea" },
+    { name: "futureImprovements", label: "Future Improvements", type: "textarea" },
+    // { name: "projectImage", label: "Upload Project Image", type: "file" },
   ],
+
   Writer: [
-    { name: "genre", label: "Genre", type: "text" },
-    { name: "inspiration", label: "Inspiration Source", type: "text" },
+    { name: "storyTitle", label: "Story / Article Title", type: "text" },
+    { name: "genre", label: "Genre (Story, Poem, Motivation, etc.)", type: "text" },
+    { name: "writingStyle", label: "Writing Style (Narrative, Creative, Descriptive)", type: "text" },
+    { name: "summary", label: "Summary", type: "textarea" },
+    { name: "fullContent", label: "Full Content", type: "textarea" },
+    { name: "inspiration", label: "Inspiration Source (optional)", type: "text" },
+    // { name: "coverImage", label: "Upload Cover Image", type: "file" },
   ],
+
   Blogger: [
-    { name: "topic", label: "Topic", type: "text" },
-    { name: "keywords", label: "Keywords", type: "text" },
+    { name: "blogTitle", label: "Blog Title", type: "text" },
+    { name: "topic", label: "Topic (Lifestyle, Opinion, Technology)", type: "text" },
+    // { name: "featuredImage", label: "Featured Image", type: "file" },
+    { name: "content", label: "Content", type: "textarea" },
+    { name: "references", label: "References or Links (optional)", type: "text" },
+    { name: "keywords", label: "Keywords (SEO tags)", type: "text" },
+    { name: "mood", label: "Mood (Happy, Sad, Informative, etc.)", type: "text" },
   ],
+
+  Designer: [
+    { name: "designTitle", label: "Design Title", type: "text" },
+    { name: "designCategory", label: "Design Category (UI/UX, Branding, 3D, Logo)", type: "text" },
+    { name: "toolsUsed", label: "Tools Used (Figma, Photoshop, etc.)", type: "text" },
+    { name: "designProcess", label: "Design Process", type: "textarea" },
+    { name: "clientProject", label: "Client / Project Type (optional)", type: "text" },
+    // { name: "designImage", label: "Upload Design Image", type: "file" },
+    { name: "inspirationSource", label: "Inspiration Source (URL or text)", type: "text" },
+    { name: "feedbackNote", label: "Feedback Note (optional)", type: "textarea" },
+  ],
+
   Photographer: [
+    { name: "photoTitle", label: "Photo Title", type: "text" },
     { name: "location", label: "Location", type: "text" },
     { name: "cameraModel", label: "Camera Model", type: "text" },
-    { name: "photoStory", label: "Story Behind Photo", type: "textarea" },
+    { name: "lensUsed", label: "Lens Used (optional)", type: "text" },
+    { name: "shootingMode", label: "Shooting Mode (Manual, Auto, etc.)", type: "text" },
+    { name: "photoStory", label: "Story Behind the Shot", type: "textarea" },
+    // { name: "photoImage", label: "Upload Photo", type: "file" },
+    { name: "editingSoftware", label: "Editing Software (if any)", type: "text" },
   ],
-  Designer: [
-    { name: "designCategory", label: "Design Category", type: "text" },
-    { name: "toolsUsed", label: "Tools Used", type: "text" },
+
+  Marketer: [
+    { name: "blogTitle", label: "Blog Title", type: "text" },
+    { name: "marketingType", label: "Marketing Type (SEO, Social Media, Branding)", type: "text" },
+    { name: "strategyDescription", label: "Strategy Description", type: "textarea" },
+    { name: "caseStudy", label: "Case Study Example", type: "textarea" },
+    { name: "targetAudience", label: "Target Audience", type: "text" },
+    { name: "toolsUsed", label: "Tools Used (Ahrefs, Canva, etc.)", type: "text" },
+    { name: "keyResult", label: "Key Result or Outcome (optional)", type: "text" },
+    // { name: "campaignImage", label: "Upload Campaign Image", type: "file" },
+  ],
+
+  Teacher: [
+    { name: "lessonTitle", label: "Lesson / Topic Title", type: "text" },
+    { name: "subject", label: "Subject", type: "text" },
+    { name: "gradeLevel", label: "Grade / Level", type: "text" },
+    { name: "learningObjectives", label: "Learning Objectives", type: "textarea" },
+    { name: "lessonContent", label: "Lesson Content", type: "textarea" },
+    { name: "resourceLinks", label: "Resource / Reference Links", type: "text" },
+    // { name: "thumbnailImage", label: "Upload Thumbnail Image", type: "file" },
+  ],
+
+  Traveler: [
+    { name: "destinationName", label: "Destination Name", type: "text" },
+    { name: "tripTitle", label: "Trip Title", type: "text" },
+    { name: "countryCity", label: "Country / City", type: "text" },
+    { name: "duration", label: "Duration (e.g., 5 Days)", type: "text" },
+    { name: "budget", label: "Budget", type: "text" },
+    { name: "travelStory", label: "Travel Story", type: "textarea" },
+    { name: "tips", label: "Tips for Travelers", type: "text" },
+    { name: "bestTime", label: "Best Time to Visit", type: "text" },
+    // { name: "travelPhoto", label: "Upload Travel Photo", type: "file" },
+  ],
+
+  Foodie: [
+    { name: "recipeName", label: "Recipe Name", type: "text" },
+    { name: "cuisineType", label: "Cuisine Type", type: "text" },
+    { name: "ingredients", label: "Ingredients", type: "textarea" },
+    { name: "cookingSteps", label: "Cooking Steps", type: "textarea" },
+    { name: "prepTime", label: "Preparation Time", type: "text" },
+    { name: "cookingTime", label: "Cooking Time", type: "text" },
+    { name: "difficultyLevel", label: "Difficulty Level (Easy/Medium/Hard)", type: "text" },
+    // { name: "dishPhoto", label: "Upload Dish Photo", type: "file" },
+    { name: "tasteRating", label: "Taste Rating (1–5)", type: "number" },
+  ],
+
+  HealthFitnessExpert: [
+    { name: "postTitle", label: "Post Title", type: "text" },
+    { name: "topic", label: "Topic (Workout, Diet, Motivation)", type: "text" },
+    { name: "routineDescription", label: "Routine Description", type: "textarea" },
+    { name: "equipmentNeeded", label: "Equipment Needed (optional)", type: "text" },
+    { name: "durationFrequency", label: "Duration / Frequency", type: "text" },
+    { name: "nutritionAdvice", label: "Nutrition Advice", type: "textarea" },
+    // { name: "thumbnailImage", label: "Upload Image / Video Thumbnail", type: "file" },
+  ],
+
+  Entrepreneur: [
+    { name: "startupName", label: "Startup / Business Name", type: "text" },
+    { name: "industryType", label: "Industry Type", type: "text" },
+    { name: "foundingStory", label: "Founding Story", type: "textarea" },
+    { name: "challengesFaced", label: "Challenges Faced", type: "textarea" },
+    { name: "achievements", label: "Achievements / Milestones", type: "textarea" },
+    { name: "fundingInfo", label: "Funding Info (optional)", type: "text" },
+    { name: "teamSize", label: "Team Size", type: "text" },
+    { name: "websiteLinks", label: "Website / Social Media Links", type: "text" },
+    // { name: "companyLogo", label: "Upload Company Logo / Image", type: "file" },
+  ],
+
+  Student: [
+    { name: "projectTitle", label: "Project / Blog Title", type: "text" },
+    { name: "institutionName", label: "Institution Name", type: "text" },
+    { name: "course", label: "Course / Subject", type: "text" },
+    { name: "yearSemester", label: "Year / Semester", type: "text" },
+    { name: "projectDescription", label: "Project Description", type: "textarea" },
+    { name: "keyLearnings", label: "Key Learnings", type: "text" },
+    { name: "mentorName", label: "Mentor Name (optional)", type: "text" },
+    // { name: "projectScreenshot", label: "Upload Project Screenshot / Image", type: "file" },
+  ],
+
+  TechReviewer: [
+    { name: "productName", label: "Product / App Name", type: "text" },
+    { name: "brand", label: "Brand / Company", type: "text" },
+    { name: "reviewSummary", label: "Review Summary", type: "text" },
+    { name: "prosCons", label: "Pros and Cons", type: "textarea" },
+    { name: "overallRating", label: "Overall Rating (1–10)", type: "number" },
+    { name: "recommendation", label: "Recommendation (Yes/No)", type: "text" },
+    // { name: "productImage", label: "Upload Product Image", type: "file" },
+  ],
+
+  Gamer: [
+    { name: "gameTitle", label: "Game Title", type: "text" },
+    { name: "gameGenre", label: "Game Genre", type: "text" },
+    { name: "reviewExperience", label: "Review / Experience", type: "textarea" },
+    { name: "platform", label: "Platform (Mobile, PC, Console)", type: "text" },
+    { name: "rating", label: "Rating (1–10)", type: "number" },
+    { name: "gameplayDuration", label: "Gameplay Duration", type: "text" },
+    // { name: "gameScreenshot", label: "Upload Game Screenshot", type: "file" },
+    { name: "favoriteCharacter", label: "Favorite Character / Weapon (optional)", type: "text" },
+  ],
+
+  MotivationalSpeaker: [
+    { name: "speechTitle", label: "Speech Title", type: "text" },
+    { name: "topic", label: "Topic (Life, Success, Confidence, etc.)", type: "text" },
+    { name: "storyMessage", label: "Story / Message", type: "textarea" },
+    { name: "keyTakeaways", label: "Key Takeaways (bullet list)", type: "textarea" },
+    { name: "quote", label: "Quote (optional)", type: "text" },
+    // { name: "posterThumbnail", label: "Upload Poster / Thumbnail", type: "file" },
+    // { name: "videoLink", label: "Optional Video Link", type: "text" },
   ],
 };
+
+
 
 // ----------------- Fetch user -----------------
 async function getUserByEmail(email) {
@@ -105,7 +247,7 @@ export default function BlogForm() {
   }, [session?.user?.email]);
 
 
-  
+
   // ----------------- Handlers -----------------
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -194,27 +336,29 @@ Requirements:
   };
 
   // ----------------- Validation -----------------
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.blog_title.trim())
-      newErrors.blog_title = "Blog title is required";
-    else if (formData.blog_title.length < 5)
-      newErrors.blog_title = "Title must be at least 5 characters";
+  // const validateForm = () => {
+  //   const newErrors = {};
+  //   if (!formData.blog_title.trim())
+  //     newErrors.blog_title = "Blog title is required";
+  //   else if (formData.blog_title.length < 5)
+  //     newErrors.blog_title = "Title must be at least 5 characters";
 
-    if (!formData.description.trim())
-      newErrors.description = "Description is required";
-    else if (formData.description.length < 10)
-      newErrors.description = "Description must be at least 10 characters";
+  //   if (!formData.description.trim())
+  //     newErrors.description = "Description is required";
+  //   else if (formData.description.length < 10)
+  //     newErrors.description = "Description must be at least 10 characters";
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
+
 
   // ----------------- Submit Handler -----------------
   const handleSubmit = async (e) => {
+    console.log('done')
     e.preventDefault();
-    if (!validateForm()) return;
-
+    // if (!validateForm()) return;
+    
     if (!userData) {
       Swal.fire({
         icon: "error",
@@ -246,7 +390,8 @@ Requirements:
           .map((t) => t.trim())
           .filter(Boolean),
         featured_image: imageUrl,
-        extraFields, // Add profession fields
+        extraFields, // profession-wise extra data
+        author_profession: userData.profession || "", // add profession
       };
 
       const res = await fetch("/api/add-post", {
@@ -296,10 +441,11 @@ Requirements:
     }
   };
 
+
   // ----------------- UI -----------------
   return (
     <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto md:px-6 py-8">
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center mb-4">
@@ -308,7 +454,7 @@ Requirements:
             </div>
           </div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-900 to-amber-900 bg-clip-text text-transparent leading-normal mb-3">
-            Blog Post Management
+            Post Management
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Create and manage your blog content with our intuitive form interface
@@ -317,133 +463,166 @@ Requirements:
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="rounded-3xl shadow-2xl overflow-hidden">
-          <div className="p-8 lg:p-10 space-y-8">
+          <div className="p-2 lg:p-10 space-y-8">
             {/* Basic Info */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-3 pb-4">
-                <div className="p-2 bg-yellow-100 rounded-lg">
-                  <FileText className="w-5 h-5 text-[#0000FF]" />
+            {
+              !userData?.profession &&
+              <div className="space-y-6">
+                <div className="flex items-center space-x-3 pb-4">
+                  <div className="p-2 bg-yellow-100 rounded-lg">
+                    <FileText className="w-5 h-5 text-[#0000FF]" />
+                  </div>
+                  <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
-              </div>
 
-              {/* Title & Category */}
-              <div className="md:flex items-center gap-3">
-                <div className="flex-3 mt-2">
-                  <label className="flex items-center mb-2 text-sm font-semibold text-gray-700">
-                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog Title
-                  </label>
+                {/* Title & Category */}
+                <div className="md:flex items-center gap-3">
+                  <div className="flex-3 mt-2">
+                    <label className="flex items-center mb-2 text-sm font-semibold text-gray-700">
+                      <FileText className="w-4 h-4 mr-2 text-gray-500" /> Blog Title
+                    </label>
+                    <input
+                      name="blog_title"
+                      type="text"
+                      value={formData.blog_title}
+                      onChange={handleInputChange}
+                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
+                        ? "border-red-300 bg-red-50 focus:border-red-500"
+                        : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
+                        }`}
+                      placeholder="Enter an engaging blog title..."
+                    />
+                    {errors.blog_title && (
+                      <p className="flex items-center text-sm text-red-600 mt-1">
+                        <AlertTriangle className="w-4 h-4 mr-1" />
+                        {errors.blog_title}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex-2 mt-2">
+                    <label className="flex items-center text-sm mb-2 font-semibold text-gray-700">
+                      <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" /> Category
+                    </label>
+                    <input
+                      name="category"
+                      type="text"
+                      required
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-[#0000FF]"
+                      placeholder="Any kind of category..."
+                    />
+                  </div>
+                </div>
+
+                {/* Word Count & AI */}
+                <div className="mt-4 flex items-center gap-3">
+                  <label className="text-sm font-semibold text-gray-700">Word Count</label>
                   <input
-                    name="blog_title"
-                    type="text"
-                    value={formData.blog_title}
+                    type="number"
+                    min={50}
+                    max={1000}
+                    value={wordCount}
+                    onChange={handleWordCountChange}
+                    className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:border-[#0000FF]"
+                  />
+                  <button
+                    onClick={generateContent}
+                    type="button"
+                    disabled={isGenerating}
+                    className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
+                      }`}
+                  >
+                    {isGenerating ? "Generating..." : "Generate Content"}
+                  </button>
+                </div>
+
+                {/* Description */}
+                <div className="space-y-2">
+                  <label className="flex items-center text-sm font-semibold text-gray-700">
+                    <FileText className="w-4 h-4 mr-2 text-gray-500" /> Description
+                  </label>
+                  <textarea
+                    name="description"
+                    rows={10}
+                    value={isGenerating ? "Generating content..." : formData.description}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 rounded-xl border-2 transition-all duration-200 focus:outline-none text-lg ${errors.blog_title
+                    className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
                       ? "border-red-300 bg-red-50 focus:border-red-500"
                       : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
                       }`}
-                    placeholder="Enter an engaging blog title..."
+                    disabled={isGenerating}
+                    placeholder="Write a compelling description..."
                   />
-                  {errors.blog_title && (
+                  {errors.description && (
                     <p className="flex items-center text-sm text-red-600 mt-1">
                       <AlertTriangle className="w-4 h-4 mr-1" />
-                      {errors.blog_title}
+                      {errors.description}
                     </p>
                   )}
                 </div>
-
-                <div className="flex-2 mt-2">
-                  <label className="flex items-center text-sm mb-2 font-semibold text-gray-700">
-                    <TbCategoryPlus className="w-4 h-4 mr-2 text-gray-500" /> Category
-                  </label>
-                  <input
-                    name="category"
-                    type="text"
-                    required
-                    value={formData.category}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 bg-gray-50 focus:border-[#0000FF]"
-                    placeholder="Any kind of category..."
-                  />
-                </div>
               </div>
-
-              {/* Word Count & AI */}
-              <div className="mt-4 flex items-center gap-3">
-                <label className="text-sm font-semibold text-gray-700">Word Count</label>
-                <input
-                  type="number"
-                  min={50}
-                  max={1000}
-                  value={wordCount}
-                  onChange={handleWordCountChange}
-                  className="w-20 px-3 py-2 rounded-xl border border-gray-300 focus:border-[#0000FF]"
-                />
-                <button
-                  onClick={generateContent}
-                  type="button"
-                  disabled={isGenerating}
-                  className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                >
-                  {isGenerating ? "Generating..." : "Generate Content"}
-                </button>
-              </div>
-
-              {/* Description */}
-              <div className="space-y-2">
-                <label className="flex items-center text-sm font-semibold text-gray-700">
-                  <FileText className="w-4 h-4 mr-2 text-gray-500" /> Description
-                </label>
-                <textarea
-                  name="description"
-                  rows={10}
-                  value={isGenerating ? "Generating content..." : formData.description}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 rounded-xl border-2 focus:outline-none resize-none ${errors.description
-                    ? "border-red-300 bg-red-50 focus:border-red-500"
-                    : "border-gray-200 bg-gray-50 focus:border-[#0000FF]"
-                    }`}
-                  disabled={isGenerating}
-                  placeholder="Write a compelling description..."
-                />
-                {errors.description && (
-                  <p className="flex items-center text-sm text-red-600 mt-1">
-                    <AlertTriangle className="w-4 h-4 mr-1" />
-                    {errors.description}
-                  </p>
-                )}
-              </div>
-            </div>
+            }
 
             {/* Extra Profession Fields */}
+            {/* Extra Profession Fields */}
             {userData?.profession && professionFields[userData.profession]?.length > 0 && (
-              <div className="mt-8 space-y-4 p-6 bg-gray-50 rounded-xl shadow">
-                <h2 className="text-xl font-semibold mb-4">{userData.profession} Info</h2>
-                {professionFields[userData.profession].map((field) => (
-                  <div key={field.name}>
-                    <label className="block text-sm font-semibold text-gray-700 mb-1">{field.label}</label>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        name={field.name}
-                        value={extraFields[field.name]}
-                        onChange={handleExtraFieldChange}
-                        rows={4}
-                        className="w-full border rounded-xl p-3 focus:border-[#0000FF]"
-                      />
-                    ) : (
-                      <input
-                        type={field.type}
-                        name={field.name}
-                        value={extraFields[field.name]}
-                        onChange={handleExtraFieldChange}
-                        className="w-full border rounded-xl p-3 focus:border-[#0000FF]"
-                      />
-                    )}
-                  </div>
-                ))}
+              <div className=" relative overflow-hidden rounded-3xl border border-blue-100 bg-gradient-to-br from-[#f8faff] to-[#eef5ff] shadow-[0_10px_30px_rgba(0,0,255,0.08)] md:p-8 p-2 py-5 transition-all duration-500">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(0,0,255,0.06),transparent_50%)] pointer-events-none"></div>
+                <h2 className="text-xl md:text-3xl font-bold text-[#1a1a40] mb-8 border-l-4 border-[#0000ff] pl-3 tracking-wide">
+                  Hey {userData.profession} Share Your Activity
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {professionFields[userData.profession].map((field) => (
+                    <div
+                      key={field.name}
+                      className="group relative bg-white/70 backdrop-blur-md border border-gray-100 rounded-2xl shadow-sm hover:shadow-lg hover:border-[#0000ff]/30 transition-all duration-300 p-5"
+                    >
+                      <label className="text-sm font-semibold text-gray-700 mb-2 block tracking-wide group-hover:text-[#0000ff] transition-colors">
+                        {field.label}
+                      </label>
+
+                      {field.type === "textarea" ? (
+                        <textarea
+                          name={field.name}
+                          value={extraFields[field.name] || ""}
+                          onChange={handleExtraFieldChange}
+                          rows={4}
+                          required
+                          className="w-full p-4 rounded-xl border border-gray-200 bg-white/60 focus:border-[#0000ff] focus:ring-2 focus:ring-[#0000ff]/30 focus:outline-none transition-all resize-none placeholder:text-gray-400"
+                          placeholder={`Enter ${field.label.toLowerCase()}...`}
+                        />
+                      ) : field.type === "file" ? (
+                        <div className="flex items-center gap-4">
+                          <input
+                            type="file"
+                            name={field.name}
+                            required
+                            onChange={(e) => handleExtraFieldChange(e, true)}
+                            className="w-full text-sm p-3 border border-gray-200 rounded-xl bg-white/60 focus:border-[#0000ff] focus:ring-2 focus:ring-[#0000ff]/30 focus:outline-none transition-all file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#0000ff] file:text-white hover:file:bg-[#1a1aff]"
+                          />
+                          <MdOutlinePublishedWithChanges className="text-[#0000ff] w-6 h-6 opacity-80 group-hover:opacity-100 transition-opacity" />
+                        </div>
+                      ) : (
+                        <input
+                          type={field.type}
+                          name={field.name}
+                          required
+                          value={extraFields[field.name] || ""}
+                          onChange={handleExtraFieldChange}
+                          placeholder={`Enter ${field.label.toLowerCase()}...`}
+                          className="w-full p-4 rounded-xl border border-gray-200 bg-white/60 focus:border-[#0000ff] focus:ring-2 focus:ring-[#0000ff]/30 focus:outline-none transition-all placeholder:text-gray-400"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
+
+
 
             {/* Featured Image */}
             <div className="space-y-4 mt-6">
@@ -496,14 +675,14 @@ Requirements:
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-8 py-3 bg-[#0000FF] hover:bg-[#0000DD] text-white font-semibold rounded-xl shadow-lg transition-all duration-200"
+                className="px-8 py-3 bg-[#0000FF] cursor-pointer hover:bg-[#0000DD] text-white font-semibold rounded-xl shadow-lg transition-all duration-200"
               >
                 {isSubmitting ? "Publishing..." : "Publish Post"}
               </button>
             </div>
           </div>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

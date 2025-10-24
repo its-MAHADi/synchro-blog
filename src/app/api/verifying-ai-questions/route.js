@@ -26,38 +26,35 @@ export async function POST(req) {
     Return the output as structured JSON like this:
 
     {
-    "results": [
+      "results": [
         { "question": "Q1 text...", "score": 4, "feedback": "..." },
-        { "question": "Q2 text...", "score": 3, "feedback": "..." },
-        ...
-    ],
-    "average_score": 3.5,
-    "summary": "Overall feedback here..."
+        { "question": "Q2 text...", "score": 3, "feedback": "..." }
+      ],
+      "average_score": 3.5,
+      "summary": "Overall feedback here..."
     }
-    `;
+  `;
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const response = await fetch(GEMINI_URL, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.OPENAI_ROUTER}`,
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "openai/gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
+        contents: [{ parts: [{ text: prompt }] }],
       }),
     });
 
     const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || "";
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    // Try to parse the JSON portion safely
+    // Parse AI response safely
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
 
-    if (!parsed) throw new Error("Failed to parse AI response");
+    if (!parsed) throw new Error("Invalid AI response format");
 
     return NextResponse.json({ success: true, ...parsed });
   } catch (error) {

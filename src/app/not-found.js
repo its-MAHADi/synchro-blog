@@ -26,12 +26,12 @@ export default function NotFound() {
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     // In a real Next.js app, you'd navigate to search results
-    console.log('Searching for:', searchQuery);
+    // console.log('Searching for:', searchQuery);
   };
 
   const handleGoHome = () => {
     // In a real Next.js app, you'd use Next.js router
-    console.log('Navigating home...');
+    // console.log('Navigating home...');
   };
 
   return (

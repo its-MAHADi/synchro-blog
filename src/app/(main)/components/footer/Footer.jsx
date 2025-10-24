@@ -16,7 +16,7 @@ const Footer = () => {
         {/* Branding */}
         <div className="space-y-4">
           <div className="flex items-center space-x-3">
-            <img src="/main_logo.png" alt="main-logo" className="w-10" />
+            <img src="/main_logo_v2.png" alt="main-logo" className="w-10" />
             <span className="text-2xl font-bold">Synchro</span>
           </div>
           <p className="text-[#0000FF] text-sm">

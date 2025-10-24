@@ -149,7 +149,7 @@ export default function ViewProfilePage() {
                         {/* Profile image */}
                         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 translate-y-1/2">
                             <img
-                                src={user.image || "/defult_profile.jpg"}
+                                src={user.image || "/default_profile.jpg"}
                                 alt="Profile"
                                 className="w-28 h-28 md:w-40 md:h-40 rounded-full border-4 border-white shadow-md object-cover bg-gray-100"
                             />

@@ -325,19 +325,22 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 </span>
               </div>
 
-              {/* Writing Style */}
-              <p className="text-sm text-gray-500 italic mb-3">
-                ✍️ Writing Style: {postData?.extraFields?.writingStyle || "N/A"}
-              </p>
+
 
               {/* Summary */}
               <div className="text-gray-700 text-sm mb-4">
-                <p className="font-semibold text-gray-900 mb-1">Summary:</p>
                 <p className="leading-relaxed">
-                  {postData?.extraFields?.summary?.length > 180 && !showFull
-                    ? postData?.extraFields?.summary?.slice(0, 180) + "..."
-                    : postData?.extraFields?.summary}
-                  {postData?.extraFields?.summary?.length > 180 && (
+                  {postData?.extraFields?.summary}
+                </p>
+              </div>
+
+              {/* Full Content */}
+              <div>
+                <p className="leading-relaxed mb-4">
+                  {postData?.extraFields?.fullContent?.length > 500 && !showFull
+                    ? postData?.extraFields?.fullContent?.slice(0, 500) + "..."
+                    : postData?.extraFields?.fullContent}
+                  {postData?.extraFields?.fullContent?.length > 500 && (
                     <button
                       onClick={() => setShowFull(!showFull)}
                       className="text-blue-600 font-medium ml-1 hover:underline"
@@ -348,15 +351,6 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 </p>
               </div>
 
-              {/* Full Content */}
-              {showFull && (
-                <div className="text-gray-700 text-sm mb-4 border-t pt-3">
-                  <p className="font-semibold text-gray-900 mb-1">Full Content:</p>
-                  <p className="whitespace-pre-line leading-relaxed">
-                    {postData?.extraFields?.fullContent}
-                  </p>
-                </div>
-              )}
 
               {/* Inspiration Source */}
               {postData?.extraFields?.inspiration && (
@@ -365,6 +359,11 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                   <p>{postData?.extraFields?.inspiration}</p>
                 </div>
               )}
+
+              {/* Writing Style */}
+              <p className="text-sm text-gray-500 italic mb-3">
+                ✍️ Writing Style: {postData?.extraFields?.writingStyle || "N/A"}
+              </p>
             </div>
           ) : (
             // Other profession posts (like Blogger, etc.)
@@ -401,10 +400,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 </span>
               </div>
 
-              {/* Mood */}
-              <p className="text-sm text-gray-500 italic mb-3">
-                📝 Mood: {postData?.extraFields?.mood || "Neutral"}
-              </p>
+            
 
               {/* Blog Content */}
               <div className="text-gray-700 text-sm mb-4 leading-relaxed">
@@ -451,6 +447,10 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                   </a>
                 </div>
               )}
+                {/* Mood */}
+              <p className="text-sm text-gray-500 italic mt-4">
+                📝 Mood: {postData?.extraFields?.mood || "Neutral"}
+              </p>
             </div>
           ) : null}
 

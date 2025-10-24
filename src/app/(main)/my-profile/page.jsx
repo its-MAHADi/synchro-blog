@@ -446,7 +446,7 @@ export default function Profile() {
           </div>
 
           <h1 className="mt-4 text-xl font-bold">{session?.user?.name || "Anonymous User"}</h1>
-          <p className="text-sm opacity-80">Professional Blogger & Writer</p>
+          {details?.profession && <p className="text-sm opacity-80 font-semibold">{details?.profession}</p>}
 
           {/* Stats */}
           <div className="w-full mt-3 flex justify-between ">
@@ -515,8 +515,8 @@ export default function Profile() {
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>{details.work}</span></div> :
               <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>Add Profession</span></div>
-                {details?.profession ? <span>{details.profession}</span> : <Link href="/add-profession"><button className="bg-[#0000FF] text-white p-1.5 cursor-pointer text-sm font-medium rounded-xl">Add Profession</button></Link>}
+                <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" />{details?.profession ? <span className="">{details.profession}</span> : <span>Add Profession</span>} </div>
+                {!details?.profession && <Link href="/add-profession"><button className="bg-[#0000FF] text-white p-1.5 cursor-pointer text-sm font-medium rounded-xl">Add Profession</button></Link>}
               </div>
             }
             {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#0000FF]" /><span>{details.education}</span></div>

@@ -24,6 +24,7 @@ export default function Sidebar() {
         { name: "Dashboard", href: "/user-dashboard", icon: Home },
         { name: "Add Posts", href: "/add-posts", icon: FileText },
         { name: "My Profile", href: "/profile", icon: Users },
+        { name: "Add Profession", href: "/add-profession", icon: Users },
     ];
 
     const AdminLinks = [

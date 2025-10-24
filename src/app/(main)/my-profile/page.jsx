@@ -47,6 +47,9 @@ export default function Profile() {
   const [tempDetails, setTempDetails] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // to show the profession
+  const [profession, setProfession] = useState("");
+
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -512,8 +515,8 @@ export default function Profile() {
           <div className="mt-6 space-y-3 text-sm text-gray-700">
             {details?.work ? <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>{details.work}</span></div> :
               <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>Add work</span></div>
-                <Link href="/user-dashboard/posts/add-profession"><button className="bg-[#0000FF] text-white p-1.5 cursor-pointer text-sm font-medium rounded-xl">Add Profession</button></Link>
+                <div className="flex items-center gap-3"><Briefcase size={14} className="text-[#0000FF]" /><span>Add Profession</span></div>
+                {details?.profession ? <span>{details.profession}</span> : <Link href="/add-profession"><button className="bg-[#0000FF] text-white p-1.5 cursor-pointer text-sm font-medium rounded-xl">Add Profession</button></Link>}
               </div>
             }
             {details?.education ? <div className="flex items-center gap-3"><GraduationCap size={14} className="text-[#0000FF]" /><span>{details.education}</span></div>

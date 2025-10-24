@@ -3,10 +3,15 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { useSession } from "next-auth/react";
 
 export default function NextStepPage() {
   const params = useSearchParams();
   const profession = params.get('profession') || 'Writer';
+
+  // to update user profession
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
 
   const manualQuestionMap = {
     Writer: "How do you avoid plagiarism in your writing?",
@@ -17,12 +22,11 @@ export default function NextStepPage() {
   };
 
   const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Fetch questions (AI + manual)
+  // Fetch questions
   useEffect(() => {
     const loadQuestions = async () => {
       setLoading(true);
@@ -55,43 +59,33 @@ export default function NextStepPage() {
     loadQuestions();
   }, [profession]);
 
-  // Input change
-  const handleInputChange = (e) => {
+  const handleInputChange = (e, index) => {
     const updated = [...answers];
-    updated[currentIndex] = e.target.value;
+    updated[index] = e.target.value;
     setAnswers(updated);
   };
 
-  // Handle next question / submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!answers[currentIndex].trim()) {
-      Swal.fire("Oops!", "Please answer this question before continuing.", "warning");
+    if (answers.some((a) => !a.trim())) {
+      Swal.fire("Oops!", "Please answer all questions before submitting.", "warning");
       return;
     }
 
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    } else {
-      Swal.fire({
-        title: "All questions answered!",
-        text: "Do you want to submit your answers for AI verification?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: "Yes, verify",
-        cancelButtonText: "Review answers",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          setSubmitted(true);
-        } else {
-          setCurrentIndex(0);
-        }
-      });
-    }
+    Swal.fire({
+      title: "All questions answered!",
+      text: "Do you want to submit your answers for AI verification?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, verify",
+      cancelButtonText: "Review answers",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSubmitted(true);
+      }
+    });
   };
 
-  // Verify all answers using AI
   const handleVerifyAll = async () => {
     try {
       Swal.fire({
@@ -110,7 +104,7 @@ export default function NextStepPage() {
       const data = await res.json();
       Swal.close();
 
-      if (!data.success) throw new Error("Verification failed");
+      // if (!data.success) throw new Error("Verification failed");
 
       const { results, average_score, summary } = data;
 
@@ -124,7 +118,7 @@ export default function NextStepPage() {
               .map(
                 (r) => `
                 <li class="mb-3">
-                  <p><strong>Q:</strong> ${r.question}</p>
+                  <p><strong>Question:</strong> ${r.question}</p>
                   <p><strong>Score:</strong> ${r.score}</p>
                   <p><strong>Feedback:</strong> ${r.feedback}</p>
                 </li>`
@@ -134,30 +128,78 @@ export default function NextStepPage() {
         </div>
       `;
 
-      if (average_score < 3) {
-        Swal.fire({
-          icon: "warning",
-          title: "Please Retake the Questions 😔",
-          html: feedbackHtml,
-          confirmButtonText: "Retake",
-        }).then(() => {
-          setAnswers(Array(questions.length).fill(""));
-          setSubmitted(false);
-          setCurrentIndex(0);
-        });
-      } else {
-        Swal.fire({
-          icon: "success",
-          title: "Great Job 🎉",
-          html: feedbackHtml,
-          confirmButtonText: "Done",
-        });
+      if (average_score >= 4) {
+        try {
+          if (!userEmail) {
+            throw new Error("User not authenticated or missing email");
+          }
+
+          // Update profession in DB
+          await fetch("/api/update-profession", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail, profession }),
+          });
+
+          // success message
+          Swal.fire({
+            icon: "success",
+            title: "Excellent Work! 🎉",
+            html: `
+              <p>Your average score is <strong>${average_score.toFixed(2)}</strong>.</p>
+              <p>You’re now eligible to apply to the <strong>${profession}</strong> community!</p>
+            `,
+            confirmButtonText: "Go to Profile",
+          }).then(() => {
+            window.location.href = "/user-dashboard/profile";
+          });
+        } catch (err) {
+          console.error("❌ Failed to update profession:", err);
+          Swal.fire("Error", "Could not update your profession. Please try again.", "error");
+        }
+        return;
       }
+
+      const retryKey = `retryCount_${profession}`;
+      let retryCount = parseInt(localStorage.getItem(retryKey) || "0");
+      retryCount += 1;
+      localStorage.setItem(retryKey, retryCount.toString());
+
+      if (retryCount >= 3) {
+  Swal.fire({
+    icon: "info",
+    title: "Need Expert Review 🧠",
+    html: `
+      ${feedbackHtml}
+      <p class="mt-3">You've attempted this test 3 times. You can now <strong>apply to the ${profession} community</strong> for personalized review and guidance.</p>
+    `,
+    confirmButtonText: "Apply to Community",
+    allowOutsideClick: false,
+  }).then(() => {
+    // Close Swal explicitly (sometimes helps)
+    Swal.close();
+    // Redirect with profession query
+    window.location.href = "/apply-to-community";
+  });
+} else {
+  Swal.fire({
+    icon: "warning",
+    title: "Please Retake the Questions 😔",
+    html: feedbackHtml,
+    confirmButtonText: "Retake",
+    allowOutsideClick: false,
+  }).then(() => {
+    setAnswers(Array(questions.length).fill(""));
+    setSubmitted(false);
+  });
+}
+
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "Failed to verify answers. Try again later.", "error");
     }
   };
+
 
   if (loading) {
     return (
@@ -167,42 +209,52 @@ export default function NextStepPage() {
           <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
           <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce"></div>
         </div>
-        <p>Generating questions for <span className="font-semibold">{profession}</span>...</p>
+        <p>
+          Generating questions for{" "}
+          <span className="font-semibold">{profession}</span>...
+        </p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 py-12">
-      <div className="w-full max-w-xl bg-white rounded-xl shadow-md p-6 text-center">
-        <h1 className="text-2xl font-bold text-blue-600 mb-6">
+      <div className="w-full max-w-xl bg-white rounded-xl shadow-md p-6">
+        <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
           {submitted
-            ? 'All Questions Answered!'
-            : `Question ${currentIndex + 1} of ${questions.length} for ${profession}`}
+            ? "All Questions Answered!"
+            : `Questions for ${profession}`}
         </h1>
 
-        {/* ✅ Before submission — show question form */}
         {!submitted ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <p className="text-slate-700 mb-2">{questions[currentIndex]}</p>
-            <textarea
-              rows={4}
-              value={answers[currentIndex]}
-              onChange={handleInputChange}
-              className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
-              required
-            />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {questions.map((q, i) => (
+              <div key={i}>
+                <p className="text-slate-700 mb-2 font-medium">
+                  {i + 1}. {q}
+                </p>
+                <textarea
+                  rows={4}
+                  value={answers[i]}
+                  onChange={(e) => handleInputChange(e, i)}
+                  className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+            ))}
+
             <button
               type="submit"
-              className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="bg-blue-600 cursor-pointer text-white w-full py-2 rounded-lg hover:bg-blue-700 transition"
             >
-              {currentIndex === questions.length - 1 ? 'Submit' : 'Next'}
+              Submit All Answers
             </button>
           </form>
         ) : (
-          // ✅ After submission — show answers + verify button
           <div className="text-left">
-            <h2 className="text-lg font-medium mb-4 text-slate-800">Your Answers:</h2>
+            <h2 className="text-lg font-medium mb-4 text-slate-800">
+              Your Answers:
+            </h2>
             <ul className="space-y-4 mb-6">
               {questions.map((q, i) => (
                 <li key={i}>
@@ -214,7 +266,7 @@ export default function NextStepPage() {
 
             <button
               onClick={handleVerifyAll}
-              className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+              className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition"
             >
               Verify My Answers
             </button>
@@ -222,10 +274,9 @@ export default function NextStepPage() {
         )}
       </div>
 
-      {/* Back button */}
       <Link href="/user-dashboard/profile" className="mt-6">
         <button className="cursor-pointer bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">
-          Back to dashboard
+          Back to Dashboard
         </button>
       </Link>
     </div>

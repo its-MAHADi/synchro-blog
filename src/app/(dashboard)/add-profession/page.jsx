@@ -56,11 +56,11 @@ export default function Page() {
     }
 
     // Navigate to next page with selected profession in query
-    router.push(`/user-dashboard/posts/questions-per-profession?profession=${encodeURIComponent(selectedProfession)}`);
+    router.push(`/questions-per-profession?profession=${encodeURIComponent(selectedProfession)}`);
   };
 
   return (
-    <div className="mt-20 min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-blue-600 mb-3">Choose Your Profession</h1>
@@ -130,4 +130,3 @@ export default function Page() {
     </div>
   );
 }
-// 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

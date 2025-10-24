@@ -10,6 +10,7 @@ export const collectionNameObj = {
   commentCollection: "comments",
   messageCollection: "message",
   notificationCollection: "notification",
+  applyCommunity: "applyCommunity",
 };
 
 // Use globalThis to store client in dev (works better in Next.js)

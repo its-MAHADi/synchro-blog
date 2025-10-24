@@ -6,44 +6,60 @@ export async function POST(req) {
   const { profession } = await req.json();
 
   if (!profession) {
-    return NextResponse.json({ error: "Profession is required" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Profession is required" },
+      { status: 400 }
+    );
   }
 
   const prompt = `
-  You are an expert interviewer.
-  Generate 4 medium-hard questions for a professional ${profession}.
-  - Questions must require reasoning or experience-based answers.
-  - Avoid simple definitions or beginner-level questions.
-  - Make them practical, analytical, and thought-provoking.
-  Return only the questions, each on a new line.
-  `;
+    You are an expert interviewer.
+    Generate 4 medium-hard, reasoning-based questions for a professional ${profession}.
+    The questions must:
+    - Require analysis, critical thinking, or experience-based insight.
+    - Avoid definition or textbook-type questions.
+    - Be practical and realistic for professionals in that field.
+    - Questions must be concise (max 20 words each).
+    Return only the questions, each on a new line.
+    `;
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+    const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_ROUTER}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "openai/gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.8,
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: prompt }],
+          },
+        ],
       }),
     });
 
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || "";
+
+    // Gemini response structure:
+    const content =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
 
     const questions = content
       .split("\n")
       .map((q) => q.trim())
       .filter((q) => q)
-      .map((q) => q.replace(/^\d+\.\s*/, ""));
+      .map((q) => q.replace(/^\d+[\).\s-]*/, "")); // remove numbering if present
 
     return NextResponse.json({ questions });
   } catch (error) {
-    console.error("AI generation error:", error);
-    return NextResponse.json({ error: "Failed to generate questions" }, { status: 500 });
+    console.error("Gemini AI generation error:", error);
+    return NextResponse.json(
+      { error: "Failed to generate questions" },
+      { status: 500 }
+    );
   }
 }

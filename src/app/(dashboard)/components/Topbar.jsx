@@ -28,17 +28,17 @@ export default function Topbar() {
             {/* Right: Notifications + Avatar */}
             <div className="flex items-center gap-4 ml-4">
                 <p className="font-semibold text-lg">
-                    Name
+                    {session?.user?.name}
                 </p>
 
                 {/* User avatar */}
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200">
                     <Image
-                        src="/defult_profile.jpg"
-                        alt="User"
+                        src={session?.user?.image || "/default_profile.jpg"} // fallback to default
+                        alt={session?.user?.name || "User"}
                         width={40}
                         height={40}
-                        className="object-cover"
+                        className="object-cover rounded-full"
                     />
                 </div>
             </div>

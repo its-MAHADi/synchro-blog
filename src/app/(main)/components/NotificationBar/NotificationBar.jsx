@@ -97,7 +97,7 @@ export default function NotificationBar() {
                 onClick={() => handleNotificationClick(noti)}
               >
                 <div className="flex items-start gap-3 w-full">
-                  <img src="/defult_profile.jpg" className="w-10 h-10 rounded-full" />
+                  <img src="/default_profile.jpg" className="w-10 h-10 rounded-full" />
                   <div className="flex-1">
                     <p className="text-sm font-semibold">{noti.message}</p>
                     <small className="text-xs text-gray-500">{formatTime(noti.createdAt)}</small>

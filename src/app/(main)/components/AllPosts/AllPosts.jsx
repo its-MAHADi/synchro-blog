@@ -53,7 +53,7 @@ const AllPosts = async () => {
   const sortedPosts = postsData.sort(
     (a, b) => new Date(b.created_at) - new Date(a.created_at)
   );
-// console.log(postsData)
+  // console.log(postsData)
   return <AllPostsClient initialPosts={sortedPosts} userEmail={email} usersData={usersData} />;
 };
 

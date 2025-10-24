@@ -137,7 +137,7 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex justify-center items-center gap-5">
             <div className="flex items-center">
-              <img src="/main_logo.png" alt="logo" className="w-10 pr-2" />
+              <img src="/main_logo_v2.png" alt="logo" className="w-10 pr-2" />
               <Link href="/" className="text-2xl font-bold"> <span className="text-[#213943]">SYN</span><span className="text-[#0000FF]">CHRO</span> </Link>
             </div>
             {/* Search Bar */}

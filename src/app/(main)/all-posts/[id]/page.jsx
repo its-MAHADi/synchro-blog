@@ -43,7 +43,7 @@ const BlogPostDetailsPage = () => {
 
   // ✅ Safe fallback values
   const image = postData?.featured_image || "/default-cover.png";
-  const authorImage = postData?.author_image || "/defult_profile.jpg";
+  const authorImage = postData?.author_image || "/default_profile.jpg";
   const authorName = postData?.author_name || "Unknown Author";
   const publishDate = postData?.created_at
     ? new Date(postData.created_at).toLocaleDateString("en-US", {

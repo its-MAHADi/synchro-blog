@@ -49,7 +49,7 @@ const ViewPostCard = ({ postData, usersData, onFollowUpdate }) => {
     const descText = postData?.description || "";
     const image = postData?.featured_image || null;
     const authorName = postData?.author_name || "Unknown Author";
-    const authorAvatar = postData?.author_image || "/defult_profile.jpg";
+    const authorAvatar = postData?.author_image || "/default_profile.jpg";
 
     const fbTime = formatFacebookDate(postData?.created_at || new Date().toISOString());
     const mobileLimit = 100;
@@ -282,7 +282,7 @@ const ViewPostCard = ({ postData, usersData, onFollowUpdate }) => {
                         {/* Comment Input */}
                         <div className="flex gap-2 border-t border-gray-200 p-3 bg-white">
                             <img
-                                src={session?.user?.image || "/defult_profile.jpg"}
+                                src={session?.user?.image || "/default_profile.jpg"}
                                 alt="user"
                                 className="w-10 h-10 rounded-full"
                             />
@@ -308,7 +308,7 @@ const ViewPostCard = ({ postData, usersData, onFollowUpdate }) => {
                             ) : (
                                 comments.map(comment => (
                                     <div key={comment.id} className="flex gap-3">
-                                        <img src={comment.comment_author_image || "/defult_profile.jpg"} alt="author" className="w-8 h-8 rounded-full object-cover" />
+                                        <img src={comment.comment_author_image || "/default_profile.jpg"} alt="author" className="w-8 h-8 rounded-full object-cover" />
                                         <div className="flex-1">
                                             <p className="text-sm font-semibold">{comment.comment_author_name}</p>
                                             {editingCommentId === comment.id ? (

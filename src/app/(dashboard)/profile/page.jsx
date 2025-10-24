@@ -90,14 +90,6 @@ export default function Profile() {
   }, [session?.user?.email]);
 
 
-  
-  useEffect(() => {
-    if (userData) {
-      console.log("✅ User data fetched:", userData);
-    }
-  }, [userData]);
-
-
   // ===== FETCH USER DATA =====
   useEffect(() => {
     if (!session?.user?.email) return;
@@ -226,7 +218,7 @@ export default function Profile() {
         <div className="relative flex flex-col items-center -mt-16 pb-6">
           <div className="relative group">
             <img
-              src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || "/defult_profile.jpg"}
+              src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || "/default_profile.jpg"}
               className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
               alt="Profile"
             />

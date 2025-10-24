@@ -10,7 +10,7 @@ const AuthNavbar = () => {
         {/* Website Name */}
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/main_logo.png"
+            src="/main_logo_v2.png"
             alt="logo"
             width={40}
             height={40}

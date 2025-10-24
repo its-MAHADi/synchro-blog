@@ -19,7 +19,7 @@ const PostCartOfMP = ({ post, session, handleEditPost, handleDeletePost, formatF
             <div className="flex items-center gap-3">
                 <img
                     className="w-10 h-10 rounded-full object-cover"
-                    src={session?.user?.image || "/defult_profile.jpg"}
+                    src={session?.user?.image || "/default_profile.jpg"}
                     alt="Author"
                 />
                 <div>

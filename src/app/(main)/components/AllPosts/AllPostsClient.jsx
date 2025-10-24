@@ -5,19 +5,19 @@ import PostCard from "./PostCard/PostCard";
 
 const AllPostsClient = ({ initialPosts, userEmail, usersData }) => {
   const [posts, setPosts] = useState(initialPosts || []);
-// console.log(initialPosts)
+  // console.log(initialPosts)
   const handleFollowUpdate = (authorEmail, following) => {
     setPosts(prevPosts =>
       prevPosts.map(post =>
         post.author_email === authorEmail
           ? {
-              ...post,
-              followers: following
-                ? [...(post.followers || []), userEmail]
-                : (post.followers || []).filter(
-                    e => e.toLowerCase() !== userEmail.toLowerCase()
-                  ),
-            }
+            ...post,
+            followers: following
+              ? [...(post.followers || []), userEmail]
+              : (post.followers || []).filter(
+                e => e.toLowerCase() !== userEmail.toLowerCase()
+              ),
+          }
           : post
       )
     );

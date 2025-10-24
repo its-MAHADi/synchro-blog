@@ -9,7 +9,9 @@ import { useMessage } from "@/app/contexts/MessageContext";
 const PostField = () => {
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
- const { showMessageBar } = useMessage();
+  const { showMessageBar } = useMessage();
+
+  // console.log(session?.user);
   return (
     <>
       {/* Post Input Box */}
@@ -19,19 +21,17 @@ const PostField = () => {
             {session?.user?.image ? (
               <img
                 className="rounded-full w-12 h-12 object-cover "
-                src={session.user.image}
+                src={session?.user?.image}
                 alt="profile"
               />
             ) : (
-              <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
-                Hi
-              </div>
+              <img src="/default_profile.jpg" alt="default profile pic" className="w-12 h-12 rounded-full"/>
             )}
           </div>
 
           <div
             onClick={() => setShowModal(true)}
-            className={`cursor-pointer w-96 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]' }`}
+            className={`cursor-pointer w-96 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]'}`}
           >
             <input
               readOnly
@@ -60,7 +60,7 @@ const PostField = () => {
               <BlogForm onClose={() => setShowModal(false)} />
             </div>
 
-          </div> 
+          </div>
         </div>
       )}
     </>

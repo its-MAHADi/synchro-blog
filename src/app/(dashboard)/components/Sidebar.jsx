@@ -12,6 +12,7 @@ import {
     Menu,
     X,
     ArrowLeft,
+    BookCopy
 } from "lucide-react";
 
 export default function Sidebar() {
@@ -23,12 +24,14 @@ export default function Sidebar() {
     const UserLinks = [
         { name: "Dashboard", href: "/user-dashboard", icon: Home },
         { name: "Add Posts", href: "/add-posts", icon: FileText },
+        { name: "My Posts", href: "/my-posts", icon: BookCopy },
         { name: "My Profile", href: "/profile", icon: Users },
     ];
 
     const AdminLinks = [
         { name: "Admin Dashboard", href: "/admin-dashboard", icon: Home },
         { name: "Add Posts", href: "/add-posts", icon: FileText },
+        { name: "My Posts", href: "/my-posts", icon: BookCopy },
         { name: "My Profile", href: "/profile", icon: Users },
     ];
 

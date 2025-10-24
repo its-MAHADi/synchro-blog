@@ -30,6 +30,7 @@ export default function NotificationBar() {
   // 🔔 Click: mark read + navigate
   const handleNotificationClick = async (noti) => {
     try {
+      // ✅ Mark read
       if (!noti.read) {
         await fetch(`/api/notification?notificationId=${noti._id}`, { method: "PATCH" });
         setNotifications((prev) =>
@@ -37,10 +38,17 @@ export default function NotificationBar() {
         );
       }
 
-      if (noti.type === "follow") router.push(`/view-profile/${noti.senderEmail}`);
+      // ✅ Navigate based on type
+      if (noti.type === "follow") {
+        router.push(`/view-profile/${noti.senderEmail}`);
+      } 
       else if ((noti.type === "like" || noti.type === "comment") && noti.postId) {
-        router.push(`/post/${noti.postId}`); // 🔑 Navigate to the post
+        router.push(`/post/${noti.postId}`); // 🔑 Navigate to post page
+      } 
+      else {
+        console.warn("No valid navigation target found for notification:", noti);
       }
+
     } catch (err) {
       console.error(err);
     }
@@ -93,7 +101,7 @@ export default function NotificationBar() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`flex items-start justify-between p-3 rounded-xl cursor-pointer border ${noti.read ? "bg-gray-50" : "bg-[#fff5f0]"} hover:shadow-md`}
+                className={`flex items-start justify-between p-3 rounded-xl cursor-pointer border ${noti.read ? "bg-gray-50" : "bg-indigo-100"} hover:shadow-md`}
                 onClick={() => handleNotificationClick(noti)}
               >
                 <div className="flex items-start gap-3 w-full">

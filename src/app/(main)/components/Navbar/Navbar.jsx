@@ -35,6 +35,8 @@ async function getUserByEmail(email) {
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [userImage, setUserImage] = useState(null);
+  const [userData, setUserData] = useState(null);
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const { toggleMessageBar, toggleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
@@ -52,13 +54,29 @@ const Navbar = () => {
     { id: 3, name: "Raisa Akter" },
     { id: 4, name: "Tanvir Islam" },
   ];
+  // console.log(first)
 
-
-  const usersData = getUserByEmail(session?.user.email)
-console.log('hii')
   // profile pic in profile btn
 
-  const [userImage, setUserImage] = useState(null);
+
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (session?.user?.email) {
+        const data = await getUserByEmail(session.user.email);
+        setUserData(data);
+      }
+    }
+
+    fetchUserData();
+  }, [session?.user?.email]);
+
+  useEffect(() => {
+    if (userData) {
+      // console.log("✅ User data fetched:", userData);
+    }
+  }, [userData]);
+
 
   useEffect(() => {
     async function fetchUserImage() {
@@ -251,19 +269,32 @@ console.log('hii')
                   </div>
 
 
-                  {userImage ? (
-                    <Link href="/my-profile">
-                      <img
-                        src={userImage}
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                      />
-                    </Link>
-                  ) : (
-                    <Link href="/my-profile">
-                      <img src="/defult_profile.jpg" alt="default profile pic" className="w-10 h-10 rounded-full object-cover border border-gray-300" />
-                    </Link>
-                  )}
+               {userImage ? (
+  <Link href="/my-profile">
+    <img
+      src={userImage}
+      alt="Profile"
+      className="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </Link>
+) : userData?.image ? (
+  <Link href="/my-profile">
+    <img
+      src={userData.image}
+      alt="Profile"
+      className="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </Link>
+) : (
+  <Link href="/my-profile">
+    <img
+      src="/default_profile.jpg"
+      alt="Default profile pic"
+      className="w-10 h-10 rounded-full object-cover border border-gray-300"
+    />
+  </Link>
+)}
+
 
 
 

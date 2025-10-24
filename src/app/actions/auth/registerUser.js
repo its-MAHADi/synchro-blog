@@ -57,7 +57,7 @@ export const registerUser = async (payload) => {
       failedLoginAttempts: 0,
       lockUntil: null,
       bio: "",
-      work: "",
+      profession: "",
       education: "",
       location: "",
       skills: [],

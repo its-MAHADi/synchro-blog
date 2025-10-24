@@ -11,10 +11,11 @@ import Swal from "sweetalert2";
 const professionFields = {
   Developer: [
     { name: "projectTitle", label: "Project Title", type: "text" },
+    { name: "projectOverView", label: "Project OverView", type: "text" },
     { name: "techStack", label: "Tech Stack (React, Node, MongoDB, etc.)", type: "text" },
     { name: "githubRepo", label: "GitHub Repo Link", type: "url" },
     { name: "liveDemo", label: "Live Demo Link", type: "url" },
-    { name: "projectDuration", label: "Project Duration (e.g., 2 months)", type: "text" },
+    { name: "projectDuration", label: "Project Duration (e.g., 2 months)", type: "number" },
     { name: "toolsUsed", label: "Tools Used (VS Code, Figma, etc.)", type: "text" },
     { name: "keyFeatures", label: "Key Features", type: "textarea" },
     { name: "challenges", label: "Challenges Faced", type: "textarea" },
@@ -28,14 +29,13 @@ const professionFields = {
     { name: "writingStyle", label: "Writing Style (Narrative, Creative, Descriptive)", type: "text" },
     { name: "summary", label: "Summary", type: "textarea" },
     { name: "fullContent", label: "Full Content", type: "textarea" },
-    { name: "inspiration", label: "Inspiration Source (optional)", type: "text" },
+    { name: "inspiration", label: "Inspiration Source (optional)", type: "textarea" },
     // { name: "coverImage", label: "Upload Cover Image", type: "file" },
   ],
 
   Blogger: [
     { name: "blogTitle", label: "Blog Title", type: "text" },
     { name: "topic", label: "Topic (Lifestyle, Opinion, Technology)", type: "text" },
-    // { name: "featuredImage", label: "Featured Image", type: "file" },
     { name: "content", label: "Content", type: "textarea" },
     { name: "references", label: "References or Links (optional)", type: "text" },
     { name: "keywords", label: "Keywords (SEO tags)", type: "text" },
@@ -48,7 +48,6 @@ const professionFields = {
     { name: "toolsUsed", label: "Tools Used (Figma, Photoshop, etc.)", type: "text" },
     { name: "designProcess", label: "Design Process", type: "textarea" },
     { name: "clientProject", label: "Client / Project Type (optional)", type: "text" },
-    // { name: "designImage", label: "Upload Design Image", type: "file" },
     { name: "inspirationSource", label: "Inspiration Source (URL or text)", type: "text" },
     { name: "feedbackNote", label: "Feedback Note (optional)", type: "textarea" },
   ],
@@ -60,7 +59,6 @@ const professionFields = {
     { name: "lensUsed", label: "Lens Used (optional)", type: "text" },
     { name: "shootingMode", label: "Shooting Mode (Manual, Auto, etc.)", type: "text" },
     { name: "photoStory", label: "Story Behind the Shot", type: "textarea" },
-    // { name: "photoImage", label: "Upload Photo", type: "file" },
     { name: "editingSoftware", label: "Editing Software (if any)", type: "text" },
   ],
 
@@ -72,7 +70,7 @@ const professionFields = {
     { name: "targetAudience", label: "Target Audience", type: "text" },
     { name: "toolsUsed", label: "Tools Used (Ahrefs, Canva, etc.)", type: "text" },
     { name: "keyResult", label: "Key Result or Outcome (optional)", type: "text" },
-    // { name: "campaignImage", label: "Upload Campaign Image", type: "file" },
+    
   ],
 
   Teacher: [
@@ -82,7 +80,7 @@ const professionFields = {
     { name: "learningObjectives", label: "Learning Objectives", type: "textarea" },
     { name: "lessonContent", label: "Lesson Content", type: "textarea" },
     { name: "resourceLinks", label: "Resource / Reference Links", type: "text" },
-    // { name: "thumbnailImage", label: "Upload Thumbnail Image", type: "file" },
+    
   ],
 
   Traveler: [
@@ -94,7 +92,6 @@ const professionFields = {
     { name: "travelStory", label: "Travel Story", type: "textarea" },
     { name: "tips", label: "Tips for Travelers", type: "text" },
     { name: "bestTime", label: "Best Time to Visit", type: "text" },
-    // { name: "travelPhoto", label: "Upload Travel Photo", type: "file" },
   ],
 
   Foodie: [
@@ -105,7 +102,6 @@ const professionFields = {
     { name: "prepTime", label: "Preparation Time", type: "text" },
     { name: "cookingTime", label: "Cooking Time", type: "text" },
     { name: "difficultyLevel", label: "Difficulty Level (Easy/Medium/Hard)", type: "text" },
-    // { name: "dishPhoto", label: "Upload Dish Photo", type: "file" },
     { name: "tasteRating", label: "Taste Rating (1–5)", type: "number" },
   ],
 
@@ -116,7 +112,6 @@ const professionFields = {
     { name: "equipmentNeeded", label: "Equipment Needed (optional)", type: "text" },
     { name: "durationFrequency", label: "Duration / Frequency", type: "text" },
     { name: "nutritionAdvice", label: "Nutrition Advice", type: "textarea" },
-    // { name: "thumbnailImage", label: "Upload Image / Video Thumbnail", type: "file" },
   ],
 
   Entrepreneur: [
@@ -128,7 +123,7 @@ const professionFields = {
     { name: "fundingInfo", label: "Funding Info (optional)", type: "text" },
     { name: "teamSize", label: "Team Size", type: "text" },
     { name: "websiteLinks", label: "Website / Social Media Links", type: "text" },
-    // { name: "companyLogo", label: "Upload Company Logo / Image", type: "file" },
+    
   ],
 
   Student: [
@@ -139,7 +134,7 @@ const professionFields = {
     { name: "projectDescription", label: "Project Description", type: "textarea" },
     { name: "keyLearnings", label: "Key Learnings", type: "text" },
     { name: "mentorName", label: "Mentor Name (optional)", type: "text" },
-    // { name: "projectScreenshot", label: "Upload Project Screenshot / Image", type: "file" },
+    
   ],
 
   TechReviewer: [
@@ -149,7 +144,7 @@ const professionFields = {
     { name: "prosCons", label: "Pros and Cons", type: "textarea" },
     { name: "overallRating", label: "Overall Rating (1–10)", type: "number" },
     { name: "recommendation", label: "Recommendation (Yes/No)", type: "text" },
-    // { name: "productImage", label: "Upload Product Image", type: "file" },
+    
   ],
 
   Gamer: [
@@ -159,7 +154,6 @@ const professionFields = {
     { name: "platform", label: "Platform (Mobile, PC, Console)", type: "text" },
     { name: "rating", label: "Rating (1–10)", type: "number" },
     { name: "gameplayDuration", label: "Gameplay Duration", type: "text" },
-    // { name: "gameScreenshot", label: "Upload Game Screenshot", type: "file" },
     { name: "favoriteCharacter", label: "Favorite Character / Weapon (optional)", type: "text" },
   ],
 
@@ -169,8 +163,6 @@ const professionFields = {
     { name: "storyMessage", label: "Story / Message", type: "textarea" },
     { name: "keyTakeaways", label: "Key Takeaways (bullet list)", type: "textarea" },
     { name: "quote", label: "Quote (optional)", type: "text" },
-    // { name: "posterThumbnail", label: "Upload Poster / Thumbnail", type: "file" },
-    // { name: "videoLink", label: "Optional Video Link", type: "text" },
   ],
 };
 

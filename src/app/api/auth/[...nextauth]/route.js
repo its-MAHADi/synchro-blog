@@ -108,7 +108,7 @@ export const authOptions = {
               failedLoginAttempts: 0,
               lockUntil: null,
               bio: "",
-              work: "",
+              profession: "",
               education: "",
               location: "",
               skills: [],

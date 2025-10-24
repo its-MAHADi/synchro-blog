@@ -57,7 +57,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
   const limit = 300; // show See more only if desc > 300 chars
   const isLong = descText.length > limit;
   const shortDesc = descText.slice(0, limit) + "...";
-
+console.log(postData)
   // Fetch comments
   const fetchComments = async () => {
     try {
@@ -785,7 +785,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* Foodie */}
         <div>
           {postData?.author_profession === "Foodie" ? (
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all duration-300">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg px-6 pb-5 transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -841,7 +841,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* HealthFitnessExpert */}
         <div>
           {postData?.author_profession === "HealthFitnessExpert" ? (
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all duration-300">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg px-6 pb-5 transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -893,7 +893,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* Entrepreneur */}
         <div>
           {postData?.author_profession === "Entrepreneur" ? (
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all duration-300">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg px-6 pb-5 transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -967,7 +967,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* Student */}
         <div>
           {postData?.author_profession === "Student" ? (
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg p-6 transition-all duration-300">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-md hover:shadow-lg px-6 pb-5 transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-semibold text-gray-800">
@@ -1020,7 +1020,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* Gamer */}
         <div>
           {postData?.author_profession === "Gamer" ? (
-            <div className="bg-gray-900 text-white border border-gray-700 rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300">
+            <div className="bg-gray-900 text-white border border-gray-700 rounded-2xl shadow-lg px-6 pb-5 hover:shadow-2xl transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-2xl font-bold">{postData?.extraFields?.gameTitle || "Untitled Game"}</h2>
@@ -1067,7 +1067,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* MotivationalSpeaker */}
         <div>
           {postData?.author_profession === "MotivationalSpeaker" ? (
-            <div className="bg-yellow-50 border border-yellow-400 rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
+            <div className="bg-yellow-50 border border-yellow-400 rounded-2xl shadow-md px-6 pb-5 hover:shadow-lg transition-all duration-300">
               {/* Header */}
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-2xl font-bold text-gray-900">{postData?.extraFields?.speechTitle || "Untitled Speech"}</h2>
@@ -1115,7 +1115,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         {/* TechReviewer */}
         <div>
           {postData?.author_profession === "TechReviewer" && (
-            <div className="bg-gray-50 border border-gray-300 rounded-2xl shadow-md p-6 hover:shadow-lg transition-all duration-300">
+            <div className="bg-gray-50 border border-gray-300 rounded-2xl shadow-md px-6 pb-5 hover:shadow-lg transition-all duration-300">
 
               {/* Header */}
               <div className="flex justify-between items-center mb-3">

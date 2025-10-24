@@ -70,7 +70,7 @@ const professionFields = {
     { name: "targetAudience", label: "Target Audience", type: "text" },
     { name: "toolsUsed", label: "Tools Used (Ahrefs, Canva, etc.)", type: "text" },
     { name: "keyResult", label: "Key Result or Outcome (optional)", type: "text" },
-    
+
   ],
 
   Teacher: [
@@ -80,7 +80,7 @@ const professionFields = {
     { name: "learningObjectives", label: "Learning Objectives", type: "textarea" },
     { name: "lessonContent", label: "Lesson Content", type: "textarea" },
     { name: "resourceLinks", label: "Resource / Reference Links", type: "text" },
-    
+
   ],
 
   Traveler: [
@@ -123,7 +123,7 @@ const professionFields = {
     { name: "fundingInfo", label: "Funding Info (optional)", type: "text" },
     { name: "teamSize", label: "Team Size", type: "text" },
     { name: "websiteLinks", label: "Website / Social Media Links", type: "text" },
-    
+
   ],
 
   Student: [
@@ -134,7 +134,7 @@ const professionFields = {
     { name: "projectDescription", label: "Project Description", type: "textarea" },
     { name: "keyLearnings", label: "Key Learnings", type: "text" },
     { name: "mentorName", label: "Mentor Name (optional)", type: "text" },
-    
+
   ],
 
   TechReviewer: [
@@ -144,7 +144,7 @@ const professionFields = {
     { name: "prosCons", label: "Pros and Cons", type: "textarea" },
     { name: "overallRating", label: "Overall Rating (1–10)", type: "number" },
     { name: "recommendation", label: "Recommendation (Yes/No)", type: "text" },
-    
+
   ],
 
   Gamer: [
@@ -210,6 +210,9 @@ export default function BlogForm() {
   const [isDragOver, setIsDragOver] = useState(false);
   const [wordCount, setWordCount] = useState(50);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [schedulePost, setSchedulePost] = useState(false);
+  const [scheduledTime, setScheduledTime] = useState("");
+
   const featuredInputRef = useRef(null);
 
   // ----------------- Fetch user data -----------------
@@ -347,10 +350,8 @@ Requirements:
 
   // ----------------- Submit Handler -----------------
   const handleSubmit = async (e) => {
-    console.log('done')
     e.preventDefault();
-    // if (!validateForm()) return;
-    
+
     if (!userData) {
       Swal.fire({
         icon: "error",
@@ -366,7 +367,6 @@ Requirements:
       if (formData.featured_image instanceof File) {
         const imgForm = new FormData();
         imgForm.append("image", formData.featured_image);
-
         const uploadRes = await fetch(
           `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
           { method: "POST", body: imgForm }
@@ -377,13 +377,15 @@ Requirements:
 
       const payload = {
         ...formData,
-        category: formData.category
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
+        category: formData.category.split(",").map((t) => t.trim()).filter(Boolean),
         featured_image: imageUrl,
-        extraFields, // profession-wise extra data
-        author_profession: userData.profession || "", // add profession
+        extraFields,
+        author_profession: userData.profession || "",
+        isScheduled: schedulePost,
+        scheduledAt: schedulePost ? new Date(scheduledTime).toISOString() : null,
+        created_at: schedulePost
+          ? new Date(scheduledTime).toISOString()
+          : new Date().toISOString(),
       };
 
       const res = await fetch("/api/add-post", {
@@ -391,13 +393,15 @@ Requirements:
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const result = await res.json();
 
+      const result = await res.json();
       if (result.success) {
         Swal.fire({
           icon: "success",
-          title: "Success!",
-          text: "Your blog post has been published.",
+          title: schedulePost ? "Post Scheduled!" : "Post Published!",
+          text: schedulePost
+            ? "Your post will be published automatically at the selected time."
+            : "Your blog post has been published successfully.",
         });
         setFormData({
           blog_title: "",
@@ -411,10 +415,10 @@ Requirements:
           created_at: new Date().toISOString(),
           modified_at: null,
         });
-        setExtraFields(
-          Object.keys(extraFields).reduce((acc, key) => ({ ...acc, [key]: "" }), {})
-        );
+        setExtraFields({});
         setFeaturedPreview(null);
+        setSchedulePost(false);
+        setScheduledTime("");
       } else {
         Swal.fire({
           icon: "error",
@@ -432,6 +436,95 @@ Requirements:
       setIsSubmitting(false);
     }
   };
+
+
+
+  // const handleSubmit = async (e) => {
+  //   console.log('done')
+  //   e.preventDefault();
+  //   // if (!validateForm()) return;
+
+  //   if (!userData) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Unauthorized",
+  //       text: "Please login before publishing a post!",
+  //     });
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   try {
+  //     let imageUrl = "";
+  //     if (formData.featured_image instanceof File) {
+  //       const imgForm = new FormData();
+  //       imgForm.append("image", formData.featured_image);
+
+  //       const uploadRes = await fetch(
+  //         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
+  //         { method: "POST", body: imgForm }
+  //       );
+  //       const uploadData = await uploadRes.json();
+  //       imageUrl = uploadData?.data?.url || "";
+  //     }
+
+  //     const payload = {
+  //       ...formData,
+  //       category: formData.category
+  //         .split(",")
+  //         .map((t) => t.trim())
+  //         .filter(Boolean),
+  //       featured_image: imageUrl,
+  //       extraFields, // profession-wise extra data
+  //       author_profession: userData.profession || "", // add profession
+  //     };
+
+  //     const res = await fetch("/api/add-post", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(payload),
+  //     });
+  //     const result = await res.json();
+
+  //     if (result.success) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success!",
+  //         text: "Your blog post has been published.",
+  //       });
+  //       setFormData({
+  //         blog_title: "",
+  //         description: "",
+  //         author_name: userData.name || "",
+  //         author_email: userData.email || "",
+  //         featured_image: "",
+  //         category: "",
+  //         likes: 0,
+  //         comment: 0,
+  //         created_at: new Date().toISOString(),
+  //         modified_at: null,
+  //       });
+  //       setExtraFields(
+  //         Object.keys(extraFields).reduce((acc, key) => ({ ...acc, [key]: "" }), {})
+  //       );
+  //       setFeaturedPreview(null);
+  //     } else {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Oops!",
+  //         text: result.message || "Failed to publish post.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error",
+  //       text: "Something went wrong while submitting!",
+  //     });
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
 
 
   // ----------------- UI -----------------
@@ -661,6 +754,37 @@ Requirements:
                 />
               </div>
             </div>
+
+
+            {/* Schedule Post Option */}
+            <div className="pt-6 border-t border-gray-200 mt-6">
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                Schedule Post (optional)
+              </h3>
+
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={schedulePost}
+                    onChange={(e) => setSchedulePost(e.target.checked)}
+                    className="checkbox checkbox-primary"
+                  />
+                  <span className="text-gray-700 font-medium">Schedule for later</span>
+                </label>
+
+                {schedulePost && (
+                  <input
+                    type="datetime-local"
+                    value={scheduledTime}
+                    onChange={(e) => setScheduledTime(e.target.value)}
+                    min={new Date().toISOString().slice(0, 16)}
+                    className="border border-gray-300 rounded-lg px-3 py-2"
+                  />
+                )}
+              </div>
+            </div>
+
 
             {/* Submit Button */}
             <div className="pt-4 text-center">

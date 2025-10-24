@@ -21,9 +21,24 @@ export default function ViewProfilePage() {
     // Determine if current user is following this profile
     const [isFollowing, setIsFollowing] = useState(false);
 
+    // Utility to normalize follower value -> email string
+    const followerToEmail = (f) => {
+        if (!f) return null;
+        if (typeof f === "string") return f;
+        if (typeof f === "object" && f.email) return f.email;
+        return null;
+    };
+
+    // Update isFollowing whenever user or session changes
     useEffect(() => {
         if (user && session?.user?.email) {
-            setIsFollowing(user.followers?.includes(session.user.email) || false);
+            const me = session.user.email;
+            const following = (user.followers || []).some(
+                (f) => followerToEmail(f) === me
+            );
+            setIsFollowing(!!following);
+        } else {
+            setIsFollowing(false);
         }
     }, [user, session]);
 
@@ -81,21 +96,33 @@ export default function ViewProfilePage() {
 
     const isOwnProfile = session?.user?.email === user.email;
 
-    // Handle live follow/unfollow updates
+    // Handle live follow/unfollow updates from FollowButton
     const handleFollowChange = (following) => {
         setIsFollowing(following);
 
-        setUser(prev => {
-            if (!prev) return prev;
+        const currentUserEmail = session?.user?.email;
+        if (!currentUserEmail) return; // safety
 
-            const currentUserEmail = session.user.email;
-            const newFollowers = following
-                ? [...(prev.followers || []), currentUserEmail]
-                : (prev.followers || []).filter(email => email !== currentUserEmail);
+        setUser((prev) => {
+            if (!prev) return prev;
+            const prevFollowers = prev.followers || [];
+
+            // normalize: convert to array of strings for internal update
+            const normalized = prevFollowers.map(f => followerToEmail(f)).filter(Boolean);
+
+            let newFollowers;
+            if (following) {
+                // add if not exists
+                newFollowers = Array.from(new Set([...normalized, currentUserEmail]));
+            } else {
+                // remove
+                newFollowers = normalized.filter(e => e !== currentUserEmail);
+            }
 
             return {
                 ...prev,
-                followers: newFollowers
+                // keep same shape (strings) — if you want objects instead, adapt accordingly
+                followers: newFollowers,
             };
         });
     };
@@ -138,13 +165,13 @@ export default function ViewProfilePage() {
                         <div className="flex justify-center gap-10 mt-6">
                             <div>
                                 <p className="text-xl font-bold text-gray-800">
-                                    {user.followers?.length || 0}
+                                    {Array.isArray(user.followers) ? user.followers.length : 0}
                                 </p>
                                 <p className="text-sm text-gray-500">Followers</p>
                             </div>
                             <div>
                                 <p className="text-xl font-bold text-gray-800">
-                                    {user.following?.length || 0}
+                                    {Array.isArray(user.following) ? user.following.length : 0}
                                 </p>
                                 <p className="text-sm text-gray-500">Following</p>
                             </div>
@@ -209,7 +236,7 @@ export default function ViewProfilePage() {
                             const skills = Array.isArray(user.skills)
                                 ? user.skills
                                 : typeof user.skills === "string"
-                                    ? user.skills.split(",").map(s => s.trim()).filter(Boolean)
+                                    ? user.skills.split(",").map((s) => s.trim()).filter(Boolean)
                                     : [];
                             if (!skills.length) return null;
                             return (
@@ -266,9 +293,11 @@ export default function ViewProfilePage() {
                                 </span>
                                 {(Array.isArray(user.languages)
                                     ? user.languages
-                                    : user.languages.split(',').map(s => s.trim())
+                                    : user.languages.split(",").map((s) => s.trim())
                                 ).map((lang, i) => (
-                                    <span key={i} className="text-gray-700">{lang}</span>
+                                    <span key={i} className="text-gray-700">
+                                        {lang}
+                                    </span>
                                 ))}
                             </div>
                         )}
@@ -286,17 +315,17 @@ export default function ViewProfilePage() {
                             <p className="text-gray-500 text-center italic">No posts yet.</p>
                         ) : (
                             <div className="space-y-6">
-                                {posts.map(post => (
+                                {posts.map((post) => (
                                     <ViewPostCard
                                         key={post._id}
                                         postData={post}
                                         usersData={user}
                                         onFollowUpdate={(email, following) => {
-                                            setUser(prev => ({
+                                            setUser((prev) => ({
                                                 ...prev,
                                                 following: following
                                                     ? [...(prev.following || []), email]
-                                                    : (prev.following || []).filter(e => e !== email)
+                                                    : (prev.following || []).filter((e) => e !== email),
                                             }));
                                         }}
                                     />

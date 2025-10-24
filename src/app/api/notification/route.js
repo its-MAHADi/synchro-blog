@@ -21,7 +21,7 @@ export async function POST(req) {
       receiverEmail: body.receiverEmail,
       type: body.type, // "like" | "comment" | "follow"
       message: body.message || "",
-      postId: body.postId || null, // 🔑 keep postId for navigation
+      postId: body.postId || null, // 🔑 Used to navigate to post
       read: false,
       createdAt: new Date(),
     };

@@ -222,7 +222,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
               <p className="text-gray-900 font-medium">{authorName}</p>
             </Link>
             {session?.user?.email !== postData.author_email && (
-              <button onClick={handleFollow} className={`text-xs font-bold ${isFollowing ? "text-gray-500" : "text-blue-600"}`}>
+              <button onClick={handleFollow} className={`text-xs cursor-pointer font-bold ${isFollowing ? "text-gray-500" : "text-blue-600"}`}>
                 {isFollowing ? "Following" : "Follow"}
               </button>
             )}

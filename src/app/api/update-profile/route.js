@@ -1,53 +1,53 @@
 // app/api/update-profile/route.js (App Router)
 import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
 
-export async function PATCH(req, res) {
+export async function PATCH(req) {
   try {
-    // Step 1: Read request body
     const body = await req.json();
     console.log("Request body:", body);
 
     const { email, image } = body;
 
-    // Step 2: Validate input
     if (!email || !image) {
-      console.warn("Missing email or image in request");
       return new Response(
         JSON.stringify({ success: false, message: "Email and image are required" }),
         { status: 400 }
       );
     }
 
-    // Step 3: Connect to MongoDB
-    const collection = await dbConnect(collectionNameObj.usersCollection);
-    if (!collection) {
-      console.error("MongoDB collection not found");
-      return new Response(
-        JSON.stringify({ success: false, message: "Database error" }),
-        { status: 500 }
-      );
-    }
+    // Connect to users collection
+    const usersCol = await dbConnect(collectionNameObj.usersCollection);
+    const postsCol = await dbConnect(collectionNameObj.blogCollection);
 
-    // Step 4: Update user profile image
-    const result = await collection.updateOne(
+    // Update user profile image
+    const userUpdateResult = await usersCol.updateOne(
       { email },
       { $set: { image } }
     );
 
-    console.log("MongoDB update result:", result);
-
-    if (result.matchedCount === 0) {
-      console.warn("User not found:", email);
+    if (userUpdateResult.matchedCount === 0) {
       return new Response(
         JSON.stringify({ success: false, message: "User not found" }),
         { status: 404 }
       );
     }
 
-    // Step 5: Success response
-    return new Response(JSON.stringify({ success: true, message: "Profile updated!" }), {
-      status: 200,
-    });
+    // Update all posts by this user with new author_image
+    const postsUpdateResult = await postsCol.updateMany(
+      { author_email: email },
+      { $set: { author_image: image } }
+    );
+
+    console.log("Profile updated. Posts updated:", postsUpdateResult.modifiedCount);
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Profile and all posts updated!",
+        updatedPosts: postsUpdateResult.modifiedCount,
+      }),
+      { status: 200 }
+    );
   } catch (err) {
     console.error("Profile update error:", err);
     return new Response(

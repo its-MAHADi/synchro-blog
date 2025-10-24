@@ -381,6 +381,7 @@ Requirements:
         featured_image: imageUrl,
         extraFields,
         author_profession: userData.profession || "",
+        author_image: userData.image || session.user?.image || "",
         isScheduled: schedulePost,
         scheduledAt: schedulePost ? new Date(scheduledTime).toISOString() : null,
         created_at: schedulePost

@@ -25,7 +25,7 @@ export default function Sidebar() {
         { name: "Dashboard", href: "/user-dashboard", icon: Home },
         { name: "Add Posts", href: "/add-posts", icon: FileText },
         { name: "My Posts", href: "/my-posts", icon: BookCopy },
-        { name: "My Profile", href: "/profile", icon: Users },
+        { name: "My Profile", href: "/my-profile", icon: Users },
         { name: "Add Profession", href: "/add-profession", icon: Users },
     ];
 
@@ -33,7 +33,7 @@ export default function Sidebar() {
         { name: "Admin Dashboard", href: "/admin-dashboard", icon: Home },
         { name: "Add Posts", href: "/add-posts", icon: FileText },
         { name: "My Posts", href: "/my-posts", icon: BookCopy },
-        { name: "My Profile", href: "/profile", icon: Users },
+        { name: "My Profile", href: "/my-profile", icon: Users },
     ];
 
     const role = session?.user?.role;

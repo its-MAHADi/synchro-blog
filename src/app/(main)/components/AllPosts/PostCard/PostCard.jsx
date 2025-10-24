@@ -236,6 +236,26 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
       )}
 
       <div>
+        {/*  */}
+        <div>
+          {postData?.author_profession === "" ? (
+
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">{postData?.blog_title}</h2>
+              <p className="text-gray-600 text-sm">
+                {showFull ? descText : isLong ? shortDesc : descText}
+                {isLong && (
+                  <button
+                    onClick={() => setShowFull(!showFull)}
+                    className="text-blue-600 font-medium ml-1 hover:underline"
+                  >
+                    {showFull ? "See less" : "See more"}
+                  </button>
+                )}
+              </p>
+            </div>
+          ) : null}
+        </div>
         {/* Developer */}
         <div>
           {postData?.author_profession === "Developer" ? (
@@ -293,23 +313,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 <p>{postData?.extraFields?.futureImprovements}</p>
               </div>
             </div>
-          ) : (
-            // 🔹 Writer বা অন্য পেশার পোস্ট দেখাও
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">{postData?.blog_title}</h2>
-              <p className="text-gray-600 text-sm">
-                {showFull ? descText : isLong ? shortDesc : descText}
-                {isLong && (
-                  <button
-                    onClick={() => setShowFull(!showFull)}
-                    className="text-blue-600 font-medium ml-1 hover:underline"
-                  >
-                    {showFull ? "See less" : "See more"}
-                  </button>
-                )}
-              </p>
-            </div>
-          )}
+          ) : null}
         </div>
         {/* Writer */}
         <div>
@@ -324,7 +328,6 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                   {postData?.extraFields?.genre || "Story"}
                 </span>
               </div>
-
 
 
               {/* Summary */}
@@ -365,25 +368,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 ✍️ Writing Style: {postData?.extraFields?.writingStyle || "N/A"}
               </p>
             </div>
-          ) : (
-            // Other profession posts (like Blogger, etc.)
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                {postData?.blog_title}
-              </h2>
-              <p className="text-gray-600 text-sm">
-                {showFull ? descText : isLong ? shortDesc : descText}
-                {isLong && (
-                  <button
-                    onClick={() => setShowFull(!showFull)}
-                    className="text-blue-600 font-medium ml-1 hover:underline"
-                  >
-                    {showFull ? "See less" : "See more"}
-                  </button>
-                )}
-              </p>
-            </div>
-          )}
+          ) : null}
 
         </div>
         {/* Blogger */}
@@ -400,7 +385,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                 </span>
               </div>
 
-            
+
 
               {/* Blog Content */}
               <div className="text-gray-700 text-sm mb-4 leading-relaxed">
@@ -447,7 +432,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
                   </a>
                 </div>
               )}
-                {/* Mood */}
+              {/* Mood */}
               <p className="text-sm text-gray-500 italic mt-4">
                 📝 Mood: {postData?.extraFields?.mood || "Neutral"}
               </p>

@@ -269,31 +269,31 @@ const Navbar = () => {
                   </div>
 
 
-               {userImage ? (
-  <Link href="/my-profile">
-    <img
-      src={userImage}
-      alt="Profile"
-      className="w-10 h-10 rounded-full object-cover border border-gray-300"
-    />
-  </Link>
-) : userData?.image ? (
-  <Link href="/my-profile">
-    <img
-      src={userData.image}
-      alt="Profile"
-      className="w-10 h-10 rounded-full object-cover border border-gray-300"
-    />
-  </Link>
-) : (
-  <Link href="/my-profile">
-    <img
-      src="/default_profile.jpg"
-      alt="Default profile pic"
-      className="w-10 h-10 rounded-full object-cover border border-gray-300"
-    />
-  </Link>
-)}
+                  {userImage ? (
+                    <Link href="/my-profile">
+                      <img
+                        src={userImage}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  ) : userData?.image ? (
+                    <Link href="/my-profile">
+                      <img
+                        src={userData.image}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  ) : (
+                    <Link href="/my-profile">
+                      <img
+                        src="/default_profile.jpg"
+                        alt="Default profile pic"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  )}
 
 
 

@@ -72,7 +72,7 @@ export default function NotificationBar() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex flex-col max-h-[80vh] overflow-y-auto">
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex flex-col min-h-screen overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <Bell size={20} />

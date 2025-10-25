@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMessage, MessageProvider } from "../contexts/MessageContext";
@@ -41,24 +42,29 @@ function MainContent({ children }) {
 
 
       {/* Sidebar */}
-      <AnimatePresence mode="wait">
-        {/* message */}
-        {activeSidebar === "message" && (<motion.aside key="messagebar" initial={{ x: 400, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: 400, opacity: 0 }} transition={{ duration: 0.4, ease: "easeInOut" }} className="w-[35%] sticky top-[90px] h-fit bg-white shadow-md rounded-xl overflow-y-auto" >
-          <MessageWithUser currentUser={currentUser} />
-        </motion.aside>)}
+      <AnimatePresence>
+        {showMessageBar && (
+          <motion.div
+            key="messageDropdown"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-20 right-6 w-[350px] max-h-[75vh] md:max-h-[83vh] bg-white shadow-xl rounded-xl overflow-auto border border-gray-200 z-50"
+          >
+            <MessageWithUser currentUser={currentUser} />
+          </motion.div>
+        )}
 
-        {/* notification */}
-        {activeSidebar === "notification" && (
-          <motion.aside
-            key="notificationbar"
-            initial={{ x: 400, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 400, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="w-[35%] sticky top-[90px] h-fit bg-white shadow-md rounded-xl overflow-y-auto"
+        {showNotificationBar && (
+          <motion.div
+            key="notificationDropdown"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-20 right-6 w-[350px] max-h-[75vh] md:max-h-[83vh] bg-white shadow-xl rounded-xl overflow-auto border border-gray-200 z-50"
           >
             <NotificationBar />
-          </motion.aside>
+          </motion.div>
         )}
       </AnimatePresence>
     </main>
@@ -109,7 +115,7 @@ function FloatingChatPopup() {
 
               <MessageBar />
             </div>
-           
+
 
           </motion.div>
         )}
@@ -141,9 +147,9 @@ export default function MainLayout({ children }) {
             </footer>
 
             {/* 💬 Floating Chat Button + Popup */}
-               
+
             <FloatingChatPopup />
-           
+
           </div>
         </ChatPopupProvider>
       </MessageProvider>

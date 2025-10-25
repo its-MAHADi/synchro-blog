@@ -47,7 +47,7 @@ const PostField = () => {
   return (
     <>
       {/* Post Input Box */}
-      <div className="mt-10 bg-white rounded-xl shadow-lg p-3">
+      <div className="mt-10 bg-white rounded-xl shadow-lg p-1 md:p-3">
         <div className="flex items-center justify-center gap-3">
           <div>
             {session?.user?.image ? (
@@ -69,7 +69,7 @@ const PostField = () => {
 
           <div
             onClick={() => setShowModal(true)}
-            className={`cursor-pointer w-96 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]'}`}
+            className={`cursor-pointer w-80 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]'}`}
           >
             <input
               readOnly

@@ -151,7 +151,7 @@ export default function QuestionsPageClient() {
             `,
             confirmButtonText: "Go to Profile",
           }).then(() => {
-            window.location.href = "/user-dashboard/profile";
+            window.location.href = "/my-profile";
           });
         } catch (err) {
           console.error("❌ Failed to update profession:", err);

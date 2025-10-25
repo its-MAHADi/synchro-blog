@@ -69,7 +69,7 @@ export default function MessageWithUser() {
   if (loading) return <p className="text-center min-h-screen">Loading chats...</p>;
 
   return (
-    <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-200 p-4 h-full flex flex-col">
+    <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-300 p-4 h-full flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-lg font-semibold text-gray-800">Chats</h2>

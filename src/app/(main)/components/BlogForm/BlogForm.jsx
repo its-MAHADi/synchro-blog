@@ -763,7 +763,7 @@ Requirements:
                 Schedule Post (optional)
               </h3>
 
-              <div className="flex items-center gap-3">
+              <div className="md:flex items-center gap-3 space-y-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"

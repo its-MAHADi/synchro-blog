@@ -98,7 +98,7 @@ export default function Profile() {
 
     fetchUserData();
   }, [session?.user?.email]);
-
+  console.log(userData)
   useEffect(() => {
     if (isEditModalOpen) {
       document.body.style.overflow = "hidden";
@@ -449,7 +449,7 @@ export default function Profile() {
     <div className="min-h-screen mt-10 bg-gradient-to-br bg-[#b4b4fd1a] ">
       {/* HEADER */}
       <div className="relative w-full shadow-md">
-        <div className="h-40 sm:h-60 relative">
+        <div className="h-40 sm:h-72 relative">
           {coverImage ? (
             <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
@@ -600,7 +600,7 @@ export default function Profile() {
               </div>
               <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
                 <SlUserFollowing className="text-[#0000FF]" />
-                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">12.5K Followers</span>
+                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">{userData?.followers.length} Followers</span>
               </div>
             </div>
 
@@ -795,7 +795,7 @@ export default function Profile() {
 
               <div className="space-y-4 text-sm">
                 {[
-                  { label: "Work / Profession", field: "work" },
+                  
                   { label: "Education", field: "education" },
                   { label: "Location", field: "location" },
                 ].map(({ label, field }) => (

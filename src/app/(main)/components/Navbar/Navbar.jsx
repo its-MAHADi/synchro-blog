@@ -308,12 +308,35 @@ const Navbar = () => {
 
 
           {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden flex items-center"
-            onClick={() => setOpen(true)}
-          >
-            <LucideSquareMenu size={28} className="text-[#0000FF] cursor-pointer" />
-          </button>
+          <div className="flex md:hidden items-center gap-2">
+            <div className={` shadow-lg rounded-full p-2 ${showMessageBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
+              <RiMessengerLine
+                color={showMessageBar ? 'white' : "#0000FF"}
+                size={15}
+                className="cursor-pointer"
+                onClick={toggleMessageBar}
+              />
+            </div>
+            <div className={` shadow-lg rounded-full p-2 ${showNotificationBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
+              <IoNotificationsOutline
+                color={showNotificationBar ? 'white' : "#0000FF"}
+                size={15}
+                className="cursor-pointer"
+                onClick={toggleNotificationBar}
+              />
+
+            </div>
+            <div>
+              <button
+                className="md:hidden flex items-center"
+                onClick={() => setOpen(true)}
+              >
+                <LucideSquareMenu size={28} className="text-[#0000FF] cursor-pointer" />
+              </button>
+            </div>
+          </div>
+
+
         </div>
       </div>
 
@@ -323,7 +346,41 @@ const Navbar = () => {
           }`}
       >
         <div className="flex justify-between items-center p-4 border-b bg-white">
-          <h2 className="text-lg font-bold text-[#0000FF]">Menu</h2>
+          <div className="flex items-center gap-2">
+            <div>
+              {userImage ? (
+                <Link href="/my-profile">
+                  <img
+                    src={userImage}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+                </Link>
+              ) : userData?.image ? (
+                <Link href="/my-profile">
+                  <img
+                    src={userData.image}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+                </Link>
+              ) : (
+                <Link href="/my-profile">
+                  <img
+                    src="/default_profile.jpg"
+                    alt="Default profile pic"
+                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                  />
+                </Link>
+              )}
+
+            </div>
+            <div>
+              <Link href="/my-profile">
+                <h2 className="text-xl font-bold">{userData?.userName}</h2>
+              </Link>
+            </div>
+          </div>
           <button onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#0000FF]" />
           </button>

@@ -7,6 +7,7 @@ import {
   Camera, Globe, GraduationCap, Languages, Mail, MapPin, X,
 } from "lucide-react";
 import { BsPostcard } from "react-icons/bs";
+import { Settings } from "lucide-react";
 import { SlUserFollowing } from "react-icons/sl";
 import { FiEdit, FiPhone } from "react-icons/fi";
 import PostField from "@/app/(main)/components/PostField/PostField";
@@ -65,6 +66,7 @@ export default function Profile() {
   const [details, setDetails] = useState({});
   const [tempDetails, setTempDetails] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // to show the profession
   const [profession, setProfession] = useState("");
@@ -523,68 +525,70 @@ export default function Profile() {
         {/* Profile Image + Name */}
         <div className="relative flex flex-col items-center -mt-16 pb-6">
           <div className="relative group">
-            <img
-              src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || userData?.image || "/default_profile.jpg"}
-              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
-              alt="Profile"
-            />
-            <label className="absolute bottom-0 right-0 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white cursor-pointer">
-              <Camera size={16} />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={async (e) => {
-                  const file = e.target.files[0];
-                  if (!file) return;
-
-                  // Local preview
-                  setProfileImage(file);
-
-                  try {
-                    const formData = new FormData();
-                    formData.append("image", file);
-
-                    const apiKey = process.env.NEXT_PUBLIC_IMGBB_KEY;
-                    if (!apiKey) throw new Error("IMGBB API key is missing!");
-
-                    // Upload to ImgBB
-                    const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-                      method: "POST",
-                      body: formData,
-                    });
-                    const data = await uploadRes.json();
-
-                    if (!data.success) throw new Error(data.error?.message || "Upload failed");
-
-                    // Update backend
-                    const res = await fetch("/api/update-profile", {
-                      method: "PATCH",
-                      headers: { "Content-Type": "application/json" },
-
-                      body: JSON.stringify({ image: data.data.url, email: session.user.email })
-
-                    });
-
-                    if (!res.ok) throw new Error("Failed to update profile in backend");
-
-                    Swal.fire({
-                      icon: "success",
-                      title: "Profile updated!",
-                      timer: 1500,
-                      showConfirmButton: false,
-                    });
-                  } catch (err) {
-                    console.error("Profile upload error:", err);
-                    Swal.fire({
-                      icon: "error",
-                      title: "Upload failed!",
-                      text: err.message,
-                    });
-                  }
-                }}
-                className="hidden"
+            <div>
+              <img
+                src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || userData?.image || "/default_profile.jpg"}
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                alt="Profile"
               />
-            </label>
+              <label className="absolute bottom-0 right-0 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white cursor-pointer">
+                <Camera size={16} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    // Local preview
+                    setProfileImage(file);
+
+                    try {
+                      const formData = new FormData();
+                      formData.append("image", file);
+
+                      const apiKey = process.env.NEXT_PUBLIC_IMGBB_KEY;
+                      if (!apiKey) throw new Error("IMGBB API key is missing!");
+
+                      // Upload to ImgBB
+                      const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                        method: "POST",
+                        body: formData,
+                      });
+                      const data = await uploadRes.json();
+
+                      if (!data.success) throw new Error(data.error?.message || "Upload failed");
+
+                      // Update backend
+                      const res = await fetch("/api/update-profile", {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+
+                        body: JSON.stringify({ image: data.data.url, email: session.user.email })
+
+                      });
+
+                      if (!res.ok) throw new Error("Failed to update profile in backend");
+
+                      Swal.fire({
+                        icon: "success",
+                        title: "Profile updated!",
+                        timer: 1500,
+                        showConfirmButton: false,
+                      });
+                    } catch (err) {
+                      console.error("Profile upload error:", err);
+                      Swal.fire({
+                        icon: "error",
+                        title: "Upload failed!",
+                        text: err.message,
+                      });
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            </div>
 
           </div>
 
@@ -600,19 +604,17 @@ export default function Profile() {
               </div>
               <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
                 <SlUserFollowing className="text-[#0000FF]" />
-                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">{userData?.followers.length} Followers</span>
+                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">{userData?.followers?.length} Followers</span>
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <button className="px-4 cursor-pointer text-[#0000FF] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
-                <FiEdit size={30} />
-              </button>
-            </div>
+           
           </div>
 
         </div>
       </div>
+
+
 
       {/* POST FIELD */}
       <div className=" mx-auto px-4  mt-4">
@@ -795,7 +797,7 @@ export default function Profile() {
 
               <div className="space-y-4 text-sm">
                 {[
-                  
+
                   { label: "Education", field: "education" },
                   { label: "Location", field: "location" },
                 ].map(({ label, field }) => (

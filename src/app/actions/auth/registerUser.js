@@ -67,6 +67,7 @@ export const registerUser = async (payload) => {
       language: [],
       followers: [],
       following: [],
+      retake:0
     };
 
     // Insert into DB

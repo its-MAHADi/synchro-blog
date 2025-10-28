@@ -95,6 +95,7 @@ export default function Sidebar() {
         { name: "Notice", href: "/notice", icon: Mail },
         { name: "My Posts", href: "/my-posts", icon: BookOpen },
         { name: "My Profile", href: "/my-profile", icon: Users },
+        { name: "Add Profession", href: "/add-profession", icon: Briefcase },
     ];
 
     const role = session?.user?.role;

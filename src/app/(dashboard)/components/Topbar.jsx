@@ -4,9 +4,44 @@ import { Search } from "lucide-react";
 import { IoNotificationsOutline } from "react-icons/io5";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+
+
+
+
+async function getUserByEmail(email) {
+    try {
+        const baseUrl =
+            process.env.NEXT_PUBLIC_BASE_URL ||
+            (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+        const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
+            cache: "no-store",
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch user");
+
+        return res.json();
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        return null;
+    }
+}
 
 export default function Topbar() {
     const { data: session, status } = useSession();
+    const [userData, setUserData] = useState(null)
+
+    useEffect(() => {
+        async function fetchUserData() {
+            if (session?.user?.email) {
+                const data = await getUserByEmail(session.user.email);
+                setUserData(data);
+            }
+        }
+
+        fetchUserData();
+    }, [session?.user?.email]);
 
     // const { toggleMessageBar, tog
     // gleNotificationBar, showMessageBar, showNotificationBar } = useMessage();
@@ -33,12 +68,11 @@ export default function Topbar() {
 
                 {/* User avatar */}
                 <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200">
-                    <Image
-                        src={session?.user?.image || "/default_profile.jpg"} // fallback to default
+                    <img
+                        src={session?.user?.image || userData?.image || "/default_profile.jpg"} // fallback to default
                         alt={session?.user?.name || "User"}
-                        width={40}
-                        height={40}
-                        className="object-cover rounded-full"
+                        
+                        className=" w-10 h-10 rounded-full"
                     />
                 </div>
             </div>

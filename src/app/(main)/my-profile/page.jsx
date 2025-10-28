@@ -7,6 +7,7 @@ import {
   Camera, Globe, GraduationCap, Languages, Mail, MapPin, X,
 } from "lucide-react";
 import { BsPostcard } from "react-icons/bs";
+import { Settings } from "lucide-react";
 import { SlUserFollowing } from "react-icons/sl";
 import { FiEdit, FiPhone } from "react-icons/fi";
 import PostField from "@/app/(main)/components/PostField/PostField";
@@ -32,6 +33,25 @@ const formatFacebookDate = (dateString) => {
   return `${date.getDate()} ${date.toLocaleString("default", { month: "short" })}`;
 };
 
+async function getUserByEmail(email) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch user");
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}
+
 export default function Profile() {
 
   const { data: session } = useSession();
@@ -46,6 +66,7 @@ export default function Profile() {
   const [details, setDetails] = useState({});
   const [tempDetails, setTempDetails] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   // to show the profession
   const [profession, setProfession] = useState("");
@@ -67,7 +88,19 @@ export default function Profile() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState("default");
+  const [userData, setUserData] = useState(null);
 
+  useEffect(() => {
+    async function fetchUserData() {
+      if (session?.user?.email) {
+        const data = await getUserByEmail(session.user.email);
+        setUserData(data);
+      }
+    }
+
+    fetchUserData();
+  }, [session?.user?.email]);
+  console.log(userData)
   useEffect(() => {
     if (isEditModalOpen) {
       document.body.style.overflow = "hidden";
@@ -418,31 +451,145 @@ export default function Profile() {
     <div className="min-h-screen mt-10 bg-gradient-to-br bg-[#b4b4fd1a] ">
       {/* HEADER */}
       <div className="relative w-full shadow-md">
-        <div className="h-40 sm:h-60 relative">
+        <div className="h-40 sm:h-72 relative">
           {coverImage ? (
             <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
+            <img src={userData?.cover_image} alt="Cover" className="w-full h-full object-cover" />
+            ||
             <div className="w-full h-full bg-[#0000FF] rounded-xl"></div> // Placeholder
           )}
           <label className="absolute top-3 right-3 bg-white/80 text-gray-900 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center gap-1 hover:bg-white transition">
             <Camera size={16} />
             Change Cover
-            <input type="file" accept="image/*" onChange={(e) => setCoverImage(e.target.files[0])} className="hidden" />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                // Local preview
+                setCoverImage(file);
+
+                try {
+                  // Upload to ImgBB
+                  const formData = new FormData();
+                  formData.append("image", file);
+
+                  const apiKey = process.env.NEXT_PUBLIC_IMGBB_KEY;
+                  if (!apiKey) throw new Error("IMGBB API key is missing!");
+
+                  const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                    method: "POST",
+                    body: formData,
+                  });
+                  const data = await uploadRes.json();
+
+                  if (!data.success) throw new Error(data.error?.message || "Upload failed");
+
+                  // Update backend with new cover URL
+                  const res = await fetch("/api/update-cover", {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ cover_image: data.data.url, email: session.user.email }),
+                  });
+
+                  if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.message || "Failed to update cover in backend");
+                  }
+
+                  Swal.fire({
+                    icon: "success",
+                    title: "Cover updated!",
+                    timer: 1500,
+                    showConfirmButton: false,
+                  });
+                } catch (err) {
+                  console.error("Cover upload error:", err);
+                  Swal.fire({
+                    icon: "error",
+                    title: "Upload failed!",
+                    text: err.message,
+                  });
+                }
+              }}
+              className="hidden"
+            />
           </label>
+
+
         </div>
 
         {/* Profile Image + Name */}
         <div className="relative flex flex-col items-center -mt-16 pb-6">
           <div className="relative group">
-            <img
-              src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || "/default_profile.jpg"}
-              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
-              alt="Profile"
-            />
-            <label className="absolute bottom-0 right-0 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white cursor-pointer">
-              <Camera size={16} />
-              <input type="file" accept="image/*" onChange={(e) => setProfileImage(e.target.files[0])} className="hidden" />
-            </label>
+            <div>
+              <img
+                src={profileImage ? URL.createObjectURL(profileImage) : session?.user?.image || userData?.image || "/default_profile.jpg"}
+                className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-white shadow-lg object-cover"
+                alt="Profile"
+              />
+              <label className="absolute bottom-0 right-0 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-white cursor-pointer">
+                <Camera size={16} />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    // Local preview
+                    setProfileImage(file);
+
+                    try {
+                      const formData = new FormData();
+                      formData.append("image", file);
+
+                      const apiKey = process.env.NEXT_PUBLIC_IMGBB_KEY;
+                      if (!apiKey) throw new Error("IMGBB API key is missing!");
+
+                      // Upload to ImgBB
+                      const uploadRes = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+                        method: "POST",
+                        body: formData,
+                      });
+                      const data = await uploadRes.json();
+
+                      if (!data.success) throw new Error(data.error?.message || "Upload failed");
+
+                      // Update backend
+                      const res = await fetch("/api/update-profile", {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+
+                        body: JSON.stringify({ image: data.data.url, email: session.user.email })
+
+                      });
+
+                      if (!res.ok) throw new Error("Failed to update profile in backend");
+
+                      Swal.fire({
+                        icon: "success",
+                        title: "Profile updated!",
+                        timer: 1500,
+                        showConfirmButton: false,
+                      });
+                    } catch (err) {
+                      console.error("Profile upload error:", err);
+                      Swal.fire({
+                        icon: "error",
+                        title: "Upload failed!",
+                        text: err.message,
+                      });
+                    }
+                  }}
+                  className="hidden"
+                />
+              </label>
+            </div>
+
           </div>
 
           <h1 className="mt-4 text-xl font-bold">{session?.user?.name || "Anonymous User"}</h1>
@@ -457,19 +604,17 @@ export default function Profile() {
               </div>
               <div className="flex flex-col items-center bg-white rounded-xl p-3 shadow-sm border border-orange-100">
                 <SlUserFollowing className="text-[#0000FF]" />
-                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">12.5K Followers</span>
+                <span className="font-bold text-[#0000FF] text-sm sm:text-base mt-1">{userData?.followers?.length} Followers</span>
               </div>
             </div>
 
-            <div className="flex justify-center">
-              <button className="px-4 cursor-pointer text-[#0000FF] font-semibold rounded-lg hover:bg-[#fdf4f0] transition-all  gap-1">
-                <FiEdit size={30} />
-              </button>
-            </div>
+           
           </div>
 
         </div>
       </div>
+
+
 
       {/* POST FIELD */}
       <div className=" mx-auto px-4  mt-4">
@@ -631,7 +776,7 @@ export default function Profile() {
       </main>
 
       {/* ===== EDIT POST MODAL ===== */}
-      
+
 
 
       {/* Modal for Editing Details */}
@@ -652,7 +797,7 @@ export default function Profile() {
 
               <div className="space-y-4 text-sm">
                 {[
-                  { label: "Work / Profession", field: "work" },
+
                   { label: "Education", field: "education" },
                   { label: "Location", field: "location" },
                 ].map(({ label, field }) => (

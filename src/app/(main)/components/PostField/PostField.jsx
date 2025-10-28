@@ -1,21 +1,53 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BlogForm from "../BlogForm/BlogForm";
 import { useMessage } from "@/app/contexts/MessageContext";
 
+
+async function getUserByEmail(email) {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
+    const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) throw new Error("Failed to fetch user");
+
+    return res.json();
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null;
+  }
+}
 
 const PostField = () => {
   const { data: session } = useSession();
   const [showModal, setShowModal] = useState(false);
   const { showMessageBar } = useMessage();
+  const [userData, setUserData] = useState(null);
+
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (session?.user?.email) {
+        const data = await getUserByEmail(session.user.email);
+        setUserData(data);
+      }
+    }
+
+    fetchUserData();
+  }, [session?.user?.email]);
 
   // console.log(session?.user);
   return (
     <>
       {/* Post Input Box */}
-      <div className="mt-10 bg-white rounded-xl shadow-lg p-3">
+      <div className="mt-10 bg-white rounded-xl shadow-lg p-1 md:p-3">
         <div className="flex items-center justify-center gap-3">
           <div>
             {session?.user?.image ? (
@@ -25,13 +57,19 @@ const PostField = () => {
                 alt="profile"
               />
             ) : (
-              <img src="/default_profile.jpg" alt="default profile pic" className="w-12 h-12 rounded-full"/>
+              <img
+                className="rounded-full w-12 h-12 object-cover "
+                src={userData?.image}
+                alt="profile"
+              />
+              ||
+              <img src="/default_profile.jpg" alt="default profile pic" className="w-12 h-12 rounded-full" />
             )}
           </div>
 
           <div
             onClick={() => setShowModal(true)}
-            className={`cursor-pointer w-96 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]'}`}
+            className={`cursor-pointer w-80 md:w-[1090px]`}
           >
             <input
               readOnly

@@ -16,6 +16,9 @@ export async function POST(req) {
 
     const body = await req.json();
 
+    const isScheduled = body.isScheduled || false;
+    const scheduledAt = body.scheduledAt ? new Date(body.scheduledAt) : null;
+
     const newPost = {
       blog_title: body.blog_title,
       description: body.description,
@@ -24,12 +27,17 @@ export async function POST(req) {
       author_name: session.user?.name || "Anonymous",
       author_email: session.user?.email,
       author_image: body.author_image || session.user?.image || "",
-      author_profession: body.author_profession || "", // save profession
-      extraFields: body.extraFields || {}, // save extra profession-wise data
-      created_at: new Date(),
+      author_profession: body.author_profession || "",
+      extraFields: body.extraFields || {},
+      created_at: isScheduled ? scheduledAt : new Date(),
       modified_at: null,
       likes: 0,
       comment: 0,
+
+      // 🕓 New Fields for Scheduling
+      isScheduled,
+      scheduledAt,
+      status: isScheduled ? "scheduled" : "published",
     };
 
     const blogCol = await dbConnect(collectionNameObj.blogCollection);
@@ -37,7 +45,9 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: true,
-      message: "Blog post added successfully!",
+      message: isScheduled
+        ? "Post scheduled successfully!"
+        : "Blog post published successfully!",
       insertedId: result.insertedId,
     });
   } catch (err) {

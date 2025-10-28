@@ -1,15 +1,15 @@
-"use client";
-
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
+'use client';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import { useSession } from "next-auth/react";
 
 export default function QuestionsPageClient() {
   const params = useSearchParams();
-  const profession = params.get("profession") || "Writer";
+  const profession = params.get('profession') || 'Writer';
 
+  // to update user profession
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
 
@@ -26,18 +26,17 @@ export default function QuestionsPageClient() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // Fetch questions
   useEffect(() => {
     const loadQuestions = async () => {
       setLoading(true);
 
-      const manual =
-        manualQuestionMap[profession] ||
-        `What's your favorite thing about being a ${profession}?`;
+      const manual = manualQuestionMap[profession] || `What's your favorite thing about being a ${profession}?`;
 
       try {
-        const res = await fetch("/api/generate-ai-questions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch('/api/generate-ai-questions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ profession }),
         });
 
@@ -46,16 +45,12 @@ export default function QuestionsPageClient() {
         const allQs = [manual, ...aiQs.slice(0, 4)];
 
         setQuestions(allQs);
-        setAnswers(Array(allQs.length).fill(""));
+        setAnswers(Array(allQs.length).fill(''));
       } catch (err) {
         console.error(err);
-        Swal.fire(
-          "Error",
-          "Failed to generate questions. Try again later.",
-          "error"
-        );
+        Swal.fire('Error', 'Failed to generate questions. Try again later.', 'error');
         setQuestions([manual]);
-        setAnswers([""]);
+        setAnswers(['']);
       } finally {
         setLoading(false);
       }
@@ -73,11 +68,7 @@ export default function QuestionsPageClient() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (answers.some((a) => !a.trim())) {
-      Swal.fire(
-        "Oops!",
-        "Please answer all questions before submitting.",
-        "warning"
-      );
+      Swal.fire("Oops!", "Please answer all questions before submitting.", "warning");
       return;
     }
 
@@ -89,7 +80,9 @@ export default function QuestionsPageClient() {
       confirmButtonText: "Yes, verify",
       cancelButtonText: "Review answers",
     }).then((result) => {
-      if (result.isConfirmed) setSubmitted(true);
+      if (result.isConfirmed) {
+        setSubmitted(true);
+      }
     });
   };
 
@@ -110,6 +103,8 @@ export default function QuestionsPageClient() {
 
       const data = await res.json();
       Swal.close();
+
+      // if (!data.success) throw new Error("Verification failed");
 
       const { results, average_score, summary } = data;
 
@@ -134,27 +129,34 @@ export default function QuestionsPageClient() {
       `;
 
       if (average_score >= 4) {
-        if (!userEmail) throw new Error("User not authenticated");
+        try {
+          if (!userEmail) {
+            throw new Error("User not authenticated or missing email");
+          }
 
-        await fetch("/api/update-profession", {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: userEmail, profession }),
-        });
+          // Update profession in DB
+          await fetch("/api/update-profession", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: userEmail, profession }),
+          });
 
-        Swal.fire({
-          icon: "success",
-          title: "Excellent Work! 🎉",
-          html: `
-            <p>Your average score is <strong>${average_score.toFixed(
-              2
-            )}</strong>.</p>
-            <p>You’re now eligible to apply to the <strong>${profession}</strong> community!</p>
-          `,
-          confirmButtonText: "Go to Profile",
-        }).then(() => {
-          window.location.href = "/user-dashboard/profile";
-        });
+          // success message
+          Swal.fire({
+            icon: "success",
+            title: "Excellent Work! 🎉",
+            html: `
+              <p>Your average score is <strong>${average_score.toFixed(2)}</strong>.</p>
+              <p>You’re now eligible to apply to the <strong>${profession}</strong> community!</p>
+            `,
+            confirmButtonText: "Go to Profile",
+          }).then(() => {
+            window.location.href = "/my-profile";
+          });
+        } catch (err) {
+          console.error("❌ Failed to update profession:", err);
+          Swal.fire("Error", "Could not update your profession. Please try again.", "error");
+        }
         return;
       }
 
@@ -164,62 +166,73 @@ export default function QuestionsPageClient() {
       localStorage.setItem(retryKey, retryCount.toString());
 
       if (retryCount >= 3) {
-        Swal.fire({
-          icon: "info",
-          title: "Need Expert Review 🧠",
-          html: `
-            ${feedbackHtml}
-            <p class="mt-3">You've attempted this test 3 times. You can now <strong>apply to the ${profession} community</strong> for personalized review and guidance.</p>
-          `,
-          confirmButtonText: "Apply to Community",
-          allowOutsideClick: false,
-        }).then(() => {
-          window.location.href = "/apply-to-community";
-        });
-      } else {
-        Swal.fire({
-          icon: "warning",
-          title: "Please Retake the Questions 😔",
-          html: feedbackHtml,
-          confirmButtonText: "Retake",
-          allowOutsideClick: false,
-        }).then(() => {
-          setAnswers(Array(questions.length).fill(""));
-          setSubmitted(false);
-        });
-      }
+  Swal.fire({
+    icon: "info",
+    title: "Need Expert Review 🧠",
+    html: `
+      ${feedbackHtml}
+      <p class="mt-3">You've attempted this test 3 times. You can now <strong>apply to the ${profession} community</strong> for personalized review and guidance.</p>
+    `,
+    confirmButtonText: "Apply to Community",
+    allowOutsideClick: false,
+  }).then(() => {
+    // Close Swal explicitly (sometimes helps)
+    Swal.close();
+    // Redirect with profession query
+    window.location.href = "/apply-to-community";
+  });
+} else {
+  Swal.fire({
+    icon: "warning",
+    title: "Please Retake the Questions 😔",
+    html: feedbackHtml,
+    confirmButtonText: "Retake",
+    allowOutsideClick: false,
+  }).then(() => {
+    setAnswers(Array(questions.length).fill(""));
+    setSubmitted(false);
+  });
+}
+
     } catch (err) {
       console.error(err);
       Swal.fire("Error", "Failed to verify answers. Try again later.", "error");
     }
   };
 
-  if (loading)
+
+  if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center text-center text-blue-600 space-y-4">
         <div className="flex items-center justify-center space-x-2 text-blue-600">
           <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-          <div className="w-4 h-4 bg-blue-600 rounded-full [animation-delay:-0.15s] animate-bounce"></div>
+          <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
           <div className="w-4 h-4 bg-blue-600 rounded-full animate-bounce"></div>
         </div>
         <p>
-          Generating questions for <span className="font-semibold">{profession}</span>...
+          Generating questions for{" "}
+          <span className="font-semibold">{profession}</span>...
         </p>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-xl bg-white rounded-xl shadow-md p-6">
         <h1 className="text-2xl font-bold text-blue-600 mb-6 text-center">
-          {submitted ? "All Questions Answered!" : `Questions for ${profession}`}
+          {submitted
+            ? "All Questions Answered!"
+            : `Questions for ${profession}`}
         </h1>
 
         {!submitted ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             {questions.map((q, i) => (
               <div key={i}>
-                <p className="text-slate-700 mb-2 font-medium">{i + 1}. {q}</p>
+                <p className="text-slate-700 mb-2 font-medium">
+                  {i + 1}. {q}
+                </p>
                 <textarea
                   rows={4}
                   value={answers[i]}
@@ -229,6 +242,7 @@ export default function QuestionsPageClient() {
                 />
               </div>
             ))}
+
             <button
               type="submit"
               className="bg-blue-600 cursor-pointer text-white w-full py-2 rounded-lg hover:bg-blue-700 transition"
@@ -238,7 +252,9 @@ export default function QuestionsPageClient() {
           </form>
         ) : (
           <div className="text-left">
-            <h2 className="text-lg font-medium mb-4 text-slate-800">Your Answers:</h2>
+            <h2 className="text-lg font-medium mb-4 text-slate-800">
+              Your Answers:
+            </h2>
             <ul className="space-y-4 mb-6">
               {questions.map((q, i) => (
                 <li key={i}>
@@ -247,6 +263,7 @@ export default function QuestionsPageClient() {
                 </li>
               ))}
             </ul>
+
             <button
               onClick={handleVerifyAll}
               className="bg-blue-600 text-white w-full py-2 rounded-lg hover:bg-blue-700 cursor-pointer transition"

@@ -11,6 +11,8 @@ export const collectionNameObj = {
   messageCollection: "message",
   notificationCollection: "notification",
   applyCommunity: "applyCommunity",
+  announcementsCommunity: "announcements",
+  noticeCommunity: "notice",
 };
 
 // Use globalThis to store client in dev (works better in Next.js)

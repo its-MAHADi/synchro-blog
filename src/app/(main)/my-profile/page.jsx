@@ -451,7 +451,7 @@ export default function Profile() {
     <div className="min-h-screen mt-10 bg-gradient-to-br bg-[#b4b4fd1a] ">
       {/* HEADER */}
       <div className="relative w-full shadow-md">
-        <div className="h-40 sm:h-72 relative">
+        <div className="h-40 border border-gray-200 sm:h-72 relative">
           {coverImage ? (
             <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
           ) : (

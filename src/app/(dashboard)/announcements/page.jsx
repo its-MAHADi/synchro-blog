@@ -10,9 +10,11 @@ const AdminAnnouncementPage = () => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [tags, setTags] = useState("");
+  const [scheduleTime, setScheduleTime] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  
 
   // Notification function
   const showNotification = (type, message) => {
@@ -59,6 +61,7 @@ const AdminAnnouncementPage = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
+      if (scheduleTime) formData.append("scheduleTime", scheduleTime);
       if (image) formData.append("image", image);
       formData.append("tags", tags);
 
@@ -152,6 +155,18 @@ const AdminAnnouncementPage = () => {
                     onChange={(e) => setTags(e.target.value)}
                   />
                 </div>
+
+                <div className="group">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Schedule Publish Time (optional)
+                  </label>
+                  <input
+                    type="datetime-local"
+                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-all duration-300"
+                    onChange={(e) => setScheduleTime(e.target.value)}
+                  />
+                </div>
+
 
                 <button
                   onClick={handleSubmit}

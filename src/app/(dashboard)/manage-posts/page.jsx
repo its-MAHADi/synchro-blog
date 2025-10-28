@@ -18,7 +18,7 @@ const professionFields = {
     ],
 
     Writer: [
-        { name: "Title", label: "Article Title", type: "text" },
+        { name: "storyTitle", label: "Article Title", type: "text" },
         { name: "genre", label: "Genre (Story, Poem, Motivation, etc.)", type: "text" },
         { name: "writingStyle", label: "Writing Style (Narrative, Creative, Descriptive)", type: "text" },
         { name: "summary", label: "Summary", type: "textarea" },
@@ -240,15 +240,33 @@ export default function AdminPostsPage() {
             try {
                 const res = await fetch(`/api/posts/${id}`, { method: "DELETE" });
                 if (!res.ok) throw new Error("Failed to delete post");
+
                 Swal.fire("Deleted!", "Post has been deleted.", "success");
-                fetchPosts();
+                fetchPosts(); // 🔁 refresh posts
             } catch (err) {
                 Swal.fire("Error!", err.message, "error");
             }
         }
     };
 
-    console.log(posts)
+    const getPostTitle = (post) => {
+        if (post.author_profession && professionFields[post.author_profession]) {
+            const fields = professionFields[post.author_profession];
+
+            // Find the field whose name contains "title" (case-insensitive)
+            const titleField = fields.find(f => f.name.toLowerCase().includes("title"));
+
+            // Try extraFields first
+            const titleValue = titleField ? post.extraFields?.[titleField.name] : null;
+            if (titleValue) return titleValue;
+        }
+
+        // Fallback common fields
+        return post.blog_title || post.title || post.projectTitle || post.postTitle || "Untitled Post";
+    };
+
+
+    // console.log(posts)
 
     return (
         <div className="p-6">
@@ -298,7 +316,7 @@ export default function AdminPostsPage() {
                                 )}
 
                                 {/* Profession Based Title & Description */}
-                              
+
                                 <div className="mb-4">
                                     {post.author_profession && professionFields[post.author_profession] ? (
                                         (() => {
@@ -311,7 +329,7 @@ export default function AdminPostsPage() {
                                                 f.name.toLowerCase().includes("summary") ||
                                                 f.name.toLowerCase().includes("content") ||
                                                 f.name.toLowerCase().includes("process") ||
-                                                f.name.toLowerCase().includes("story") ||
+                                                f.name.toLowerCase().includes("behind") ||
                                                 f.name.toLowerCase().includes("cooking")
                                             );
 
@@ -321,7 +339,7 @@ export default function AdminPostsPage() {
                                             return (
                                                 <>
                                                     <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                                                        {titleValue || post.blog_title || post.title || "Untitled Post"}
+                                                         {getPostTitle(post)}
                                                     </h3>
                                                     <p className="text-gray-600 text-sm line-clamp-3">
                                                         {descValue || post.short_description || post.description || "No description available."}

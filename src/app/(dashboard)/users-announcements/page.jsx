@@ -46,9 +46,7 @@ const UserAnnouncementPage = () => {
                 />
 
               ) : (
-                <div className="w-full h-64 md:h-80 bg-gray-200 flex items-center justify-center text-gray-400 font-medium">
-                  No Image
-                </div>
+                <h2></h2>
               )}
 
               {/* Content */}

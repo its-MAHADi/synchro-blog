@@ -23,7 +23,7 @@ const ManageUsersPage = () => {
     };
 
     useEffect(() => {
-        fetchUsers();
+        fetchUsers(); 
     }, []);
 
     // Delete user function

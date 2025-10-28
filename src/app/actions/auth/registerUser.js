@@ -67,7 +67,8 @@ export const registerUser = async (payload) => {
       language: [],
       followers: [],
       following: [],
-      retake:0
+      retake: 0,
+      applyForProfessionChange: false
     };
 
     // Insert into DB

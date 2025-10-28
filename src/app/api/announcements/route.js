@@ -1,13 +1,13 @@
-// app/api/announcement/route.js
 import dbConnect, { collectionNameObj } from "@/lib/dbConnect";
 
-// POST: Create new announcement with FormData
+// POST: Create new (or scheduled) announcement
 export async function POST(req) {
   try {
     const formData = await req.formData();
     const title = formData.get("title");
     const description = formData.get("description");
     const tags = formData.get("tags") || "";
+    const scheduleTime = formData.get("scheduleTime"); // 🆕
     const imageFile = formData.get("image");
 
     let image = null;
@@ -17,12 +17,15 @@ export async function POST(req) {
     }
 
     const collection = await dbConnect(collectionNameObj.announcementsCommunity);
+
     const result = await collection.insertOne({
       title,
       description,
       tags,
       image,
       createdAt: new Date(),
+      scheduleTime: scheduleTime ? new Date(scheduleTime) : new Date(), // 🕒 schedule support
+      published: !scheduleTime || new Date(scheduleTime) <= new Date(), // published now or later
     });
 
     return new Response(
@@ -38,11 +41,22 @@ export async function POST(req) {
   }
 }
 
-// GET: Fetch all announcements
+// GET: Fetch only published announcements
 export async function GET(req) {
   try {
     const collection = await dbConnect(collectionNameObj.announcementsCommunity);
-    const announcements = await collection.find({}).sort({ createdAt: -1 }).toArray();
+
+    // auto-publish any past scheduled announcements
+    await collection.updateMany(
+      { scheduleTime: { $lte: new Date() }, published: false },
+      { $set: { published: true } }
+    );
+
+    const announcements = await collection
+      .find({ published: true })
+      .sort({ createdAt: -1 })
+      .toArray();
+
     return new Response(JSON.stringify(announcements), {
       status: 200,
       headers: { "Content-Type": "application/json" },

@@ -89,6 +89,7 @@ export default function Sidebar() {
     const AdminLinks = [
         { name: "Admin Dashboard", href: "/admin-dashboard", icon: Home },
         { name: "Users", href: "/manage-users", icon: Users },
+        { name: "Posts", href: "/manage-posts", icon: Users },
         { name: "Application List", href: "/application", icon: ClipboardList },
         { name: "Announcements", href: "/announcements", icon: Megaphone },
         { name: "Notice", href: "/notice", icon: Mail },

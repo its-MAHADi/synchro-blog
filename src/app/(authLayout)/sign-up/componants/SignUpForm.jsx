@@ -80,12 +80,12 @@ const handleGithubLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4 ">
+    <div className="min-h-screen flex items-center justify-center bg-[#eaeff6e8] px-4 ">
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden mt-20 ">
         {/* Left: Illustration */}
         <div className="hidden md:flex items-center justify-center">
           <Image
-            src="/images/authentication.png"
+            src="/images/authImg.png"
             alt="Authentication"
             width={400}
             height={400}
@@ -124,7 +124,7 @@ const handleGithubLogin = () => {
             />
             <button
               type="submit"
-              className="w-full bg-[#0000FF] text-white py-3 rounded-lg hover:bg-[#a9441f] transition cursor-pointer"
+              className="w-full bg-[#0000FF] text-white py-3 rounded-lg hover:bg-[#2121f7f3] transition cursor-pointer"
             >
               Sign Up
             </button>

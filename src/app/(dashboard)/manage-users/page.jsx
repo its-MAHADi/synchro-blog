@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { MapPin, Briefcase, BookOpen, Users, Globe } from "lucide-react";
 import Swal from "sweetalert2";
+import AdminUsersLoading from "./loading";
 
 const ManageUsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -72,7 +73,7 @@ const ManageUsersPage = () => {
     });
 
     if (loading)
-        return <p className="text-center mt-10 text-lg font-medium">Loading users...</p>;
+        return <><AdminUsersLoading/></>;
 
     return (
         <div className="p-6">

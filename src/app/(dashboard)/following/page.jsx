@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { User2, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import FollowersLoading from "../followers/loading";
 
 
 export default function FollowingPage() {
@@ -36,9 +37,9 @@ export default function FollowingPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[60vh]">
-        <Loader2 className="animate-spin text-blue-500" size={32} />
-      </div>
+      <>
+        <FollowersLoading/>
+      </>
     );
   }
 

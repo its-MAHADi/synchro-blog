@@ -3,7 +3,7 @@ import React from "react";
 
 const MyPostsLoading = () => {
     return (
-        <div className="max-w-6xl mx-auto mt-10 space-y-6 animate-pulse">
+        <div className="px-4 md:px-10 mx-auto mt-10 space-y-6 animate-pulse">
             {[1, 2, 3].map((i) => (
                 <div
                     key={i}

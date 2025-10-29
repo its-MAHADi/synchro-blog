@@ -14,6 +14,7 @@ import PostField from "@/app/(main)/components/PostField/PostField";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import PostCartOfMP from "./PostCartOfMP";
+import ProfileLoading from "./loading";
 
 // Facebook-style date formatter
 const formatFacebookDate = (dateString) => {
@@ -440,9 +441,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <p className="text-center mt-10 text-xl text-[#0000FF] min-h-screen flex justify-center items-center">
-        <span className="loading loading-spinner loading-xl"></span>
-      </p>
+      <><ProfileLoading/></>
     );
   }
 

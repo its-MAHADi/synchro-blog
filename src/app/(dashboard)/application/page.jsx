@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import LoadingApplicationList from "./loading";
 
 const ApplicationPage = () => {
   const [profApps, setProfApps] = useState([]);
@@ -25,7 +26,7 @@ const ApplicationPage = () => {
     fetchApplications();
   }, []);
 
-  if (loading) return <p className="text-center mt-10">Loading applications...</p>;
+  if (loading) return <><LoadingApplicationList/></>;
 
   return (
     <div className="p-6">

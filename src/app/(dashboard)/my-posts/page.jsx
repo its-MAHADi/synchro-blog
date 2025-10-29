@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { X } from "lucide-react";
 import Swal from "sweetalert2";
 import PostCartOfMP from "./PostCartOfMP";
+import MyPostsLoading from "./loading";
 
 // Facebook-style date formatter
 const formatFacebookDate = (dateString) => {
@@ -433,9 +434,7 @@ export default function MyPostsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center text-[#0000FF]">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
+      <><MyPostsLoading/></>
     );
   }
 

@@ -283,7 +283,7 @@ const Navbar = () => {
 
 
           {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex lg:hidden items-center gap-2">
             {
               session?.user &&
               <div className="flex items-center gap-2">
@@ -306,9 +306,10 @@ const Navbar = () => {
                 </div>
               </div>
             }
+            {/* menu bar for Mobile */}
             <div>
               <button
-                className="md:hidden flex items-center"
+                className="lg:hidden flex items-center"
                 onClick={() => setOpen(true)}
               >
                 <LucideSquareMenu size={28} className="text-[#0000FF] cursor-pointer" />

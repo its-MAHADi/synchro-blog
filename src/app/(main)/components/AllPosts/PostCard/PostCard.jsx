@@ -44,7 +44,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
   const [likes, setLikes] = useState(postData?.likes || 0);
   const [liked, setLiked] = useState(false);
   const [totalComments, setTotalComments] = useState(postData?.comment || 0);
-  const shares = postData?.shares || 4;
+  const shares = postData?.share || 0;
   const [isFollowing, setIsFollowing] = useState(false);
 
   const titleText = postData?.blog_title || "Untitled Post";
@@ -209,6 +209,10 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
       setIsFollowing(followingStatus);
     }
   }, [session, postData?.author_email, usersData.following]);
+
+
+
+console.log(postData)
 
   const CardContent = () => (
     <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">
@@ -1164,7 +1168,6 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
         </div>
         <div className="flex items-center gap-5">
           <span>{totalComments} Comments</span>
-          <span>{shares} Shares</span>
         </div>
       </div>
 
@@ -1179,9 +1182,8 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
           <MessageCircle size={18} /> Comment
         </button>
 
-        <button className="flex cursor-pointer items-center gap-1 hover:text-[#0000FF] transition">
-          <Share2 size={18} /> Share
-        </button>
+
+       
       </div>
     </article>
   );

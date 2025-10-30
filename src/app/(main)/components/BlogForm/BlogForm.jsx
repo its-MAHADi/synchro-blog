@@ -447,11 +447,11 @@ Requirements:
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="p-3 bg-[#0000FF] rounded-2xl shadow-lg">
+            <div className="p-3 bg-gradient-to-br from-[#0000FF] to-blue-600 rounded-2xl shadow-lg">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold bg-[#0000FF] bg-clip-text text-transparent leading-normal mb-3">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-900 to-blue-500 bg-clip-text text-transparent leading-normal mb-3">
             Post Management
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -529,7 +529,7 @@ Requirements:
                     onClick={generateContent}
                     type="button"
                     disabled={isGenerating}
-                    className={`btn rounded-lg text-[#0000FF] hover:text-white font-bold border border-[#0000FF] hover:bg-[#0000FF] ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
+                    className={`btn rounded-lg text-blue-600 hover:text-white font-bold border border-blue-500 hover:bg-indigo-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
                       }`}
                   >
                     {isGenerating ? "Generating..." : "Generate Content"}
@@ -626,10 +626,10 @@ Requirements:
             <div className="space-y-4 mt-6">
               <div
                 className={`relative border-2 border-dashed rounded-2xl overflow-hidden h-48 sm:h-64 lg:h-72 flex items-center justify-center cursor-pointer transition-all duration-300 ${isDragOver
-                  ? "border-[#0000FF] bg-blue-400 scale-102"
+                  ? "border-[#0000FF] bg-orange-50 scale-102"
                   : featuredPreview
                     ? "border-transparent"
-                    : "border-[#212fffef] bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF]"
+                    : "border-gray-300 bg-gradient-to-br from-gray-50 to-gray-100 hover:border-[#0000FF]"
                   }`}
                 onClick={() => featuredInputRef.current?.click()}
                 onDragOver={handleDragOver}
@@ -652,7 +652,7 @@ Requirements:
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-center p-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-sky-400 rounded-full flex items-center justify-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-blue-600 rounded-full flex items-center justify-center mb-4">
                       <Upload className="w-8 h-8 text-white" />
                     </div>
                     <p className="text-gray-500 font-medium">Drag & Drop or Click to Upload Featured Image</p>

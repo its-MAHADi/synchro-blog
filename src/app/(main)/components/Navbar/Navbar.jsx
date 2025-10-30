@@ -394,15 +394,27 @@ const Navbar = () => {
             </Link>
           </li>
 
+          {session?.user && (
+            <li>
+              <Link
+                href="/user-dashboard"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2 hover:text-[#0000FF]"
+              >
+                <FaTachometerAlt /> Dashboard
+              </Link>
+            </li>
+          )}
           <li>
             <Link
-              href="/user-dashboard"
+              href="/aboutUs"
               onClick={() => setOpen(false)}
               className="flex items-center gap-2 hover:text-[#0000FF]"
             >
-              <FaTachometerAlt /> Dashboard
+              <AiOutlineInfoCircle /> About Us
             </Link>
           </li>
+
 
           {/* Auth Buttons */}
           <div className="mt-4 flex flex-col gap-2">

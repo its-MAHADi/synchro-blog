@@ -441,7 +441,7 @@ export default function MyPostsPage() {
   return (
     <div className="min-h-screen ">
       <h1 className="px-4 md:px-8 text-2xl md:text-3xl font-semibold text-center">My Posts</h1>
-      <main className="px-4 md:px-8  mx-auto py-8">
+      <main className="px-0 md:px-8  mx-auto py-8">
         {/* Search + Sort */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
           <input

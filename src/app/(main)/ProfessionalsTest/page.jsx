@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default function ProfessionalsTest() {
@@ -144,7 +144,7 @@ export default function ProfessionalsTest() {
                 You’re a {result}!
               </h2>
               <p className="text-gray-700 mb-6">{professionDetails[result]}</p>
-              <Button
+              <button
                 variant="outline"
                 onClick={() => {
                   setShowResult(false);
@@ -152,7 +152,7 @@ export default function ProfessionalsTest() {
                 }}
               >
                 Retake Test
-              </Button>
+              </button>
             </motion.div>
           )}
         </AnimatePresence>

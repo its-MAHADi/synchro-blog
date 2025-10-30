@@ -57,7 +57,7 @@ export default function FollowingPage() {
     Following
   </h1>
 
-  <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
     {following.map((person) => (
       <Link
         key={person._id || person.email}

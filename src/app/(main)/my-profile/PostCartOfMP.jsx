@@ -44,8 +44,8 @@ const PostCartOfMP = ({ post, session, handleEditPost, handleDeletePost, formatF
                         <div>
                             <h2 className="text-lg font-semibold text-gray-900 line-clamp-2">{post?.blog_title}</h2>
                             <p className="text-gray-600 text-sm">
-                                {showFull ? descText : isLong ? shortDesc : descText}
-                                {isLong && (
+                                {showFull ? descText : isLongDescription ? shortText : descText}
+                                {isLongDescription && (
                                     <button
                                         onClick={() => setShowFull(!showFull)}
                                         className="text-blue-600 font-medium ml-1 hover:underline"

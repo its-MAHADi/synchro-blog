@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import ManagePostLoading from "./loading";
 
 const professionFields = {
     Developer: [
@@ -281,7 +282,7 @@ export default function AdminPostsPage() {
             />
 
             {loading ? (
-                <p className="text-gray-500">Loading posts...</p>
+                <><ManagePostLoading/></>
             ) : filteredPosts.length === 0 ? (
                 <p className="text-gray-500">No posts found.</p>
             ) : (

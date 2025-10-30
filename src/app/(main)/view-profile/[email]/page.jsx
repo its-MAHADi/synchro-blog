@@ -9,6 +9,7 @@ import { FiPhone } from "react-icons/fi";
 import { IoLanguageOutline } from "react-icons/io5";
 import FollowButton from "../components/FollowButton";
 import { useMessage } from "@/app/contexts/MessageContext";
+import ViewProfileLoading from "./loading";
 
 export default function ViewProfilePage() {
     const { email } = useParams();
@@ -83,9 +84,7 @@ export default function ViewProfilePage() {
 
     if (loading || sessionStatus === "loading") {
         return (
-            <div className="min-h-screen flex justify-center">
-                <span className="loading loading-spinner loading-xl"></span>
-            </div>
+            <><ViewProfileLoading/></>
         );
     }
 

@@ -4,13 +4,18 @@ import Banner from "./components/Banner/Banner";
 import Contact from "./components/Contact/Contact";
 import FAQ from "./components/FAQ/FAQ";
 import PopularTopic from "./components/popularTopic/PopularTopic";
-import RecentPosts from "./components/RecentPosts/RecentPosts";
+// import RecentPosts from "./components/SynchroStatistic/RecentPosts";
 // import SignupCoverProfile from "./components/signupCoverProfile/SignupCoverProfile";
 import BlogPost from "./components/BlogPost/BlogPost";
 import PostField from "./components/PostField/PostField";
 import AllPosts from "./components/AllPosts/AllPosts";
 import MessageBar from "./components/MessageBar/MessageBar";
 import SignupCoverProfile from "./SignupCoverProfile/page";
+import SynchroStatistic from "./components/SynchroStatistic/SynchroStatistic";
+import TopArticles from "./components/TopArtricles/TopArticles";
+import AllProfessions from "./components/AllProfessions/AllProfessions";
+import JoinCommunity from "./components/JoinCommunity/JoinCommunity";
+import Newsletter from "./components/Newsletter/Newsletter";
 
 export const metadata = {
   title: "Home | Synchro",
@@ -22,35 +27,21 @@ export default function Home() {
   return (
     <section >
      <div className="space-y-10">
-       {/* banner */}
       <Banner/>
 
+      <SynchroStatistic></SynchroStatistic>
 
-      {/* Recent Post */}
-      <RecentPosts/>
-
-      {/*Features of Synchro */}
       <SynchroFeatures/>
 
-      {/* How synchro works */}
-      <SynchroWorks/>
+      <TopArticles></TopArticles>
 
-      {/* PopularTopic */}
-      <PopularTopic/>
+      <AllProfessions></AllProfessions>
 
-      {/* FAQ section */}
-      <FAQ></FAQ>
-      
-      {/* contact page */}
-      <Contact/>
+      <JoinCommunity></JoinCommunity>
 
-      {/* <BlogPost/> */}
-      {/* <PostField/>
-     <AllPosts/> */}
+      <Newsletter></Newsletter>      
+      {/* <Contact/> */}
      </div>
-     {/* <aside className="w-4/12  sticky top-[90px] overflow-y-auto">
-      <MessageBar />
-     </aside> */}
     </section>
   );
 }

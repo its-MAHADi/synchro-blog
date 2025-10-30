@@ -1,4 +1,4 @@
-
+// Admin email : mhmahadi360@gmail.com Password : 12345678
 "use client";
 
 import { useMessage, MessageProvider } from "../contexts/MessageContext";
@@ -112,11 +112,8 @@ function FloatingChatPopup() {
 
             {/* Chat Body */}
             <div className="flex-1 overflow-hidden">
-
               <MessageBar />
             </div>
-
-
           </motion.div>
         )}
       </AnimatePresence>

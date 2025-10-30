@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import AllPostsLoading from "../../all-posts/loading";
+import NotificationLoading from "./NotificationLoading";
 
 export default function NotificationBar() {
   const { data: session } = useSession();
@@ -28,32 +29,32 @@ export default function NotificationBar() {
     fetchNotifications();
   }, [session]);
 
-  // 🔔 Click: mark read + navigate
-  const handleNotificationClick = async (noti) => {
-    try {
-      // ✅ Mark read
-      if (!noti.read) {
-        await fetch(`/api/notification?notificationId=${noti._id}`, { method: "PATCH" });
-        setNotifications((prev) =>
-          prev.map((n) => (n._id === noti._id ? { ...n, read: true } : n))
-        );
-      }
+  // // 🔔 Click: mark read + navigate
+  // const handleNotificationClick = async (noti) => {
+  //   try {
+  //     // ✅ Mark read
+  //     if (!noti.read) {
+  //       await fetch(`/api/notification?notificationId=${noti._id}`, { method: "PATCH" });
+  //       setNotifications((prev) =>
+  //         prev.map((n) => (n._id === noti._id ? { ...n, read: true } : n))
+  //       );
+  //     }
 
-      // ✅ Navigate based on type
-      if (noti.type === "follow") {
-        router.push(`/view-profile/${noti.senderEmail}`);
-      } 
-      else if ((noti.type === "like" || noti.type === "comment") && noti.postId) {
-        router.push(`/post/${noti.postId}`); // 🔑 Navigate to post page
-      } 
-      else {
-        console.warn("No valid navigation target found for notification:", noti);
-      }
+  //     // ✅ Navigate based on type
+  //     if (noti.type === "follow") {
+  //       router.push(`/view-profile/${noti.senderEmail}`);
+  //     } 
+  //     else if ((noti.type === "like" || noti.type === "comment") && noti.postId) {
+  //       router.push(`/post/${noti.postId}`); // 🔑 Navigate to post page
+  //     } 
+  //     else {
+  //       console.warn("No valid navigation target found for notification:", noti);
+  //     }
 
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const formatTime = (time) => {
     const diff = Date.now() - new Date(time);
@@ -81,7 +82,7 @@ export default function NotificationBar() {
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex flex-col min-h-screen overflow-y-auto">
+    <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-4 flex flex-col h-screen md:min-h-screen overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold flex items-center gap-2">
           <Bell size={20} />
@@ -102,8 +103,8 @@ export default function NotificationBar() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className={`flex items-start justify-between p-3 rounded-xl cursor-pointer border ${noti.read ? "bg-gray-50" : "bg-indigo-100"} hover:shadow-md`}
-                onClick={() => handleNotificationClick(noti)}
+                className={`flex items-start justify-between p-3 rounded-xl cursor-pointer border border-slate-200 ${noti.read ? "bg-gray-50" : "bg-indigo-100"} hover:shadow-md`}
+                // onClick={() => handleNotificationClick(noti)}
               >
                 <div className="flex items-start gap-3 w-full">
                   <img src="/default_profile.jpg" className="w-10 h-10 rounded-full" />
@@ -117,7 +118,7 @@ export default function NotificationBar() {
             );
           })
         ) : (
-          <AllPostsLoading></AllPostsLoading>
+          <NotificationLoading/>
         )}
       </div>
     </div>

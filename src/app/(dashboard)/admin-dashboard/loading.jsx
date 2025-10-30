@@ -2,9 +2,11 @@
 import React from "react";
 
 const AdminDashboardLoading = () => {
+    const barHeights = [70, 90, 60, 80, 100, 75, 85, 65]; // fixed values
+
     return (
         <div className="min-h-[calc(100vh-73px)] flex flex-col justify-center">
-            <div className="p-6 animate-pulse ">
+            <div className="p-6 animate-pulse">
                 {/* Header */}
                 <div className="mb-6">
                     <div className="h-6 w-56 bg-gray-300 rounded-md mb-2"></div>
@@ -39,11 +41,11 @@ const AdminDashboardLoading = () => {
                     <div className="bg-white rounded-xl shadow p-6">
                         <div className="h-5 w-40 bg-gray-300 rounded-md mb-6"></div>
                         <div className="flex items-end justify-between space-x-2">
-                            {[...Array(8)].map((_, i) => (
+                            {barHeights.map((height, i) => (
                                 <div
                                     key={i}
                                     className="w-full bg-gray-200 rounded-md"
-                                    style={{ height: `${Math.random() * 80 + 40}px` }}
+                                    style={{ height: `${height}px` }}
                                 ></div>
                             ))}
                         </div>

@@ -8,7 +8,7 @@ const FollowingLoading = () => {
             <div className="w-32 h-6 bg-gray-300 rounded mb-6 animate-pulse"></div>
 
             {/* Skeleton Grid */}
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[...Array(8)].map((_, i) => (
                     <div
                         key={i}

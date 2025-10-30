@@ -117,6 +117,9 @@ export const authOptions = {
               website: "",
               language: [],
               followers: [],
+              following: [],
+              retake: 0,
+              applyForProfessionChange: false
             });
           } else {
             // Existing user, update last_log_in

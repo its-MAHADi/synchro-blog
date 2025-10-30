@@ -146,7 +146,7 @@ export default function ChatPopup({ user, onClose }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.95 }}
         transition={{ duration: 0.25 }}
-        className="fixed bottom-20 right-20 w-80 h-[40vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col z-50"
+        className="fixed bottom-20 md:right-20 w-80 h-[50vh] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col z-50"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-3 py-2 bg-[#0000FF] text-white">

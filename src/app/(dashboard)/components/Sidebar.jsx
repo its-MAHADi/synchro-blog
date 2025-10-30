@@ -1,39 +1,101 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Swal from "sweetalert2";
 import {
     Home,
-    FileText,
+    BookOpen,
     Users,
+    UserCheck,
+    UserPlus,
+    Briefcase,
     LogOut,
-    Menu,
+    FileText,
+    BookCopy,
     X,
     ArrowLeft,
-    BookCopy
+    Menu,
+    Megaphone,
+    Mail,
+    Bell,
+    ClipboardList,
+    ClipboardCheck,
 } from "lucide-react";
 
 export default function Sidebar() {
     const { data: session, status } = useSession();
     const [isOpen, setIsOpen] = useState(false);
+    const [announcements, setAnnouncements] = useState([]);
+    const [notices, setNotices] = useState([]);
     const pathname = usePathname();
     const router = useRouter();
 
+
+    const fetchAnnouncements = async () => {
+        try {
+            const res = await fetch("/api/announcements");
+            const data = await res.json();
+            setAnnouncements(Array.isArray(data) ? data : []);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            // setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchAnnouncements();
+    }, []);
+
+    const fetchNotices = async () => {
+        try {
+            const res = await fetch("/api/notice");
+            const data = await res.json();
+            setNotices(data);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    useEffect(() => {
+        fetchNotices();
+    }, []);
+
+
+    const userEmail = session?.user?.email;
+    const userNotices = notices.filter((n) => n.email === userEmail);
+
+
+    // USER LINKS
     const UserLinks = [
         { name: "Dashboard", href: "/user-dashboard", icon: Home },
-        { name: "Add Posts", href: "/add-posts", icon: FileText },
-        { name: "My Posts", href: "/my-posts", icon: BookCopy },
+        ...(announcements.length > 0
+            ? [{ name: "Announcements", href: "/users-announcements", icon: Megaphone }]
+            : []),
+        ...(userNotices.length > 0
+            ? [{ name: "Notice", href: "/users-notice", icon: Mail }]
+            : []),
+        { name: "My Posts", href: "/my-posts", icon: BookOpen },
+        { name: "Followers", href: "/followers", icon: UserPlus },
+        { name: "Following", href: "/following", icon: UserCheck },
         { name: "My Profile", href: "/my-profile", icon: Users },
-        { name: "Add Profession", href: "/add-profession", icon: Users },
+        { name: "Add Profession", href: "/add-profession", icon: Briefcase },
     ];
 
+
+    // ADMIN LINKS
     const AdminLinks = [
         { name: "Admin Dashboard", href: "/admin-dashboard", icon: Home },
-        { name: "Add Posts", href: "/add-posts", icon: FileText },
-        { name: "My Posts", href: "/my-posts", icon: BookCopy },
+        { name: "Users", href: "/manage-users", icon: Users },
+        { name: "Posts", href: "/manage-posts", icon: Users },
+        { name: "Application List", href: "/application", icon: ClipboardList },
+        { name: "Announcements", href: "/announcements", icon: Megaphone },
+        { name: "Notice", href: "/notice", icon: Mail },
+        { name: "My Posts", href: "/my-posts", icon: BookOpen },
         { name: "My Profile", href: "/my-profile", icon: Users },
+        { name: "Add Profession", href: "/add-profession", icon: Briefcase },
     ];
 
     const role = session?.user?.role;
@@ -94,9 +156,6 @@ export default function Sidebar() {
                 {/* Navigation */}
                 <nav className="p-4 flex flex-col justify-between min-h-[calc(100vh-73px)]">
                     <div>
-                        <h3 className="text-xs uppercase font-bold text-gray-400 mb-2 px-3">
-                            Main Menu
-                        </h3>
                         <div className="space-y-1">
                             {status === "loading" ? (
                                 <div className="animate-pulse space-y-2 p-2">
@@ -115,8 +174,8 @@ export default function Sidebar() {
                                                 href={link.href}
                                                 onClick={() => setIsOpen(false)}
                                                 className={`flex items-center gap-3 p-3 rounded-lg transition-colors duration-150 ${isActive
-                                                        ? "bg-[#0000FF] text-white font-medium shadow-sm"
-                                                        : "text-gray-700 hover:bg-gray-100"
+                                                    ? "bg-[#0000FF] text-white font-medium shadow-sm"
+                                                    : "text-gray-700 hover:bg-gray-100"
                                                     }`}
                                             >
                                                 <Icon size={20} />

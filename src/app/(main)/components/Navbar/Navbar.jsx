@@ -188,33 +188,8 @@ const Navbar = () => {
                 <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
-            {/* <li>
-              <Link href="/popular" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/popular"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <FaRegStar /> Popular Post
-              </Link>
-            </li> */}
-            {
-              session?.user &&
-              <li>
-                <Link href="/events" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/events"
-                  ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                  : "text-gray-700 hover:text-[#213943]"
-                  }`}>
-                  <MdOutlineEmojiEvents /> Events
-                </Link>
-              </li>
-            }
-            {/* <li>
-              <Link href="/add-post" className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/add-post"
-                ? "text-[#0000FF] border-b-2 border-[#0000FF]" // ✅ Active route style
-                : "text-gray-700 hover:text-[#213943]"
-                }`}>
-                <FaPlusCircle /> Add Post
-              </Link>
-            </li> */}
+          
+           
             {session?.user &&
               <li>
                 <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
@@ -253,7 +228,7 @@ const Navbar = () => {
                   <div className={` shadow-lg rounded-full p-3 ${showMessageBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
                     <RiMessengerLine
                       color={showMessageBar ? 'white' : "#0000FF"}
-                      size={19}
+                      size={15}
                       className="cursor-pointer"
                       onClick={toggleMessageBar}
                     />
@@ -261,7 +236,7 @@ const Navbar = () => {
                   <div className={` shadow-lg rounded-full p-3 ${showNotificationBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
                     <IoNotificationsOutline
                       color={showNotificationBar ? 'white' : "#0000FF"}
-                      size={19}
+                      size={15}
                       className="cursor-pointer"
                       onClick={toggleNotificationBar}
                     />

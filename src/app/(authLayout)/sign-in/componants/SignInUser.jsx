@@ -17,12 +17,12 @@ const SignInUser = () => {
 
   return (
     <div>
-      <div className="min-h-screen flex items-center justify-center bg-[#f6f5ea] px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#eaeff6e8] px-4">
         <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 overflow-hidden mt-20">
           {/* Left: Illustration */}
           <div className="hidden md:flex items-center justify-center">
             <Image
-              src="/images/authentication.png"
+              src="/images/authImg.png"
               alt="Authentication"
               width={400}
               height={400}
@@ -85,7 +85,7 @@ const SignInUser = () => {
             {/* Sign Up Link */}
             <p className="text-sm text-center text-gray-500 mt-6">
               Don&apos;t have an account?{" "}
-              <a href="/sign-up" className="text-[#0000FF] font-medium">
+              <a href="/sign-up" className="text-[#0000FF]  font-medium">
                 Sign up
               </a>
             </p>

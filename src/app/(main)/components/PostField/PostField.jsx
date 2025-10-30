@@ -69,7 +69,7 @@ const PostField = () => {
 
           <div
             onClick={() => setShowModal(true)}
-            className={`cursor-pointer w-80 ${showMessageBar ? 'md:w-[700px]' : 'md:w-[1090px]'}`}
+            className={`cursor-pointer w-80 md:w-[1090px]`}
           >
             <input
               readOnly

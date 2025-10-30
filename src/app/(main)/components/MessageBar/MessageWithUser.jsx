@@ -7,6 +7,7 @@ import ChatPopup from "../ChatPopup/ChatPopup";
 import { useMessage } from "@/app/contexts/MessageContext";
 import { useChatPopup } from "@/app/contexts/ChatsContext";
 import { useSession } from "next-auth/react";
+import AllPostsLoading from "../../all-posts/loading";
 
 export default function MessageWithUser() {
   const { data: session } = useSession();
@@ -66,7 +67,7 @@ export default function MessageWithUser() {
     user.userName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p className="text-center min-h-screen">Loading chats...</p>;
+  if (loading) return <AllPostsLoading></AllPostsLoading>
 
   return (
     <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-300 p-4 h-full flex flex-col">

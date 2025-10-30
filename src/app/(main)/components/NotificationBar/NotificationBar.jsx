@@ -4,6 +4,7 @@ import { Bell, Heart, UserCheck, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import AllPostsLoading from "../../all-posts/loading";
 
 export default function NotificationBar() {
   const { data: session } = useSession();
@@ -116,7 +117,7 @@ export default function NotificationBar() {
             );
           })
         ) : (
-          <p className="text-center text-sm text-gray-400 mt-8">No notifications yet 🔕</p>
+          <AllPostsLoading></AllPostsLoading>
         )}
       </div>
     </div>

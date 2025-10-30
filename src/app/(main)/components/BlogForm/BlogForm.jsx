@@ -447,11 +447,11 @@ Requirements:
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="p-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg">
+            <div className="p-3 bg-gradient-to-br from-[#0000FF] to-blue-600 rounded-2xl shadow-lg">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-900 to-amber-900 bg-clip-text text-transparent leading-normal mb-3">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-900 to-blue-500 bg-clip-text text-transparent leading-normal mb-3">
             Post Management
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -467,7 +467,7 @@ Requirements:
               !userData?.profession &&
               <div className="space-y-6">
                 <div className="flex items-center space-x-3 pb-4">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
+                  <div className="p-2 bg-indigo-100 rounded-lg">
                     <FileText className="w-5 h-5 text-[#0000FF]" />
                   </div>
                   <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
@@ -529,7 +529,7 @@ Requirements:
                     onClick={generateContent}
                     type="button"
                     disabled={isGenerating}
-                    className={`btn rounded-lg text-amber-500 hover:text-white font-bold border border-amber-500 hover:bg-amber-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
+                    className={`btn rounded-lg text-blue-600 hover:text-white font-bold border border-blue-500 hover:bg-indigo-500 ${isGenerating ? "opacity-50 cursor-not-allowed" : ""
                       }`}
                   >
                     {isGenerating ? "Generating..." : "Generate Content"}
@@ -652,7 +652,7 @@ Requirements:
                   </div>
                 ) : (
                   <div className="flex flex-col items-center text-center p-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-yellow-600 rounded-full flex items-center justify-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-[#0000FF] to-blue-600 rounded-full flex items-center justify-center mb-4">
                       <Upload className="w-8 h-8 text-white" />
                     </div>
                     <p className="text-gray-500 font-medium">Drag & Drop or Click to Upload Featured Image</p>

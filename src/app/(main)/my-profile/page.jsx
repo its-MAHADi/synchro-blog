@@ -48,7 +48,7 @@ async function getUserByEmail(email) {
 
     return res.json();
   } catch (error) {
-    console.error("Error fetching user:", error);
+    // console.error("Error fetching user:", error);
     return null;
   }
 }
@@ -101,7 +101,7 @@ export default function Profile() {
 
     fetchUserData();
   }, [session?.user?.email]);
-  console.log(userData)
+  // console.log(userData)
   useEffect(() => {
     if (isEditModalOpen) {
       document.body.style.overflow = "hidden";
@@ -441,7 +441,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <><ProfileLoading/></>
+      <><ProfileLoading /></>
     );
   }
 
@@ -449,15 +449,26 @@ export default function Profile() {
   return (
     <div className="min-h-screen mt-10 bg-gradient-to-br bg-[#b4b4fd1a] ">
       {/* HEADER */}
-      <div className="relative w-full shadow-md">
-        <div className="h-40 border border-gray-200 sm:h-72 relative">
+      <div className="relative w-full shadow-md ">
+        <div className="h-40 border border-gray-200 sm:h-72 relative rounded-t-xl">
           {coverImage ? (
-            <img src={URL.createObjectURL(coverImage)} alt="Cover" className="w-full h-full object-cover" />
+            <img
+              src={URL.createObjectURL(coverImage)}
+              alt="Cover"
+              className="w-full h-full object-cover rounded-xl"
+            />
+          ) : userData?.cover_image ? (
+            <img
+              src={userData.cover_image}
+              alt="Cover"
+              className="w-full h-full object-cover rounded-xl"
+            />
           ) : (
-            <img src={userData?.cover_image} alt="Cover" className="w-full h-full object-cover" />
-            ||
-            <div className="w-full h-full bg-[#0000FF] rounded-xl"></div> // Placeholder
+            <div className="w-full h-full bg-gradient-to-r from-blue-200 to-indigo-200 flex items-center justify-center text-gray-600 font-semibold text-lg rounded-t-xl">
+              No Cover Photo
+            </div>
           )}
+
           <label className="absolute top-3 right-3 bg-white/80 text-gray-900 px-3 py-1 rounded-lg cursor-pointer text-sm flex items-center gap-1 hover:bg-white transition">
             <Camera size={16} />
             Change Cover
@@ -607,7 +618,7 @@ export default function Profile() {
               </div>
             </div>
 
-           
+
           </div>
 
         </div>
@@ -623,7 +634,7 @@ export default function Profile() {
       {/* MAIN CONTENT */}
       <main className="px-4 mx-auto py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* LEFT: ABOUT */}
-        <div className="lg:col-span-4 bg-white rounded-2xl shadow-lg p-5 border border-orange-100 self-start lg:sticky top-18">
+        <div className="lg:col-span-4 bg-white rounded-2xl shadow-lg p-5 border border-slate-100 self-start lg:sticky top-18">
           <h3 className="text-lg font-bold text-gray-900 mb-3">About</h3>
 
           {/* BIO */}
@@ -640,7 +651,7 @@ export default function Profile() {
           ) : (
             <>
               <textarea
-                className="w-full h-32 border border-orange-200 rounded-lg p-3 text-sm text-gray-700 focus:ring-2 focus:ring-[#0000FF]"
+                className="w-full h-32 border border-slate-400 rounded-lg p-3 text-sm text-gray-700 focus:ring-2 focus:ring-[#0000FF]"
                 value={tempBio}
                 onChange={(e) => setTempBio(e.target.value)}
               />
@@ -692,7 +703,7 @@ export default function Profile() {
                   {skillsArray.map((skill, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 text-xs bg-orange-50 text-[#0000FF] rounded-full border border-orange-200"
+                      className="px-3 py-1 text-xs bg-orange-50 text-[#0000FF] rounded-full border border-slate-400"
                     >
                       {skill}
                     </span>
@@ -740,12 +751,12 @@ export default function Profile() {
               placeholder="Search posts..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-1/2 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none"
+              className="w-full sm:w-1/2 border border-slate-400 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none"
             />
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="w-full sm:w-1/4 border border-orange-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none bg-white"
+              className="w-full sm:w-1/4 border border-slate-400 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-[#0000FF] outline-none bg-white"
             >
               <option value="default">🔁 Default</option>
               <option value="newest">🕒 Newest</option>

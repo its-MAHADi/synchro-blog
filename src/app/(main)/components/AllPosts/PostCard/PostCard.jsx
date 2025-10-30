@@ -57,7 +57,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
   const limit = 300; // show See more only if desc > 300 chars
   const isLong = descText.length > limit;
   const shortDesc = descText.slice(0, limit) + "...";
-  console.log(postData)
+  // console.log(postData)
   // Fetch comments
   const fetchComments = async () => {
     try {
@@ -212,7 +212,7 @@ const PostCard = ({ postData, usersData, onFollowUpdate }) => {
 
 
 
-console.log(postData)
+// console.log(postData)
 
   const CardContent = () => (
     <article className="rounded-xl p-4 flex flex-col gap-4 border border-gray-200 h-full bg-white">

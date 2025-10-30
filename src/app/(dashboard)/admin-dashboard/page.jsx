@@ -1,190 +1,245 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, FileText, BarChart2, Settings } from "lucide-react";
+import {
+  Users,
+  FileText,
+  MessageSquare,
+  BarChart2,
+  UserCircle,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
+import AdminDashboardLoading from "./loading";
 
 export default function AdminDashboard() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [stats, setStats] = useState({
+    total_users: 0,
+    total_posts: 0,
+    total_comments: 0,
+  });
   const [users, setUsers] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Fetch users
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      setUsers(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error loading users:", err);
-    }
-  };
-
-  // Fetch posts
-  const fetchPosts = async () => {
-    try {
-      const res = await fetch("/api/posts");
-      const data = await res.json();
-      setPosts(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Error loading posts:", err);
-    }
-  };
-
+  // ✅ Redirect if not admin
   useEffect(() => {
-    setLoading(true);
-    Promise.all([fetchUsers(), fetchPosts()]).finally(() => setLoading(false));
-  }, []);
+    if (status === "authenticated" && session?.user?.role !== "admin") {
+      router.push("/");
+    }
+  }, [status, session, router]);
 
+  // ✅ Fetch dashboard data
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const [adminRes, userRes] = await Promise.all([
+          fetch("/api/admin-dashboard-data"),
+          fetch("/api/users"),
+        ]);
 
-  const maxUsers = 1000; // Adjust as needed
-  const maxPosts = 1000;
+        if (!adminRes.ok) throw new Error("Failed to fetch admin data");
 
-  const stats = [
+        const adminData = await adminRes.json();
+        const userData = await userRes.json();
+
+        setStats(adminData);
+        setUsers(Array.isArray(userData) ? userData.slice(0, 5) : []);
+      } catch (err) {
+        // console.error(err);
+        setError("Failed to load admin dashboard data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (status === "authenticated") fetchDashboardData();
+  }, [status]);
+
+  if (loading || status === "loading") {
+    return (
+      <div>
+        <AdminDashboardLoading/>
+      </div>
+    );
+  }
+
+  if (!session || session?.user?.role !== "admin") {
+    return (
+      <div className="flex flex-col items-center justify-center h-[80vh] space-y-4">
+        <h2 className="text-2xl font-bold text-red-600">Access Denied</h2>
+        <p className="text-gray-500">Only admins can view this page.</p>
+      </div>
+    );
+  }
+
+  const adminName = session?.user?.name || "Admin";
+
+  const statCards = [
     {
       id: 1,
       label: "Total Users",
-      value: users?.length || 0,
+      value: stats.total_users,
       icon: Users,
       color: "#0000FF",
-      pct: Math.round(((users?.length || 0) / maxUsers) * 100),
     },
     {
       id: 2,
       label: "Total Posts",
-      value: posts?.length || 0,
+      value: stats.total_posts,
       icon: FileText,
       color: "#0000FF",
-      pct: Math.round(((posts?.length || 0) / maxPosts) * 100),
     },
-    { id: 3, label: "Engagement", value: "98%", icon: BarChart2, color: "#0000FF", pct: 98 },
-    { id: 4, label: "Pending Tasks", value: 12, icon: Settings, color: "#0000FF", pct: 30 },
+    {
+      id: 3,
+      label: "Total Comments",
+      value: stats.total_comments,
+      icon: MessageSquare,
+      color: "#0000FF",
+    },
   ];
 
-  const recent = [
-    { text: "New user Mahadi Hasan joined the platform", time: "2m ago" },
-    { text: 'Published "Next.js Performance Tips"', time: "1h ago" },
-    { text: "Updated roles and permissions", time: "3h ago" },
-    { text: "Generated weekly analytics report", time: "1d ago" },
+  const chartData = [
+    { name: "Users", value: stats.total_users },
+    { name: "Posts", value: stats.total_posts },
+    { name: "Comments", value: stats.total_comments },
   ];
 
   return (
     <div className="p-6 space-y-8 my-20">
-      {/* Progress animation */}
-      <style>{`
-        @keyframes grow {
-          from { width: 0%; }
-          to { width: var(--pct); }
-        }
-      `}</style>
-
       {/* Header */}
-      <div className="flex items-center justify-between gap-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">Welcome back, Mahadi Hasan</h1>
-          <p className="text-gray-500 mt-1">Overview of platform activity and recent events</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
+            Welcome back, {adminName}
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Platform statistics and recent insights
+          </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0000FF] text-white font-semibold shadow-lg hover:scale-105 transform transition">
-            Create Report
+            Export Report
           </button>
           <div className="p-3 rounded-lg bg-white shadow-md">
-            <span className="text-sm text-gray-600">v2.0.0</span>
+            <span className="text-sm text-gray-600">v3.0.0</span>
           </div>
         </div>
       </div>
 
-      {/* Stats grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((s) => {
-          const Icon = s.icon;
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {statCards.map((stat) => {
+          const Icon = stat.icon;
           return (
-            <div key={s.id} className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition transform hover:-translate-y-1">
+            <div
+              key={stat.id}
+              className="bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition transform hover:-translate-y-1"
+            >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
                   <div
                     className="w-12 h-12 rounded-xl flex items-center justify-center"
                     style={{
-                      background: `linear-gradient(135deg, ${s.color}20 0%, ${s.color}10 100%)`,
-                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3)",
+                      background: `linear-gradient(135deg, ${stat.color}20 0%, ${stat.color}10 100%)`,
                     }}
                   >
-                    <Icon size={20} className="text-[#0000FF] animate-pulse" />
+                    <Icon size={22} className="text-[#0000FF]" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500">{s.label}</p>
-                    <p className="text-xl font-bold text-gray-900">{s.value}</p>
+                    <p className="text-sm text-gray-500">{stat.label}</p>
+                    <p className="text-xl font-bold text-gray-900">
+                      {stat.value}
+                    </p>
                   </div>
                 </div>
-
-                <div className="text-sm px-2 py-1 rounded-full bg-[#0000FF]/10 text-[#0000FF] font-semibold">{s.pct}%</div>
-              </div>
-
-              {/* Progress bar */}
-              <div className="mt-4">
-                <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                  <div
-                    className="h-2 rounded-full"
-                    style={{
-                      background: `linear-gradient(90deg, ${s.color}, #a8431f)`,
-                      width: `${s.pct}%`,
-                      animation: `grow 1.2s ease forwards`,
-                      "--pct": `${s.pct}%`,
-                    }}
-                  />
-                </div>
-                <p className="text-xs text-gray-400 mt-2">Progress toward monthly goal</p>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Main content */}
+      {/* Chart + Users */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Bar Chart */}
         <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">User growth (demo)</h3>
-            <div className="text-sm text-gray-500">Last 30 days</div>
-          </div>
-
-          <div className="flex items-end gap-2 h-40">
-            {[30, 40, 55, 70, 60, 80, 95, 75, 85, 100, 90].map((val, idx) => (
-              <div
-                key={idx}
-                className="flex-1 bg-[#0000FF]/20 rounded-t-md transition-all transform hover:scale-y-105 origin-bottom"
-                style={{ height: `${val}%`, boxShadow: "inset 0 -2px 8px rgba(0,0,0,0.05)" }}
-                title={`${val}%`}
-              />
-            ))}
-          </div>
-
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            Platform Statistics
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" fill="#0000FF" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
           <p className="text-sm text-gray-500 mt-4">
-            This mini visualization is a demo. Replace with a real chart (Recharts, Chart.js, etc.) for production analytics.
+            Real-time overview of total users, posts, and comments.
           </p>
         </div>
 
+        {/* Recent Users */}
         <div className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition flex flex-col">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent activity</h3>
-            <button className="text-sm text-[#0000FF] font-semibold hover:underline">See all</button>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Recent Users
+            </h3>
+            <button className="text-sm text-[#0000FF] font-semibold hover:underline">
+              View all
+            </button>
           </div>
 
           <ul className="space-y-3 flex-1 overflow-auto pr-2">
-            {recent.map((r, i) => (
-              <li key={i} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition">
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#0000FF]/10 text-[#0000FF] font-bold">{i + 1}</div>
-                <div className="flex-1">
-                  <p className="text-sm text-gray-800">{r.text}</p>
-                  <p className="text-xs text-gray-400 mt-1">{r.time}</p>
-                </div>
-              </li>
-            ))}
+            {users.length > 0 ? (
+              users.map((u, i) => (
+                <li
+                  key={u._id || i}
+                  className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition"
+                >
+                  {u.image ? (
+                    <img
+                      src={u.image}
+                      alt={u.name}
+                      className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                    />
+                  ) : (
+                    <UserCircle className="w-10 h-10 text-gray-400" />
+                  )}
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">
+                      {u.name || "Unnamed User"}
+                    </p>
+                    <p className="text-xs text-gray-500">{u.email}</p>
+                  </div>
+                </li>
+              ))
+            ) : (
+              <p className="text-gray-400 text-sm">No users found.</p>
+            )}
           </ul>
-
-         
         </div>
       </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-300 text-red-600 rounded-lg p-3 text-center mt-4">
+          {error}
+        </div>
+      )}
     </div>
   );
 }

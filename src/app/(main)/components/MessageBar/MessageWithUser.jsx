@@ -7,7 +7,7 @@ import ChatPopup from "../ChatPopup/ChatPopup";
 import { useMessage } from "@/app/contexts/MessageContext";
 import { useChatPopup } from "@/app/contexts/ChatsContext";
 import { useSession } from "next-auth/react";
-import AllPostsLoading from "../../all-posts/loading";
+import MassageLoading from "./MassageLoading";
 
 export default function MessageWithUser() {
   const { data: session } = useSession();
@@ -67,7 +67,7 @@ export default function MessageWithUser() {
     user.userName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <AllPostsLoading></AllPostsLoading>
+  if (loading) return <><MassageLoading/></>
 
   return (
     <div className="bg-white min-h-screen rounded-2xl shadow-md border border-gray-300 p-4 h-full flex flex-col">

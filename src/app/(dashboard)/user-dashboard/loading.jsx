@@ -18,11 +18,11 @@ const UserDashboardLoading = () => {
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-5 mb-6">
                 {[...Array(5)].map((_, i) => (
                     <div
                         key={i}
-                        className="bg-white rounded-xl shadow p-5 flex justify-between items-center"
+                        className="bg-white rounded-xl shadow p-5 flex h-[120px] justify-between items-center"
                     >
                         <div className="space-y-2">
                             <div className="h-3 w-20 bg-gray-200 rounded"></div>

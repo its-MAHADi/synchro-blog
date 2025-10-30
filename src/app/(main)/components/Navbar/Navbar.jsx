@@ -188,8 +188,8 @@ const Navbar = () => {
                 <FaRegFileAlt /> All Blog Posts
               </Link>
             </li>
-          
-           
+
+
             {session?.user &&
               <li>
                 <Link href={`${session?.user.role === "admin" ? "/admin-dashboard" : "/user-dashboard"}`} className={`flex items-center gap-2 hover:text-[#0000FF] transition ${pathname === "/user-dashboard"
@@ -216,10 +216,10 @@ const Navbar = () => {
               !session?.user ?
                 <div className="hidden lg:flex items-center gap-3">
                   <Link href="/sign-in" className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
-                    Login
+                    Sign In
                   </Link>
                   <Link href="/sign-up" className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
-                    Register
+                    Sign Up
                   </Link>
                 </div>
                 :
@@ -275,7 +275,7 @@ const Navbar = () => {
 
 
                   <Link href="/" onClick={() => signOut()} className="btn border-[#0000FF] text-[#0000FF] font-bold hover:bg-[#0000FF] hover:text-white rounded-sm">
-                    Logout
+                    Sign Out
                   </Link>
                 </div>
             }
@@ -284,23 +284,28 @@ const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            <div className={` shadow-lg rounded-full p-2 ${showMessageBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
-              <RiMessengerLine
-                color={showMessageBar ? 'white' : "#0000FF"}
-                size={15}
-                className="cursor-pointer"
-                onClick={toggleMessageBar}
-              />
-            </div>
-            <div className={` shadow-lg rounded-full p-2 ${showNotificationBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
-              <IoNotificationsOutline
-                color={showNotificationBar ? 'white' : "#0000FF"}
-                size={15}
-                className="cursor-pointer"
-                onClick={toggleNotificationBar}
-              />
+            {
+              session?.user &&
+              <div className="flex items-center gap-2">
+                <div className={` shadow-lg rounded-full p-2 ${showMessageBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
+                  <RiMessengerLine
+                    color={showMessageBar ? 'white' : "#0000FF"}
+                    size={15}
+                    className="cursor-pointer"
+                    onClick={toggleMessageBar}
+                  />
+                </div>
+                <div className={` shadow-lg rounded-full p-2 ${showNotificationBar ? 'bg-[#0000FF]' : 'bg-white'} border border-[#0000FF5d]`}>
+                  <IoNotificationsOutline
+                    color={showNotificationBar ? 'white' : "#0000FF"}
+                    size={15}
+                    className="cursor-pointer"
+                    onClick={toggleNotificationBar}
+                  />
 
-            </div>
+                </div>
+              </div>
+            }
             <div>
               <button
                 className="md:hidden flex items-center"
@@ -321,41 +326,49 @@ const Navbar = () => {
           }`}
       >
         <div className="flex justify-between items-center p-4 border-b bg-white">
-          <div className="flex items-center gap-2">
-            <div>
-              {userImage ? (
-                <Link href="/my-profile">
-                  <img
-                    src={userImage}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                  />
-                </Link>
-              ) : userData?.image ? (
-                <Link href="/my-profile">
-                  <img
-                    src={userData.image}
-                    alt="Profile"
-                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                  />
-                </Link>
-              ) : (
-                <Link href="/my-profile">
-                  <img
-                    src="/default_profile.jpg"
-                    alt="Default profile pic"
-                    className="w-10 h-10 rounded-full object-cover border border-gray-300"
-                  />
-                </Link>
-              )}
+          {
+            session?.user ?
+              <div className="flex items-center gap-2">
+                <div>
+                  {userImage ? (
+                    <Link href="/my-profile">
+                      <img
+                        src={userImage}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  ) : userData?.image ? (
+                    <Link href="/my-profile">
+                      <img
+                        src={userData.image}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  ) : (
+                    <Link href="/my-profile">
+                      <img
+                        src="/default_profile.jpg"
+                        alt="Default profile pic"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-300"
+                      />
+                    </Link>
+                  )}
 
-            </div>
-            <div>
-              <Link href="/my-profile">
-                <h2 className="text-xl font-bold">{userData?.userName}</h2>
-              </Link>
-            </div>
-          </div>
+                </div>
+                <div>
+                  <Link href="/my-profile">
+                    <h2 className="text-xl font-bold">{userData?.userName}</h2>
+                  </Link>
+                </div>
+              </div>
+              :
+              <div className="flex items-center gap-1">
+                <img src="/main_logo_v2.png" alt="" className="w-8 rounded-full " />
+                <h2 className="font-bold">SYNCHRO</h2>
+              </div>
+          }
           <button onClick={() => setOpen(false)}>
             <AiOutlineCloseCircle className="h-7 w-7 cursor-pointer text-[#0000FF]" />
           </button>
@@ -379,15 +392,7 @@ const Navbar = () => {
               <FaRegFileAlt /> All Blog Posts
             </Link>
           </li>
-          <li>
-            <Link
-              href="/events"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-2 hover:text-[#0000FF]"
-            >
-              <MdOutlineEmojiEvents /> Events
-            </Link>
-          </li>
+
           <li>
             <Link
               href="/user-dashboard"
@@ -406,7 +411,7 @@ const Navbar = () => {
                   signOut();
                   setOpen(false);
                 }}
-                className="btn btn-sm bg-[#0000FF] text-white hover:opacity-90"
+                className="btn rounded-lg btn-sm bg-[#0000FF] text-white hover:opacity-90"
               >
                 Sign Out
               </button>
@@ -414,17 +419,17 @@ const Navbar = () => {
               <>
                 <Link
                   href="/sign-in"
-                  className="btn btn-sm btn-outline border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF] hover:text-white"
+                  className="btn rounded-lg btn-sm btn-outline border-[#0000FF] text-[#0000FF] hover:bg-[#0000FF] hover:text-white"
                   onClick={() => setOpen(false)}
                 >
-                  Login
+                  Sign In
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="btn btn-sm bg-[#0000FF] text-white hover:opacity-90"
+                  className="btn rounded-lg btn-sm bg-[#0000FF] text-white hover:opacity-90"
                   onClick={() => setOpen(false)}
                 >
-                  Register
+                  Sign Up
                 </Link>
               </>
             )}

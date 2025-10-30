@@ -84,7 +84,7 @@ const ViewPostCard = ({ postData, usersData, onFollowUpdate }) => {
     // Comment Handlers
     const handleAddComment = async () => {
         if (!session) {
-            Swal.fire({ icon: "warning", title: "Login to comment!", toast: true, position: "top-end", showConfirmButton: false, timer: 2000 });
+            Swal.fire({ icon: "warning", title: "Sign In to comment!", toast: true, position: "top-end", showConfirmButton: false, timer: 2000 });
             return;
         }
         if (newComment.trim() === "") return;
@@ -245,8 +245,8 @@ const ViewPostCard = ({ postData, usersData, onFollowUpdate }) => {
             {image && <img src={image} alt="Post" className="rounded-lg max-h-96 mt-3 w-full object-cover" />}
 
             {/* Footer */}
-            <div className="flex items-center justify-between mt-3">
-                <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between  mt-3">
+                <div className="flex justify-between items-center  w-full">
                     <button onClick={handleLike} className={`flex items-center gap-1 cursor-pointer transition ${liked ? "text-red-500" : "hover:text-red-500"}`}>
                         <Heart size={18} fill={liked ? "red" : "none"} /> {liked ? "Liked" : "Like"}
                     </button>

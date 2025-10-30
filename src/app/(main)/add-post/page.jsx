@@ -219,7 +219,7 @@ Requirements:
       Swal.fire({
         icon: "error",
         title: "Unauthorized",
-        text: "Please login before publishing a post!",
+        text: "Please Sign In before publishing a post!",
       });
       return;
     }

@@ -35,14 +35,14 @@ const SignInFrom = () => {
             } else {
                 Swal.fire({
                     icon: "error",
-                    title: "Login Failed",
+                    title: "Sign In Failed",
                     text: res.error,
                 });
             }
         } else {
             Swal.fire({
                 icon: "success",
-                title: "Login Successful",
+                title: "Sign In Successful",
                 timer: 1500,
                 showConfirmButton: false,
             });

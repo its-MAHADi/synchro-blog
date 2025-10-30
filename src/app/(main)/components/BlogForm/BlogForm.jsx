@@ -356,7 +356,7 @@ Requirements:
       Swal.fire({
         icon: "error",
         title: "Unauthorized",
-        text: "Please login before publishing a post!",
+        text: "Please Sign In before publishing a post!",
       });
       return;
     }
@@ -440,97 +440,6 @@ Requirements:
 
 
 
-  // const handleSubmit = async (e) => {
-
-  //   console.log('done')
-  //   e.preventDefault();
-  //   // if (!validateForm()) return;
-
-  //   if (!userData) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Unauthorized",
-  //       text: "Please login before publishing a post!",
-  //     });
-  //     return;
-  //   }
-
-  //   setIsSubmitting(true);
-  //   try {
-  //     let imageUrl = "";
-  //     if (formData.featured_image instanceof File) {
-  //       const imgForm = new FormData();
-  //       imgForm.append("image", formData.featured_image);
-
-  //       const uploadRes = await fetch(
-  //         `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`,
-  //         { method: "POST", body: imgForm }
-  //       );
-  //       const uploadData = await uploadRes.json();
-  //       imageUrl = uploadData?.data?.url || "";
-  //     }
-
-  //     const payload = {
-  //       ...formData,
-  //       category: formData.category
-  //         .split(",")
-  //         .map((t) => t.trim())
-  //         .filter(Boolean),
-  //       featured_image: imageUrl,
-  //       extraFields, // profession-wise extra data
-  //       author_profession: userData.profession || "", // add profession
-  //     };
-
-  //     const res = await fetch("/api/add-post", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(payload),
-  //     });
-  //     const result = await res.json();
-
-  //     if (result.success) {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success!",
-  //         text: "Your blog post has been published.",
-  //       });
-  //       setFormData({
-  //         blog_title: "",
-  //         description: "",
-  //         author_name: userData.name || "",
-  //         author_email: userData.email || "",
-  //         featured_image: "",
-  //         category: "",
-  //         likes: 0,
-  //         comment: 0,
-  //         created_at: new Date().toISOString(),
-  //         modified_at: null,
-  //       });
-  //       setExtraFields(
-  //         Object.keys(extraFields).reduce((acc, key) => ({ ...acc, [key]: "" }), {})
-  //       );
-  //       setFeaturedPreview(null);
-  //     } else {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Oops!",
-  //         text: result.message || "Failed to publish post.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error",
-  //       text: "Something went wrong while submitting!",
-  //     });
-  //   } finally {
-  //     setIsSubmitting(false);
-  //   }
-  // };
-
-
-  // ----------------- UI -----------------
-  
   return (
     <div className="min-h-screen">
       <div className="max-w-5xl mx-auto md:px-6 py-8">

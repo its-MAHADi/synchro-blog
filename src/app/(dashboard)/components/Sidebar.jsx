@@ -94,6 +94,8 @@ export default function Sidebar() {
         { name: "Announcements", href: "/announcements", icon: Megaphone },
         { name: "Notice", href: "/notice", icon: Mail },
         { name: "My Posts", href: "/my-posts", icon: BookOpen },
+        { name: "Followers", href: "/followers", icon: UserPlus },
+        { name: "Following", href: "/following", icon: UserCheck },
         { name: "My Profile", href: "/my-profile", icon: Users },
         { name: "Add Profession", href: "/add-profession", icon: Briefcase },
     ];
@@ -109,7 +111,7 @@ export default function Sidebar() {
             showCancelButton: true,
             confirmButtonColor: "#3B82F6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, logout!",
+            confirmButtonText: "Yes, Sign Out!",
             reverseButtons: true,
         });
 
@@ -202,7 +204,7 @@ export default function Sidebar() {
                             className="btn btn-outline btn-error w-full rounded-xl hover:text-white flex items-center justify-center gap-2"
                         >
                             <LogOut size={18} />
-                            <span>Logout</span>
+                            <span>Sign Out</span>
                         </button>
                     </div>
                 </nav>

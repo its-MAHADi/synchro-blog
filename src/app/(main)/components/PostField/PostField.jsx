@@ -52,18 +52,22 @@ const PostField = () => {
           <div>
             {session?.user?.image ? (
               <img
-                className="rounded-full w-12 h-12 object-cover "
-                src={session?.user?.image}
+                src={session.user.image}
                 alt="profile"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+            ) : userData?.image ? (
+              <img
+                src={userData.image}
+                alt="profile"
+                className="w-12 h-12 rounded-full object-cover"
               />
             ) : (
               <img
-                className="rounded-full w-12 h-12 object-cover "
-                src={userData?.image}
-                alt="profile"
+                src="/default_profile.jpg"
+                alt="default profile pic"
+                className="w-12 h-12 rounded-full object-cover"
               />
-              ||
-              <img src="/default_profile.jpg" alt="default profile pic" className="w-12 h-12 rounded-full" />
             )}
           </div>
 
@@ -92,7 +96,6 @@ const PostField = () => {
               ✖
             </button>
 
-            {/* Blog Form */}
             {/* Blog Form */}
             <div className="pt-6">
               <BlogForm onClose={() => setShowModal(false)} />

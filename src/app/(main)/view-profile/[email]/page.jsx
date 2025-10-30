@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ViewPostCard from "../components/ViewPostCard";
-import { Briefcase, Globe, GraduationCap, Mail, MapPin } from "lucide-react";
+import { Briefcase, Globe, GraduationCap, Mail, MapPin, Wrench } from "lucide-react";
 import { FiPhone } from "react-icons/fi";
 import { IoLanguageOutline } from "react-icons/io5";
 import FollowButton from "../components/FollowButton";
+import { useMessage } from "@/app/contexts/MessageContext";
 import ViewProfileLoading from "./loading";
 
 export default function ViewProfilePage() {
     const { email } = useParams();
     const { data: session, status: sessionStatus } = useSession();
-
+    const { toggleMessageBar } = useMessage();
     const [user, setUser] = useState(null);
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -189,7 +190,7 @@ export default function ViewProfilePage() {
                         {isFollowing && (
                             <button
                                 className="px-5 py-2 rounded-lg font-semibold bg-green-600 text-white hover:bg-green-700 transition-all"
-                                onClick={() => console.log("Open message modal")}
+                                onClick={toggleMessageBar}
                             >
                                 Message
                             </button>
@@ -205,28 +206,52 @@ export default function ViewProfilePage() {
                             About
                         </h3>
 
-                        {user.bio && (
+                        {/* Bio */}
+                        {user.bio ? (
                             <div className="text-gray-700 leading-relaxed mb-3 pb-2">{user.bio}</div>
-                        )}
+                        ) : (
+                            <div className="">
 
-                        {user.work && (
-                            <div className="flex items-center gap-3 mb-2 text-gray-700">
-                                <Briefcase size={14} className="text-[#0000FF]" />
-                                <span>{user.work}</span>
                             </div>
                         )}
 
-                        {user.education && (
+                        {/* Profession */}
+                        {user.profession ? (
+                            <div className="flex items-center gap-3 mb-2 text-gray-700">
+                                <Briefcase size={14} className="text-[#0000FF]" />
+                                <span>{user.profession}</span>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-3 text-gray-400  mb-2">
+                                <Briefcase size={14} />
+                                <p>No profession added.</p>
+                            </div>
+                        )}
+
+                        {/* Education */}
+                        {user.education ? (
                             <div className="flex items-center gap-3 mb-2 text-gray-700">
                                 <GraduationCap size={14} className="text-[#0000FF]" />
                                 <span>{user.education}</span>
                             </div>
+                        ) : (
+                            <div className="flex items-center gap-3 mb-2 text-gray-400">
+                                <GraduationCap size={14} />
+                                <p>No education info.</p>
+                            </div>
                         )}
 
-                        {user.location && (
+                        {/* Location */}
+                        {user.location ? (
                             <div className="flex items-center gap-3 mb-2 text-gray-700">
                                 <MapPin size={14} className="text-[#0000FF]" />
                                 <span>{user.location}</span>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-3 mb-2 text-gray-400">
+                                <MapPin size={14} />
+                                <p>No location added.</p>
+
                             </div>
                         )}
 
@@ -237,12 +262,14 @@ export default function ViewProfilePage() {
                                 : typeof user.skills === "string"
                                     ? user.skills.split(",").map((s) => s.trim()).filter(Boolean)
                                     : [];
-                            if (!skills.length) return null;
-                            return (
-                                <div className="mt-4">
-                                    <h3 className="text-lg font-semibold border-b pb-2 mb-3 text-[#0000FF]">
+
+                            return skills.length ? (
+                                <div className="mt-2">
+                                    <h3 className="text-lg font-semibold border-b pb-2 mb-3 text-[#0000FF] flex items-center gap-2">
+                                        <Wrench size={16} className="text-[#0000FF]" /> {/* 🔧 Skill Icon */}
                                         Skills
                                     </h3>
+
                                     <div className="flex flex-wrap gap-2">
                                         {skills.map((skill, i) => (
                                             <span
@@ -254,24 +281,43 @@ export default function ViewProfilePage() {
                                         ))}
                                     </div>
                                 </div>
+                            ) : (
+                                <div className="text-gray-400 italic mt-2 flex items-center gap-2">
+                                    <Wrench size={14} className="text-gray-400" />
+                                    No skills added.
+                                </div>
                             );
                         })()}
 
-                        {user.contact_email && (
+
+                        {/* Contact Email */}
+                        {user.contact_email ? (
                             <div className="flex items-center gap-3 mt-4 text-gray-700">
                                 <Mail size={14} className="text-[#0000FF]" />
                                 <span>{user.contact_email}</span>
                             </div>
+                        ) : (
+                            <div className="flex items-center gap-3 mt-4 text-gray-400">
+                                <Mail size={14} />
+                                <p>No contact email added.</p>
+                            </div>
                         )}
 
-                        {user.contact_number && (
+                        {/* Contact Number */}
+                        {user.contact_number ? (
                             <div className="flex items-center gap-3 mt-2 text-gray-700">
                                 <FiPhone size={14} className="text-[#0000FF]" />
                                 <span>{user.contact_number}</span>
                             </div>
+                        ) : (
+                            <div className="flex items-center gap-3 mt-2 text-gray-400">
+                                <FiPhone size={14} />
+                                <p> No phone number added.</p>
+                            </div>
                         )}
 
-                        {user.website && (
+                        {/* Website */}
+                        {user.website ? (
                             <div className="flex items-center gap-3 mt-2 text-gray-700">
                                 <Globe size={14} className="text-[#0000FF]" />
                                 <a
@@ -283,9 +329,15 @@ export default function ViewProfilePage() {
                                     {user.website}
                                 </a>
                             </div>
+                        ) : (
+                            <div className="flex items-center gap-3 mt-2 text-gray-400">
+                                <Globe size={14} />
+                                <p>No website added.</p>
+                            </div>
                         )}
 
-                        {user.languages && user.languages.length > 0 && (
+                        {/* Languages */}
+                        {user.languages && user.languages.length > 0 ? (
                             <div className="flex flex-wrap items-center gap-2 mt-2">
                                 <span className="text-[#0000FF]">
                                     <IoLanguageOutline size={16} />
@@ -299,8 +351,14 @@ export default function ViewProfilePage() {
                                     </span>
                                 ))}
                             </div>
+                        ) : (
+                            <div className="flex flex-wrap items-center gap-2 mt-2 text-gray-400">
+                                <IoLanguageOutline size={16} />
+                                <p> No languages added.</p>
+                            </div>
                         )}
                     </div>
+
 
                     {/* Posts Section */}
                     <div className="md:col-span-2 bg-white rounded-2xl shadow-sm p-6 hover:shadow-md transition-all overflow-y-auto md:max-h-[calc(100vh-4rem)]">

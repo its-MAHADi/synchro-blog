@@ -276,7 +276,7 @@ const ManageUsersPage = () => {
                                         </td>
                                     </tr>
                                     <tr className="border-b border-gray-300">
-                                        <td className="font-medium px-3 py-2">Failed Login Attempts</td>
+                                        <td className="font-medium px-3 py-2">Failed Sign In Attempts</td>
                                         <td className="px-3 py-2">{selectedUser.failedLoginAttempts}</td>
                                     </tr>
                                     <tr>

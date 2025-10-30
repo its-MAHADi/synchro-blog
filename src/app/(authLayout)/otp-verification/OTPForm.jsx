@@ -37,7 +37,7 @@ export default function OTPForm() {
           Swal.fire({ icon: "success", title: "Verified & Logged In", timer: 1500, showConfirmButton: false });
           router.push(`/`);
         } else {
-          Swal.fire({ icon: "error", title: "Login Failed", text: "Please login manually." });
+          Swal.fire({ icon: "error", title: "Sign In Failed", text: "Please Sign In manually." });
         }
       } else {
         setLoading(false);

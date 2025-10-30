@@ -9,7 +9,7 @@ export async function POST(req) {
 
     if (!session || !session.user?.email) {
       return NextResponse.json(
-        { success: false, message: "Unauthorized! Please login first." },
+        { success: false, message: "Unauthorized! Please Sign In first." },
         { status: 401 }
       );
     }

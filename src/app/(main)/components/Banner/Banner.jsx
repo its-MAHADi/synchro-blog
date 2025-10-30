@@ -1,20 +1,16 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { Sparkles, Zap, Target, Brain, PenTool, Users } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import Swal from 'sweetalert2';
-// #0000FF 
-// (// from-blue-600 to-indigo-800) 
-
-
+import React, { useEffect, useState } from "react";
+import { Sparkles, Zap, Target, Brain, PenTool, Users } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Swal from "sweetalert2";
 
 async function getUserByEmail(email) {
   try {
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+      (process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000");
 
     const res = await fetch(`${baseUrl}/api/user?email=${email}`, {
       cache: "no-store",
@@ -31,15 +27,24 @@ async function getUserByEmail(email) {
 
 export default function AIBlogBanner() {
   const [hoveredIcon, setHoveredIcon] = useState(null);
-  const [userData, setUserData] = useState(null)
-  const { data: session } = useSession()
-  const professions = [
-    { icon: Brain, label: 'Tech Writer', color: 'from-blue-400 to-cyan-400' },
-    { icon: Target, label: 'Marketer', color: 'from-purple-400 to-pink-400' },
-    { icon: PenTool, label: 'Content Creator', color: 'from-blue-500 to-indigo-500' },
-    { icon: Users, label: 'Business Owner', color: 'from-cyan-400 to-blue-500' }
-  ];
+  const [userData, setUserData] = useState(null);
+  const [particles, setParticles] = useState([]);
+  const { data: session } = useSession();
 
+  const professions = [
+    { icon: Brain, label: "Tech Writer", color: "from-blue-400 to-cyan-400" },
+    { icon: Target, label: "Marketer", color: "from-purple-400 to-pink-400" },
+    {
+      icon: PenTool,
+      label: "Content Creator",
+      color: "from-blue-500 to-indigo-500",
+    },
+    {
+      icon: Users,
+      label: "Business Owner",
+      color: "from-cyan-400 to-blue-500",
+    },
+  ];
 
   useEffect(() => {
     async function fetchUserData() {
@@ -52,15 +57,19 @@ export default function AIBlogBanner() {
     fetchUserData();
   }, [session?.user?.email]);
 
+  // ✅ Generate random particles only after hydration (client side)
   useEffect(() => {
-    if (userData) {
-      // console.log("✅ User data fetched:", userData);
-    }
-  }, [userData]);
-
+    const arr = Array.from({ length: 20 }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      duration: 5 + Math.random() * 10,
+      delay: Math.random() * 5,
+    }));
+    setParticles(arr);
+  }, []);
 
   return (
-    <div className="mt-20 border-t-2 border-b-2 border-r-1 border-r-gray-100 border-l-1 border-l-gray-100  border-b-[#443eb35b] border-t-[#443eb35b]    rounded-4xl relative p-4 md:p-10  overflow-hidden flex items-center justify-center">
+    <div className="mt-20 border-t-2 border-b-2 border-r-1 border-r-gray-100 border-l-1 border-l-gray-100 border-b-[#443eb35b] border-t-[#443eb35b] rounded-4xl relative p-4 md:p-10 overflow-hidden flex items-center justify-center">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
@@ -68,18 +77,18 @@ export default function AIBlogBanner() {
         <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-2000"></div>
       </div>
 
-      {/* Floating Particles */}
-      {[...Array(20)].map((_, i) => (
+      {/* Floating Particles (hydration-safe) */}
+      {particles.map((p, i) => (
         <div
           key={i}
           className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-40"
           style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
-            animationDelay: `${Math.random() * 5}s`
+            top: p.top,
+            left: p.left,
+            animation: `float ${p.duration}s ease-in-out infinite`,
+            animationDelay: `${p.delay}s`,
           }}
-        ></div>
+        />
       ))}
 
       {/* Main Content */}
@@ -104,7 +113,10 @@ export default function AIBlogBanner() {
         {/* Tagline */}
         <p className="text-lg md:text-2xl text-[#0000FF] mb-12 max-w-3xl mx-auto leading-relaxed">
           Transform your ideas into professional blog posts in minutes.
-          <span className="text-[#0000FF] font-semibold"> Choose your profession, let AI do the rest.</span>
+          <span className="text-[#0000FF] font-semibold">
+            {" "}
+            Choose your profession, let AI do the rest.
+          </span>
         </p>
 
         {/* Profession Icons */}
@@ -118,15 +130,23 @@ export default function AIBlogBanner() {
                 onMouseEnter={() => setHoveredIcon(idx)}
                 onMouseLeave={() => setHoveredIcon(null)}
               >
-                <div className={`w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br ${prof.color} rounded-xl flex items-center justify-center shadow-lg transform transition-all duration-300 ${hoveredIcon === idx ? 'scale-110 shadow-2xl' : 'hover:scale-105'}`}
+                <div
+                  className={`w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br ${prof.color} rounded-xl flex items-center justify-center shadow-lg transform transition-all duration-300 ${hoveredIcon === idx
+                      ? "scale-110 shadow-2xl"
+                      : "hover:scale-105"
+                    }`}
                   style={{
-                    animation: `floatIcon ${3 + idx * 0.5}s ease-in-out infinite`,
-                    animationDelay: `${idx * 0.2}s`
+                    animation: `floatIcon ${3 + idx * 0.5
+                      }s ease-in-out infinite`,
+                    animationDelay: `${idx * 0.2}s`,
                   }}
                 >
                   <Icon className="w-10 h-10 text-white" />
                 </div>
-                <p className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-slate-400 whitespace-nowrap transition-opacity duration-300 ${hoveredIcon === idx ? 'opacity-100' : 'opacity-0'}`}>
+                <p
+                  className={`absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-sm text-slate-400 whitespace-nowrap transition-opacity duration-300 ${hoveredIcon === idx ? "opacity-100" : "opacity-0"
+                    }`}
+                >
                   {prof.label}
                 </p>
               </div>
@@ -135,39 +155,37 @@ export default function AIBlogBanner() {
         </div>
 
         {/* CTA Button */}
-        {
-          !userData?.profession && (
-            <button
-              onClick={() => {
-                if (!session) {
-                  Swal.fire({
-                    icon: "warning",
-                    title: "You must be logged in to choose a profession!",
-                    text: "Please log in to continue.",
-                    showCancelButton: true,
-                    confirmButtonText: "Login Now",
-                    cancelButtonText: "Cancel",
-                    confirmButtonColor: "#2563EB",
-                    cancelButtonColor: "#6B7280",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      window.location.href = "/sign-in"; // redirect to your login page
-                    }
-                  });
-                } else {
-                  window.location.href = "/add-profession"; // normal redirect if logged in
-                }
-              }}
-              className="cursor-pointer group relative inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-2xl shadow-blue-500/50 hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+        {!userData?.profession && (
+          <button
+            onClick={() => {
+              if (!session) {
+                Swal.fire({
+                  icon: "warning",
+                  title: "You must be logged in to choose a profession!",
+                  text: "Please log in to continue.",
+                  showCancelButton: true,
+                  confirmButtonText: "Login Now",
+                  cancelButtonText: "Cancel",
+                  confirmButtonColor: "#2563EB",
+                  cancelButtonColor: "#6B7280",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.href = "/sign-in";
+                  }
+                });
+              } else {
+                window.location.href = "/add-profession";
+              }
+            }}
+            className="cursor-pointer group relative inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg font-semibold rounded-full shadow-2xl shadow-blue-500/50 hover:shadow-purple-500/50 transform hover:scale-105 transition-all duration-300 overflow-hidden"
+          >
+            <span className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
 
-              <span className="relative">Choose your Profession</span>
+            <span className="relative">Choose your Profession</span>
 
-              <Sparkles className="relative w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
-            </button>
-          )
-        }
+            <Sparkles className="relative w-5 h-5 group-hover:rotate-180 transition-transform duration-500" />
+          </button>
+        )}
 
         {/* Feature Highlights */}
         <div className="mt-8 md:mt-16 flex flex-wrap justify-center gap-8 text-xl text-slate-900">
@@ -186,9 +204,11 @@ export default function AIBlogBanner() {
         </div>
       </div>
 
+      {/* Animations */}
       <style jsx>{`
         @keyframes float {
-          0%, 100% {
+          0%,
+          100% {
             transform: translateY(0px) translateX(0px);
             opacity: 0.4;
           }
@@ -198,7 +218,8 @@ export default function AIBlogBanner() {
           }
         }
         @keyframes floatIcon {
-          0%, 100% {
+          0%,
+          100% {
             transform: translateY(0px);
           }
           50% {

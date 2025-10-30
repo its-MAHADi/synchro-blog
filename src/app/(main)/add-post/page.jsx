@@ -303,7 +303,7 @@ Requirements:
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="flex items-center justify-center mb-4">
-            <div className="p-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl shadow-lg">
+            <div className="p-3 bg-[#0000FF] rounded-2xl shadow-lg">
               <Sparkles className="w-8 h-8 text-white" />
             </div>
           </div>

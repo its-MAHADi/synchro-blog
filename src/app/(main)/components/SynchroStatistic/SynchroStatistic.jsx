@@ -13,8 +13,7 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '' }) => {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(progress / duration, 1);
-      
-      // Easing function for smooth animation
+
       const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
       setCount(Math.floor(end * easeOutQuart));
 
@@ -39,10 +38,9 @@ const StatItem = ({ icon: Icon, value, label, delay }) => {
   }, [delay]);
 
   return (
-    <div 
-      className={`flex flex-col items-center gap-2 transform transition-all duration-700 ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-      }`}
+    <div
+      className={`flex flex-col items-center gap-2 transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+        }`}
     >
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
@@ -66,6 +64,19 @@ export default function SynchroStatistic() {
     { icon: BookOpen, value: <><AnimatedCounter end={12} />+</>, label: 'Posts Made', delay: 200 },
     { icon: Award, value: <><AnimatedCounter end={15} />+</>, label: 'Professions to choose from', delay: 400 }
   ];
+
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    // Generate particles only on client
+    const newParticles = Array.from({ length: 20 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      duration: `${3 + Math.random() * 4}s`,
+      delay: `${Math.random() * 2}s`,
+    }));
+    setParticles(newParticles);
+  }, []);
 
   return (
     <div className="mt-30 relative w-full bg-gradient-to-br from-[#3333ff] via-[#000099] to-[#3333ff] py-16 px-4 overflow-hidden rounded-tl-4xl rounded-br-4xl">
@@ -99,17 +110,17 @@ export default function SynchroStatistic() {
 
         {/* Floating particles effect */}
         <div className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
+          {particles.map((p, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white rounded-full opacity-20"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
-                animationDelay: `${Math.random() * 2}s`
+                left: p.left,
+                top: p.top,
+                animation: `float ${p.duration} ease-in-out infinite`,
+                animationDelay: p.delay
               }}
-            ></div>
+            />
           ))}
         </div>
       </div>

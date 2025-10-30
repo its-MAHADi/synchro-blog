@@ -413,6 +413,7 @@ Requirements:
           category: "",
           likes: 0,
           comment: 0,
+          share: 0,
           created_at: new Date().toISOString(),
           modified_at: null,
         });

@@ -8,7 +8,6 @@ import BlogPost from "./components/BlogPost/BlogPost";
 import PostField from "./components/PostField/PostField";
 import AllPosts from "./components/AllPosts/AllPosts";
 import MessageBar from "./components/MessageBar/MessageBar";
-// import SignupCoverProfile from "./SignupCoverProfile/page";
 import SynchroStatistic from "./components/SynchroStatistic/SynchroStatistic";
 import TopArticles from "./components/TopArtricles/TopArticles";
 import AllProfessions from "./components/AllProfessions/AllProfessions";

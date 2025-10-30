@@ -56,7 +56,7 @@ const PostCartOfMP = ({ post, session, handleEditPost, handleDeletePost, formatF
                     <FaHeart className="text-red-500" /> {post.likes || 0} Likes
                 </div>
                 <div>
-                    {post.comment || 0} Comments · {post.shares || 0} Shares
+                    {post.comment || 0} Comments 
                 </div>
             </div>
 

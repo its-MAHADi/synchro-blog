@@ -1,36 +1,49 @@
-
 import SynchroFeatures from "./components/FeaturesOfSynchor/SynchroFeatures";
 import SynchroWorks from "./components/HowSynchroWorks/SynchroWorks";
 import Banner from "./components/Banner/Banner";
 import Contact from "./components/Contact/Contact";
 import FAQ from "./components/FAQ/FAQ";
 import PopularTopic from "./components/popularTopic/PopularTopic";
-import RecentPosts from "./components/RecentPosts/RecentPosts";
+import BlogPost from "./components/BlogPost/BlogPost";
+import PostField from "./components/PostField/PostField";
+import AllPosts from "./components/AllPosts/AllPosts";
+import MessageBar from "./components/MessageBar/MessageBar";
+import SynchroStatistic from "./components/SynchroStatistic/SynchroStatistic";
+import TopArticles from "./components/TopArtricles/TopArticles";
+import AllProfessions from "./components/AllProfessions/AllProfessions";
+import JoinCommunity from "./components/JoinCommunity/JoinCommunity";
+import Newsletter from "./components/Newsletter/Newsletter";
+
+export const metadata = {
+  title: "Home | Synchro",
+  description:
+    "The purpose of Synchro - AI-Powered Blogging Site is to simplify and enhance the process of creating, managing, and publishing blog content by leveraging artificial intelligence.",
+};
 
 export default function Home() {
   return (
-    <section className="max-w-11/12 mx-auto">
-      {/* banner */}
+    <section >
+     <div className="space-y-10">
       <Banner/>
 
-      {/* Recent Post */}
-      <RecentPosts/>
+      <SynchroStatistic></SynchroStatistic>
 
-      {/*Features of Synchro */}
       <SynchroFeatures/>
 
-      {/* How synchro works */}
-      <SynchroWorks/>
+      <TopArticles></TopArticles>
 
-      {/* PopularTopic */}
-      <PopularTopic/>
+      <AllProfessions></AllProfessions>
 
-      {/* FAQ section */}
-      <FAQ></FAQ>
-      
-      {/* contact page */}
-      <Contact/>
+      <JoinCommunity></JoinCommunity>
 
+      <Newsletter></Newsletter>      
+      {/* <Contact/> */}
+     </div>
     </section>
   );
 }
+
+
+
+
+

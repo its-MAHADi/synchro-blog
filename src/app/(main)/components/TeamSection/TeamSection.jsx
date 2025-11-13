@@ -8,7 +8,7 @@ export default function TeamSection() {
       photo: "/images/manDeveloper.avif",
       bio: "Visionary leader with passion for community building and innovative web solutions.",
       skills: ["Leadership", "Full Stack", "Community"],
-      gradient: "from-[#c45627] to-[#e67045]"
+      gradient: "from-[#0000FF] to-[#e67045]"
     },
     {
       name: "Kazi Tahia",
@@ -56,14 +56,14 @@ export default function TeamSection() {
     <div className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 via-white to-gray-50">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto text-center mb-20">
-        <div className="inline-flex items-center bg-[#c45627]/10 text-[#c45627] rounded-full px-6 py-3 mb-8 border border-[#c45627]/20">
+        <div className="inline-flex items-center bg-[#0000FF]/10 text-[#0000FF] rounded-full px-6 py-3 mb-8 border border-[#0000FF]/20">
           <Star className="w-5 h-5 mr-2" />
           <span className="font-semibold text-lg">Meet The Builders</span>
         </div>
         
         <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#213943] mb-6 leading-tight">
           Our Creative{" "}
-          <span className="bg-gradient-to-r from-[#c45627] to-[#e67045] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[#0000FF] to-[#e67045] bg-clip-text text-transparent">
             Dream Team
           </span>
         </h2>
@@ -76,17 +76,17 @@ export default function TeamSection() {
         {/* Team Stats */}
         <div className="flex justify-center items-center gap-8 mt-12">
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#c45627]">6</div>
+            <div className="text-3xl font-bold text-[#0000FF]">6</div>
             <div className="text-gray-600">Team Members</div>
           </div>
           <div className="w-px h-12 bg-gray-300"></div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#c45627]">1+</div>
+            <div className="text-3xl font-bold text-[#0000FF]">1+</div>
             <div className="text-gray-600">Years Experience</div>
           </div>
           <div className="w-px h-12 bg-gray-300"></div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#c45627]">100%</div>
+            <div className="text-3xl font-bold text-[#0000FF]">100%</div>
             <div className="text-gray-600">Dedication</div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export default function TeamSection() {
           {teamMembers.map((member, idx) => (
             <div
               key={idx}
-              className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-[#c45627]/20 hover:-translate-y-4"
+              className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-[#0000FF]/20 hover:-translate-y-4"
             >
               {/* Background Gradient Effect */}
               <div className={`absolute inset-0 bg-gradient-to-br ${member.gradient} opacity-0 group-hover:opacity-5 rounded-3xl transition-opacity duration-500`}></div>
@@ -119,10 +119,10 @@ export default function TeamSection() {
 
               {/* Member Info */}
               <div className="text-center relative">
-                <h3 className="text-2xl font-bold text-[#213943] mb-2 group-hover:text-[#c45627] transition-colors duration-300">
+                <h3 className="text-2xl font-bold text-[#213943] mb-2 group-hover:text-[#0000FF] transition-colors duration-300">
                   {member.name}
                 </h3>
-                <p className="text-[#c45627] font-semibold mb-4 text-lg">
+                <p className="text-[#0000FF] font-semibold mb-4 text-lg">
                   {member.role}
                 </p>
                 <p className="text-gray-600 mb-6 leading-relaxed">
@@ -134,7 +134,7 @@ export default function TeamSection() {
                   {member.skills.map((skill, skillIdx) => (
                     <span
                       key={skillIdx}
-                      className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium group-hover:bg-[#c45627]/10 group-hover:text-[#c45627] transition-colors duration-300"
+                      className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium group-hover:bg-[#0000FF]/10 group-hover:text-[#0000FF] transition-colors duration-300"
                     >
                       {skill}
                     </span>
@@ -145,19 +145,19 @@ export default function TeamSection() {
                 <div className="flex justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <a
                     href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#c45627] hover:text-white transition-colors duration-300"
+                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#0000FF] hover:text-white transition-colors duration-300"
                   >
                     <Github className="w-5 h-5" />
                   </a>
                   <a
                     href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#c45627] hover:text-white transition-colors duration-300"
+                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#0000FF] hover:text-white transition-colors duration-300"
                   >
                     <Linkedin className="w-5 h-5" />
                   </a>
                   <a
                     href="#"
-                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#c45627] hover:text-white transition-colors duration-300"
+                    className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#0000FF] hover:text-white transition-colors duration-300"
                   >
                     <Twitter className="w-5 h-5" />
                   </a>
@@ -166,7 +166,7 @@ export default function TeamSection() {
 
               {/* Decorative Elements */}
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Sparkles className="w-6 h-6 text-[#c45627]" />
+                <Sparkles className="w-6 h-6 text-[#0000FF]" />
               </div>
             </div>
           ))}
@@ -175,7 +175,7 @@ export default function TeamSection() {
 
       {/* Team Quote Section */}
       <div className="max-w-4xl mx-auto mt-20">
-        <div className="bg-gradient-to-r from-[#213943] to-[#c45627] rounded-xl p-12 text-white text-center relative overflow-hidden">
+        <div className="bg-gradient-to-r from-[#213943] to-[#0000FF] rounded-xl p-12 text-white text-center relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-0 left-0 w-32 h-32 bg-white rounded-full -translate-x-16 -translate-y-16"></div>

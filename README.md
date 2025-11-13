@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🧠 Synchro – AI-Powered Smart Blogging Platform
 
-## Getting Started
+**Live:** [synchro-blog.vercel.app](https://synchro-blog.vercel.app/)
 
-First, run the development server:
+Synchro is an AI-powered smart blogging platform built with **Next.js**, **NextAuth**, and **MongoDB**, integrating **Google Gemini** and **OpenAI** to make blogging faster, smarter, and more efficient.
 
+---
+
+## 🚀 Features
+
+### 👤 User
+- Secure email & OTP authentication  
+- Temporary login lock system (5 failed attempts = 15m lock)  
+- Profile & cover image updates, editable bio and info  
+- Profession-based post creation  
+- Like, comment, follow, message & schedule posts  
+- Real-time notifications (likes, comments, follows)  
+- Profession validation quiz with AI-based evaluation  
+- Apply for profession change or unblock via community  
+
+### 🧑‍💼 Admin
+- Manage all users and posts  
+- Handle profession and unblock requests  
+- Send user notifications via email  
+- Create or schedule announcements  
+
+---
+
+## 🛠️ Tech Stack
+- **Frontend & Backend:** Next.js, React, Tailwind CSS, Framer Motion   
+- **Auth:** NextAuth, Bcrypt  
+- **AI:** Google Gemini, OpenAI API  
+- **Others:** TanStack Query, Recharts, Nodemailer, SweetAlert2  
+
+---
+
+## 📦 Packages
+`@tanstack/react-query`, `bcrypt`, `next-auth`, `nodemailer`, `openai`, `react-toastify`, `sweetalert2`, `recharts`, `lucide-react`, `framer-motion`
+
+---
+
+## ⚡ Getting Started
 ```bash
+# Clone repo
+git clone https://github.com/its-MAHADi/synchro-blog.git
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

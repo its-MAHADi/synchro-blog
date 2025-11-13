@@ -1,24 +1,155 @@
+// Admin email : mhmahadi360@gmail.com Password : 12345678
+"use client";
+
+import { useMessage, MessageProvider } from "../contexts/MessageContext";
 import Footer from "./components/footer/Footer";
+import MessageBar from "./components/MessageBar/MessageBar";
 import Navbar from "./components/Navbar/Navbar";
+import NextProvider from "@/Provider/NextProvider";
+import { motion, AnimatePresence } from "framer-motion";
+import NotificationBar from "./components/NotificationBar/NotificationBar";
+import { useState } from "react";
+import { Bot, X } from "lucide-react";
+import MessageWithUser from "./components/MessageBar/MessageWithUser";
+import { useSession } from "next-auth/react";
+import { ChatPopupProvider, useChatPopup } from "../contexts/ChatsContext";
+import ChatPopup from "./components/ChatPopup/ChatPopup";
 
 
-export const metadata = {
-  title: "Home | Synchro",
-  description: "The purpose of Synchro - AI-Powered Blogging Site is to simplify and enhance the process of creating, managing, and publishing blog content by leveraging artificial intelligence. Traditional blogging often requires significant effort in research, writing, editing, SEO optimization, and audience engagement.",
-};
+function MainContent({ children }) {
+  const { showNotificationBar, showMessageBar } = useMessage();
+
+  const { data: session } = useSession();
+  const currentUser = session?.user?.email
+  // এখন শুধু notification sidebar থাকবে (AI chat popup হবে)
+  const activeSidebar = showMessageBar ? "message" : showNotificationBar ? "notification" : null;
+
+  return (
+    <main className="max-w-7xl mx-auto py-10 flex gap-8 items-start relative transition-all duration-500 ease-in-out">
+      {/* বাম দিকের content */}
+      <motion.section
+        className="flex-1"
+        animate={{
+          width: activeSidebar ? "65%" : "100%",
+          opacity: activeSidebar ? 0.95 : 1,
+        }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+      >
+        {children}
+      </motion.section>
+
+
+
+
+      {/* Sidebar */}
+      <AnimatePresence>
+        {showMessageBar && (
+          <motion.div
+            key="messageDropdown"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-20 md:right-6 right-4 w-[360px] max-h-[72vh] md:max-h-[83vh] bg-white shadow-xl rounded-xl overflow-auto border border-gray-200 z-50"
+          >
+            <MessageWithUser currentUser={currentUser} />
+          </motion.div>
+        )}
+
+        {showNotificationBar && (
+          <motion.div
+            key="notificationDropdown"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-20 md:right-6 right-4 w-[360px] max-h-[72vh] md:max-h-[83vh] bg-white shadow-xl rounded-xl overflow-auto border border-gray-200 z-50"
+          >
+            <NotificationBar />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </main>
+  );
+}
+
+/* ✅ Floating Chat Button + Popup Chat */
+/* ✅ Floating Chat Button + Popup Chat */
+function FloatingChatPopup() {
+  const [openChat, setOpenChat] = useState(false);
+  const { openPopupUser, closePopup } = useChatPopup();
+  return (
+    <>
+      {/* Chat Floating Button */}
+      <button
+        onClick={() => setOpenChat(true)}
+        className={`fixed ${openChat && 'ml-40 mb-10'} bottom-6 cursor-pointer right-6 bg-[#0000FF] hover:bg-[#2525ffe8] text-white px-5  py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform hover:scale-105 z-50`}
+      >
+        <Bot size={20} />
+        Chat with AI
+      </button>
+
+      {/* Popup Chat Modal */}
+      <AnimatePresence>
+        {openChat && (
+          <motion.div
+            key="chatbox"
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 80 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            // 🟢 নিচের অংশটাই popup box — এখন blur নেই
+            className="fixed bottom-0 right-5 md:right-0 w-[350px] md:w-[420px] max-w-[95vw] my-10 h-[60vh] bg-white shadow-2xl rounded-2xl border border-gray-300 z-50 flex flex-col overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex justify-between items-center  p-3 border-b bg-[#0000FF] text-white">
+              <h2 className="font-semibold text-md text-center  w-full">Your Personal Assistant From Synchro</h2>
+              <button
+                onClick={() => setOpenChat(false)}
+                className="hover:text-gray-200 transition"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            {/* Chat Body */}
+            <div className="flex-1 overflow-hidden">
+              <MessageBar />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
 
 export default function MainLayout({ children }) {
-  return <>
-    <div className="space-y-20">
-      <header>
-        {/* nav bar */}
-        <Navbar />
-      </header>
-      <main className="min-h-[calc(100vh-148px)]">
-        {children}
-      </main>
-      {/* footer */}
-      <Footer />
-    </div>
-  </>;
+  return (
+    <NextProvider>
+      <MessageProvider>
+        <ChatPopupProvider>
+          <div className="relative min-h-screen">
+            {/* Navbar */}
+            <header className="sticky top-0 z-50 bg-white shadow-sm">
+              <Navbar />
+            </header>
+
+            {/* Main Content */}
+            <div className="max-w-11/12 mx-auto min-h-[calc(100vh-4.33px)]">
+              <MainContent>{children}</MainContent>
+            </div>
+
+            {/* Footer */}
+            <footer className="bg-white border-t border-gray-200 mt-10">
+              <Footer />
+            </footer>
+
+            {/* 💬 Floating Chat Button + Popup */}
+
+            <FloatingChatPopup />
+
+          </div>
+        </ChatPopupProvider>
+      </MessageProvider>
+    </NextProvider>
+  );
 }
